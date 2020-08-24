@@ -1,0 +1,50 @@
+/*IMPORT ANTD*/
+@import "~antd/dist/antd.css";
+
+/*REM*/
+html {
+  font-size: 100px; /*750:1REM=100PX*/
+}
+
+#root {
+  margin: 0 auto;
+  max-width: 750px;
+}
+
+/*NAV-BOTTOM*/
+.footerNavBox {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    z-index: 9999;
+    width: 100%;
+    height: 1.06rem;
+    line-height: 1.06rem;
+    box-shadow:0.05rem  0 0.16rem rgba(0,0,0,0.13);
+    background: #FFF;
+  
+    display: flex;
+    a {
+      flex: 1;
+      text-align: center;
+      color: #666;
+  
+      i {
+        display: block;
+        margin-top: .12rem;
+        font-size: .44rem;
+      }
+  
+      span {
+        display: block;
+        height: .5rem;
+        line-height: .5rem;
+        font-size: .24rem;
+      }
+  
+      &.active {
+        color: #369836;
+        font-weight: bold;
+      }
+    }
+  }
