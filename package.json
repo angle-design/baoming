@@ -120,5 +120,6 @@
   },
   "devDependencies": {
     "babel-plugin-import": "^1.13.0"
-  }
+  },
+  "proxy": "http://bmdt.zgn365.com"
 }
