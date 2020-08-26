@@ -24,7 +24,8 @@ class Settlement extends Component {
                 let result=await querySettlement(values);
                 console.log(result)
                 if(parseFloat(result.code)===200){
-                    this.props.history.push('/course')
+                    this.props.history.push('/course');
+                    return;
                 }
                 loginFail()
             }

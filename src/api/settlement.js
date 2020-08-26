@@ -1,8 +1,8 @@
 import axios from './index';
 
-//=>头条
-export function querySettlement(payLoad){
+//=>机构入驻
+export function querySettlement(payLoad={}){
     return axios.post('/api/api/index/addJg',{
-        payLoad
+        ...payLoad
     });
 }
