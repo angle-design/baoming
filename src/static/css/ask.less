@@ -1,5 +1,6 @@
 .askBox{
-        margin: 0.1rem 0.1rem;
+        .askBox{
+          margin:0.1rem;
         .ask_item {
           background: #f8f8f8;
           border: 0.02rem solid #eeeeee;
@@ -224,6 +225,153 @@
                 color: #fff;
                 font-size: 0.26rem;
                 margin: 0 0.2rem;
+              }
+            }
+          }
+        }
+      }
+        .detailsBox{
+          .details_top {
+            width: 7.5rem;
+            height: 2.95rem;
+            background-size: 7.5rem 2.95rem;
+            color: #fff;
+            div {
+              width: 7.5rem;
+              height: 2.95rem;
+              background: rgba(0, 0, 0, 0.6);
+              box-sizing: border-box;
+              padding: 0 0.4rem;
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              justify-content: center;
+              p {
+                font-size: 0.34rem;
+                line-height: 0.5rem;
+                font-weight: 500;
+              }
+              span {
+                padding: 0.1rem 0.2rem;
+                border: 0.02rem solid #fff;
+                border-radius: 0.1rem;
+                font-size: 0.26rem;
+                display: block;
+                margin-top: 0.4rem;
+                font {
+                  color: #48e248;
+                  &.cur{
+                    color:#999;
+                  }
+                }
+              }
+            }
+          }
+          .details_text {
+            margin: 0.2rem 0.3rem 0.5rem;
+            dl {
+              display: flex;
+              align-items: center;
+              dt {
+                margin-right: 0.25rem;
+                position: relative;
+                font {
+                  width: 0.32rem;
+                  height: 0.32rem;
+                  background: #f1a91e;
+                  border-radius: 50%;
+                  position: absolute;
+                  right: -0.1rem;
+                  bottom: 0.1rem;
+                }
+                img {
+                  width: 1.1rem;
+                  height: 1.1rem;
+                  border-radius: 50%;
+                }
+              }
+              dd {
+                font-size: 0.26rem;
+                color: #999;
+                font {
+                  display: block;
+                  color: #333;
+                  font-size: 0.34rem;
+                }
+              }
+            }
+            p {
+              font-size: 0.26rem;
+              line-height: 0.4rem;
+              margin-top: 0.2rem;
+              span {
+                height: auto;
+                overflow: auto;
+                &.heightauto {
+                  overflow: hidden;
+                  max-height:100px;
+                  display: block;
+                }
+              }
+              font {
+                color: #f1a91e;
+                display: block;
+                text-align: center;
+                padding-top: 0.05rem;
+              }
+            }
+          }
+          .otherquestion {
+            margin: 0.2rem 0.3rem 0.5rem;
+            font-size: 0.26rem;
+            span {
+              display: block;
+              color: #999;
+          
+              margin-bottom: 0.23rem;
+            }
+            div {
+              background: #e9f8ea;
+              border-radius: 0.1rem;
+              padding: 0.05rem 0.15rem;
+              box-sizing: border-box;
+          
+              p {
+                line-height: 0.4rem;
+                margin: 0.2rem 0;
+                height: auto;
+              }
+            }
+          }
+          .question {
+            .question_tab {
+              display: flex;
+              justify-content: space-between;
+              height: 0.9rem;
+              background: #f4f4f4;
+              padding: 0 0.3rem;
+              align-items: center;
+              p {
+                &:nth-child(1) {
+                  font-size: 0.26rem;
+                  color: #999999;
+                  font {
+                    margin-right: 0.2rem;
+                  }
+                }
+                &:nth-child(2) {
+                  display: flex;
+        
+                  font-size: 0.26rem;
+                  span {
+                    // font-weight: bold;
+                    padding: 0.2rem 0.15rem;
+                    &.active,
+                    &.router-link-active {
+                      color: #369836;
+                    }
+                  }
+                }
               }
             }
           }

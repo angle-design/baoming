@@ -79,7 +79,6 @@ class List extends Component {
                         {
                             this.state.askLeftList.map((item, index) => {
                                 let { hinfo: { acount, hcount, qcount }, uinfo: { a_title, a_uname, a_image } } = item;
-                                console.log(item, 222)
                                 return <li key={index}>
                                     <dl>
                                         <dt>
