@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Form, Icon, Input, Button, Checkbox, Modal ,Select} from 'antd';
+import { Form, Input, Button, Modal ,Select} from 'antd';
 import '../static/css/settlement.less';
 import {querySettlement} from '../api/settlement';
 const FormItem=Form.Item;

@@ -1,7 +1,9 @@
 import course from './course';
 import headline from './headline';
+import ask from './ask';
 let action={
     course,
-    headline
+    headline,
+    ask
 }
 export default action;
