@@ -29,7 +29,7 @@ class Login extends Component {
         this.props.form.validateFields(async (err, values) => {
             if (!err) {
                 let { userName, userPass } = values;
-                userPass = md5(userPass);
+                // userPass = md5(userPass);
                 let result = await login({
                     phone: userName,
                     passwd: userPass
@@ -107,7 +107,7 @@ class Login extends Component {
                         }}>账号密码登陆</p>
                     </Form.Item>
                 </Form>) : (<Form onSubmit={this.handleSubmit} className="login-form">
-                    <Form.Item>
+                    <Form.Item >
                         {getFieldDecorator('userName', {
                             rules: [
                                 { required: true, message: '请输入用户名!' }

@@ -47,6 +47,7 @@ class Detail extends Component {
             h_etime = h_etime.split(" ")[0];
         }
         if (!uinfo) return '';
+        if (!hlist) return '';
         return (
             <div className="detailsBox">
                 <div className="details_top" style={{ background: 'url(' + h_image + ') no-repeat center center' }}>
@@ -94,10 +95,10 @@ class Detail extends Component {
                 <div className="otherquestion">
                     <span>TA开设的其他话题：</span>
                     <div>
-                        {hlist.map((item, index) => {
+                        {/* {hlist.map((item, index) => {
                             let { h_title, h_title2 } = item;
                             return <p key={index}>{h_title},{h_title2}</p>
-                        })}
+                        })} */}
                     </div>
                 </div>
                 {

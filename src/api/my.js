@@ -26,3 +26,18 @@ export function codeLogin(payload){
         ...payload
     })
 }
+
+//登陆存info
+export function infoUser(){
+    return axios.get('/api/api/my/getUinfo')
+}
+
+
+// 上传图片的接口
+export function imgload(formData){
+    return axios.post('/api/api/upload/uploadimage', formData, {
+        contentType: false,
+        processData: false,
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+    })
+}
