@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { ListView, Toast } from 'antd-mobile';
 import action from '../../store/action/index';
 import { Link, withRouter } from 'react-router-dom';
-import { querytop, fuList ,replyList} from '../../api/ask';
+import { querytop, fuList, replyList } from '../../api/ask';
 import { checkLogin } from '../../api/my';
 import ListItem from './ListItem';
 class List extends Component {
@@ -26,7 +26,7 @@ class List extends Component {
             flagreply: false,
             isLogin: false,//验证是否登录
             replaydata: [],//回复提交的参数
-            msg:''//回复的内容
+            msg: ''//回复的内容
         }
 
     }
@@ -97,7 +97,7 @@ class List extends Component {
         if (!this.state.data) return '';
         const row = (rowData, sectionID, rowID) => {
             // 这里rowData,就是上面方法cloneWithRows的数组遍历的单条数据了，直接用就行
-            let { uinfo, zan, countr, ctime, relist, content,id,aid,uid} = rowData;
+            let { uinfo, zan, countr, ctime, relist, content, id, aid, uid } = rowData;
             return (
                 <li>
                     <div className="list_item">
@@ -117,17 +117,17 @@ class List extends Component {
                                     <i></i>
                                     <font>{zan ? zan : '0'}</font>
                                 </span>
-                                <span  onClick={ev=>{
-                                        if(this.state.isLogin){
-                                            this.setState({
-                                                flagreply:true,
-                                                replaydata:[aid, id, id, uid]
-                                            })
-                                        }else{
-                                            this.props.history.push('/my/login')
-                                        }
-                                       
-                                    }}>
+                                <span onClick={ev => {
+                                    if (this.state.isLogin) {
+                                        this.setState({
+                                            flagreply: true,
+                                            replaydata: [aid, id, id, uid]
+                                        })
+                                    } else {
+                                        this.props.history.push('/my/login')
+                                    }
+
+                                }}>
                                     <i></i>
                                     <font>{countr}</font>
                                 </span>
@@ -155,16 +155,16 @@ class List extends Component {
                                 <p>
                                     <span>
                                     </span>
-                                    <span onClick={ev=>{
-                                        if(this.state.isLogin){
+                                    <span onClick={ev => {
+                                        if (this.state.isLogin) {
                                             this.setState({
-                                                flagreply:true,
-                                                replaydata:[item.aid, item.id, id, item.uid]
+                                                flagreply: true,
+                                                replaydata: [item.aid, item.id, id, item.uid]
                                             })
-                                        }else{
+                                        } else {
                                             this.props.history.push('/my/login')
                                         }
-                                       
+
                                     }}>
                                         <i></i>
                                     </span>
@@ -198,8 +198,8 @@ class List extends Component {
                 {
                     this.state.flagreply ? <div className="fixed_bottom">
                         <div>
-                            <textarea type="text" placeholder="一起讨论吧"  value={this.state.msg} onChange={this.changeHandle}></textarea>
-                            <p onClick={this.toSend} className={this.state.msg?'lv':''}>发表</p>
+                            <textarea type="text" placeholder="一起讨论吧" value={this.state.msg} onChange={this.changeHandle}></textarea>
+                            <p onClick={this.toSend} className={this.state.msg ? 'lv' : ''}>发表</p>
                         </div>
                     </div> : ''
                 }
@@ -208,26 +208,26 @@ class List extends Component {
         )
 
     }
-    changeHandle=(e)=>{
+    changeHandle = (e) => {
         this.setState({
-            msg:e.target.value
+            msg: e.target.value
         })
     };
     // 发表
-     toSend=async ()=>{
-         let {msg,replaydata}=this.state;
-        if(msg){
+    toSend = async () => {
+        let { msg, replaydata } = this.state;
+        if (msg) {
             this.setState({
-                flagreply:false
+                flagreply: false
             })
-            let payLoad={};
-            payLoad.aid=replaydata[0];
-            payLoad.rid=replaydata[1];
-            payLoad.ffid=replaydata[2];
-            payLoad.fuid=replaydata[3];
-            payLoad.content=msg;
-            let result=await replyList(payLoad);
-            if(result.code==200){
+            let payLoad = {};
+            payLoad.aid = replaydata[0];
+            payLoad.rid = replaydata[1];
+            payLoad.ffid = replaydata[2];
+            payLoad.fuid = replaydata[3];
+            payLoad.content = msg;
+            let result = await replyList(payLoad);
+            if (result.code == 200) {
                 Toast.info('提交成功~', 1);
             }
         }

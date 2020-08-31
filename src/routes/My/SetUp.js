@@ -18,26 +18,6 @@ class SetUp extends Component {
             organCertUrl:''
         }
     }
-    //上传文件改变时的状态，详情可以参考antd的Upload组件API参数
-    // onChange = ({fileList}) => {
-    //     this.setState({ fileList });
-    // };
-    // onChange = info => {
-    //     if (info.file.status === 'uploading') {
-    //         // this.setState({ loading: true });
-    //         console.log(info.file)
-    //         return;
-    //     }
-    //     if (info.file.status === 'uploading') {
-    //         imgload(info.file.response.file_url);
-    //         console.log(info.file)
-    //         // this.setState({
-    //         //     imageUrl: info.file.response.file_url,
-    //         //     loading: false,
-    //         // })
-    //     }
- 
-    // }
 
     beforeUpload = (file)=> {
         const _this = this;
@@ -56,7 +36,8 @@ class SetUp extends Component {
         let { queryInfo } = this.props;
         await queryInfo();
         this.setState({
-            name: this.props.uinfo.a_uname
+            name: this.props.uinfo.a_uname,
+            organCertUrl:this.props.uinfo.a_image,
         })
         if (parseFloat(this.props.uinfo.a_sex) === 1) {
             this.setState({
@@ -83,7 +64,7 @@ class SetUp extends Component {
                     console.log(1)
                     console.log(file)
                   $this.setState({
-                    organCertUrl:file.response.result,//前面是我的存放地址的对象
+                    organCertUrl:file.response.data.src,//前面是我的存放地址的对象
                   })
                 }
              }
@@ -99,7 +80,7 @@ class SetUp extends Component {
                         {/* {fileList.length >= 1 ? null : (<Button>添加图片</Button>)}　 */}
                  
                 <p className="head">
-                    {uinfo.a_image ? <img src={uinfo.a_image} /> : <img src="../../assets/mohead.png" />}
+                    {this.state.organCertUrl ? <img src={this.state.organCertUrl } /> : <img src="../../assets/mohead.png" />}
                     <span>更换头像</span>
                 </p>
                 </Upload>
@@ -107,7 +88,7 @@ class SetUp extends Component {
                 <p>
                     <font>用户名</font>
                     <input value={this.state.name || ''} onChange={this.handleChange} />
-                    <b>该账户已存在</b>
+                    {/* <b>该账户已存在</b> */}
                 </p>
                 <p >
                     <font>性&nbsp;&nbsp;&nbsp;别</font>

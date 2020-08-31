@@ -41,3 +41,33 @@ export function imgload(formData){
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
     })
 }
+
+//获取提问接口
+export function questionList(p){
+    return axios.get('/api/api/my/getmyask',{
+        params:{p}
+      })
+}
+
+// 评论接口
+export function commentList(p){
+    return axios.get('/api/api/my/getmyreply',{
+        params:{p}
+      })
+}
+
+// 反馈接口
+export function feedBack(content){
+    return axios.post("/api/api/My/fankui",{
+        content
+    })
+}
+
+// 话题接口
+export function topicList(p){
+    return axios.get("/api/api/my/getmyhuati", {
+        params: {
+          p
+        }
+      })
+    }
