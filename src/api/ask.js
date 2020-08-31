@@ -1,4 +1,5 @@
 import axios from './index';
+import { func } from 'prop-types';
 
 //=>问吧列表
 export function askList(p=1){
@@ -23,11 +24,32 @@ export function askInfo(id){
 }
 
 ///=>获取问答列表
-export function questList(p,id){
+export function questList(payload){
   return axios.get("/api/api/Ask/getAlist",{
+    params:payload
+  })
+}
+
+// 回复详情
+export function querytop(aid){
+  return axios.get("/api/api/Ask/getreplyinfo",{
     params:{
-      p,
-      id
+      aid:aid
     }
   })
+}
+
+//回复
+export function fuList(aid,p){
+  return axios.get("/api/api/Ask/getreply", {
+    params: {
+      aid: aid,
+      p:p
+    }
+  })
+}
+
+// 提交回复
+export function replyList(payLoad){
+  return axios.post('/api/api/Ask/addreply',payLoad)
 }

@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Form, Icon, Input, Button, Checkbox, Modal } from 'antd';
 import { Link } from 'react-router-dom';
-import md5 from 'blueimp-md5';
 import { login, getCodeMa, codeLogin } from '../../api/my';
 // import action from '../../store/action/index';
 
@@ -29,7 +28,6 @@ class Login extends Component {
         this.props.form.validateFields(async (err, values) => {
             if (!err) {
                 let { userName, userPass } = values;
-                userPass = md5(userPass);
                 let result = await login({
                     phone: userName,
                     passwd: userPass
