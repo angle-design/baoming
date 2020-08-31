@@ -15,28 +15,29 @@ class SetUp extends Component {
             previewVisible: false,
             previewImage: '',
             fileList: [],
+            organCertUrl:''
         }
     }
     //上传文件改变时的状态，详情可以参考antd的Upload组件API参数
     // onChange = ({fileList}) => {
     //     this.setState({ fileList });
     // };
-    onChange = info => {
-        if (info.file.status === 'uploading') {
-            // this.setState({ loading: true });
-            console.log(info.file.response.file_url)
-            return;
-        }
-        if (info.file.status === 'done') {
-            imgload(info.file.response.file_url);
-            console.log(info.file.response.file_url)
-            // this.setState({
-            //     imageUrl: info.file.response.file_url,
-            //     loading: false,
-            // })
-        }
+    // onChange = info => {
+    //     if (info.file.status === 'uploading') {
+    //         // this.setState({ loading: true });
+    //         console.log(info.file)
+    //         return;
+    //     }
+    //     if (info.file.status === 'uploading') {
+    //         imgload(info.file.response.file_url);
+    //         console.log(info.file)
+    //         // this.setState({
+    //         //     imageUrl: info.file.response.file_url,
+    //         //     loading: false,
+    //         // })
+    //     }
  
-    }
+    // }
 
     beforeUpload = (file)=> {
         const _this = this;
@@ -71,31 +72,31 @@ class SetUp extends Component {
         let { uinfo } = this.props;
     
         const { previewVisible, previewImage, fileList } = this.state;
+        const $this=this;
         const props = {
-            width: 600,  //裁剪宽度
-            height: 600, //裁剪高度
-            // resize: false, //裁剪是否可以调整大小
-            resizeAndDrag: true, //裁剪是否可以调整大小、可拖动
-            modalTitle: "上传图片", //弹窗标题
-            modalWidth: 300, //弹窗宽度
-        };
-       
+            ref:"upload",
+            action: '/api/api/upload/uploadimage', //这块是将后台给你的接口地址需要改一下你自己的交互地址
+            listType: 'picture',
+            className: 'upload-list-inline',
+            onChange({ file, fileList }) {//file,和fileList是组件自带的参数，根据你上面赋值过去的接口给你返回的内容，file是个对象，fileList是个数组，其实file对象就相当于你用axios方法返回的response对象差不多啦~
+                if (file.status === 'done') {
+                    console.log(1)
+                    console.log(file)
+                  $this.setState({
+                    organCertUrl:file.response.result,//前面是我的存放地址的对象
+                  })
+                }
+             }
+          }
     
         return (
             <div className="setup">
                   <ImgCrop grid>
                     <Upload
-                        name="file"
-                    　  action="http://localhost:3000/api/upload/uploadimage"
-                        accept="image/*"
-                        listType="picture"
-                        fileList={fileList}
-                        // onPreview={this.handlePreview}
-                        onChange={this.onChange}
                         {...props}
                         beforeUpload={this.beforeUpload}
                     >
-                        {fileList.length >= 1 ? null : (<Button>添加图片</Button>)}　
+                        {/* {fileList.length >= 1 ? null : (<Button>添加图片</Button>)}　 */}
                  
                 <p className="head">
                     {uinfo.a_image ? <img src={uinfo.a_image} /> : <img src="../../assets/mohead.png" />}
