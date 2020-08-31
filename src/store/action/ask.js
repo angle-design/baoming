@@ -1,7 +1,7 @@
 import * as TYPES from '../action-types';
-import { askList } from '../../api/ask';
+import { askList,questList } from '../../api/ask';
 let ask = {
-    //课程头条
+    //问吧首页列表
     queryAsk(p=1) {
         console.log(p);
         return async dispatch => {
@@ -11,6 +11,22 @@ let ask = {
                 result
             });
         }
-    }
+    },
+    //=>问吧详情列表
+    queryList(payload = {}) {
+        let {id,page=1, order='',flagA = 'push'} = payload;
+        return async dispatch => {
+            let result = await questList({
+                id,
+                page,
+                order
+            });
+            dispatch({
+                type: TYPES.ASK_LISTITEM_DETAIL,
+                result,
+                flagA
+            });
+        }
+    },
 }
 export default ask;

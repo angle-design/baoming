@@ -5,6 +5,7 @@ import { ListView, Toast } from 'antd-mobile'
 import { askLeft } from '../../api/ask'
 
 import Item from './AskItem';
+import Like from './LikeBtn';
 class List extends Component {
     constructor(props, context) {
         super(props, context);
@@ -64,6 +65,7 @@ class List extends Component {
         }
         return (
             <div className="askBox">
+                <Like/>
                 {/* 前三条 */}
                 <div className="askTop">
                     {

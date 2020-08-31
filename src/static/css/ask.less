@@ -8,7 +8,7 @@
           padding-bottom: 0.1rem;
           margin-bottom: 0.16rem;
           .ask_img {
-            width: 7.1rem;
+            width:100%;
             height: 2.48rem;
             position: relative;
             overflow: hidden;
@@ -105,7 +105,6 @@
                 display: flex;
                 align-items: center;
                 i {
-    
                   display: flex;
                   width:0.36rem;
                   height:0.26rem;
@@ -376,4 +375,197 @@
             }
           }
         }
-}
+
+        .new_bottom,.list_body {
+          border-bottom: 0.1rem solid #f4f4f4;
+          position: relative;
+          padding: 0.3rem 0.3rem 0.3rem;
+        }
+        .new_bottom {
+          padding: 0 0 0 !important;
+          border-bottom:none;
+          ul {
+            li {
+              padding: 0.3rem 0.3rem;
+              border-bottom: 0.1rem solid #f4f4f4;
+              &:last-child {
+                border-bottom: none;
+              }
+            }
+          }
+        }
+        .new_text {
+          margin-top: 0.2rem;
+          background: url('../image/wen_01.png') no-repeat 0.2rem 0.05rem;
+          background-size: 0.4rem 0.4rem;
+          font-size: 0.3rem;
+          padding-left: 1rem;
+          position: relative;
+          &.new_text_ask {
+            background: url('../image/wen_03.png') no-repeat 0.2rem 0.05rem;
+            background-size: 0.4rem 0.4rem;
+          }
+        }
+        .list_itemleft {
+          margin-left: 1rem;
+          padding-top: 0.2rem;
+          margin-top: 0.2rem;
+          &::after {
+            content: "";
+            height: 0.02rem;
+            width: 6rem;
+            position: absolute;
+            top: 0rem;
+            left: 1rem;
+            background: #f4f4f4;
+          }
+          dl {
+            dd {
+              margin-left: 0.3rem !important;
+            }
+          }
+          .new_text {
+            background: none;
+            padding-left: 0;
+          }
+        }
+        .list_item {
+          &.list_item2 {
+            padding-top: 0.2rem;
+            div {
+              padding-top: 0.2rem;
+              position: relative;
+              &::after {
+                content: "";
+                height: 0.02rem;
+                width: 6rem;
+                position: absolute;
+                top: 0rem;
+                left: 1rem;
+                background: #f4f4f4;
+              }
+            }
+          }
+          div {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            dl {
+              display: flex;
+              dt {
+                position: relative;
+                height: 0.76rem;
+                img {
+                  width: 0.7rem;
+                  height: 0.7rem;
+                  border-radius: 50%;
+                }
+                font {
+                  position: absolute;
+                  background: #f1a91e;
+                  border-radius: 50%;
+                  display: flex;
+                  width: 0.28rem;
+                  height: 0.28rem;
+                  right: -0.1rem;
+                  bottom: 0rem;
+                }
+              }
+              dd {
+                display: flex;
+                flex-direction: column;
+                margin-left: 0.4rem;
+                font-size: 0.28rem;
+                line-height: 0.4rem;
+                font {
+                  font {
+                    color: #369836;
+                    &:nth-child(1) {
+                      margin-right: 0.1rem;
+                    }
+                    // &:nth-child(2) {
+                    //   margin-left: 0.1rem;
+                    // }
+                  }
+                }
+                & > span {
+                  color: #bfbfbf;
+                  font-size: 0.24rem;
+                }
+              }
+            }
+            p {
+              display: flex;
+              font-size: 0.24rem;
+              color: #666666;
+        
+              span {
+                margin-left: 0.3rem;
+                display: flex;
+                align-items: center;
+                i {
+                      //     padding: 0.1rem 0.06rem;
+                      // color: #bfbfbf;
+                      // font-size: 0.3rem;
+                      display: flex;
+                      width:0.36rem;
+                      height:0.26rem;
+                      background:url(http://bmdt.zgn365.com/Public/aa.png) no-repeat;
+                      background-position:0 -4.41rem;
+                      background-size:0.36rem auto;
+                      padding-right:0.1rem;
+                      &.active{
+                        background-position: 0 -4.73rem;
+                      }
+                    }
+                    &:nth-child(2){
+                      i{
+                         background-position:0 -5.08rem;
+                      }
+                    }
+              }
+            }
+          }
+        }
+        .fixed_bottom {
+          height: 100%;
+          background: rgba(0, 0, 0, 0.6);
+          position: fixed;
+          bottom:0rem;
+         
+          left: 0;
+          display: flex;
+          align-items: flex-end;
+          justify-content: center;
+          width: 100%;
+          div {
+            display: flex;
+            align-items: center;
+            height:2.6rem;
+            background: #eff0ef;
+            width: 100%;
+            padding-bottom:1.2rem;
+            justify-content: center;
+            textarea {
+              border: 0.02rem solid #ccc;
+              background: #fff;
+              height: 0.4rem;
+              line-height: 0.4rem;
+              border-radius: 0.2rem;
+              color: #333;
+              margin-left: 0.1rem;
+              padding: 0.15rem 0.1rem;
+              width: 5.9rem;
+              font-size: 0.28rem;
+              height:0.8rem;
+            }
+            p {
+              color: #999;
+              padding: 0 0.2rem;
+              &.lv {
+                color: #369836;
+              }
+            }
+          }
+        }
+      }

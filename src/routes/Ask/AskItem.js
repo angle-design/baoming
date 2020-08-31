@@ -9,6 +9,7 @@ class AskItem extends Component {
 
     render() {
         let {id,h_title,h_title2,ishot,h_image,isnow,uinfo:{a_uname,a_image},tagname:{name},zan,huifu}=this.props.item;
+
         return (
                 <div className="ask_item">
                      <Link to={{

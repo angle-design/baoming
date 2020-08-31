@@ -6,6 +6,12 @@ let INIT_STATE = {
         topList: [],
         data: [],//=>数据
         page: 1
+    },
+    askInfoList: {
+        page: 1,
+        data: [],
+        flag: true,
+        count: {}
     }
 };
 export default function headline(state = INIT_STATE, action) {
@@ -26,6 +32,21 @@ export default function headline(state = INIT_STATE, action) {
 
             } else {
                 state.askListData.flag = false;
+            }
+            break;
+        case TYPES.ASK_LISTITEM_DETAIL:
+            if (parseFloat(action.result.code) === 200 && action.result.list) {
+                if (action.result.list.length < 10) {
+                    state.askInfoList.count = action.result.count;
+                    state.askInfoList.data =action.result.list;
+                    state.askInfoList.flag = false;
+                }else{
+                    state.askInfoList.count = action.result.count;
+                    state.askInfoList.data = state.askInfoList.data.concat(action.result.list);
+                    state.askInfoList.page++
+                }
+            } else {
+                state.askInfoList.flag = false;
             }
             break;
     }

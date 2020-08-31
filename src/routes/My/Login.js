@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Form, Icon, Input, Button, Checkbox, Modal } from 'antd';
 import { Link } from 'react-router-dom';
-import md5 from 'blueimp-md5';
 import { login, getCodeMa, codeLogin } from '../../api/my';
 // import action from '../../store/action/index';
 
