@@ -1,0 +1,139 @@
+.FileBox{
+    font-size:0.3rem;
+    & > div {
+        border-bottom: 0.1rem solid #f4f4f4;
+        background: #fff;
+        width: 100%;
+        padding: 0.2rem 0.25rem;
+        box-sizing: border-box;
+        line-height: 0.6rem;
+        .tit_text {
+          width: 1rem;
+          display: flex;
+          &.error {
+            color: #da1d1d;
+          }
+        }
+        &:nth-child(1) {
+          p {
+            display: flex;
+            position: relative;
+          }
+    
+          span {
+            color: #369836;
+          }
+          i {
+            position: absolute;
+            right: 0;
+            top: 0.1rem;
+            font-size: 0.4rem;
+          }
+        }
+    &:nth-child(2) {
+        
+        p {
+          display: flex;
+          &:nth-child(2) {
+            margin-top: 0.1rem;
+          }
+        }
+        input {
+          width: 5.2rem;
+        }
+        span {
+          width: 6rem;
+          border-bottom: 0.02rem solid #eeeeee;
+          padding-bottom: 0.1rem;
+        }
+        font {
+          margin-left: 0.1rem;
+        }
+      }
+      &:nth-child(3) {
+        p {
+          display: flex;
+          align-items: flex-start;
+          textarea {
+            height: 3rem;
+            width: 5.8rem;
+            line-height: 0.4rem;
+            font-size: 0.28rem;
+            padding: 0.08rem 0;
+          }
+        }
+      }
+      &:nth-child(4) {
+        p {
+          width: 6.9rem;
+          height: 2.45rem;
+          border: 0.04rem dashed #eeeeee;
+          border-radius: 0.1rem;
+          font-size: 0.28rem;
+          color: #999;
+          overflow: hidden;
+          img {
+            width: 100%;
+            height: auto;
+          }
+          span {
+            width: 6.9rem;
+            height: 2.45rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            i {
+              font-size: 0.8rem;
+              color: #eee;
+              margin-bottom: 0.1rem;
+            }
+          }
+        }
+      }
+      &:nth-child(5) {
+        padding: 0.2rem 0;
+        p {
+          padding: 0 0.25rem;
+          line-height: 0.8rem;
+          display: flex;
+          &:nth-child(1) {
+            border-bottom: 0.02rem solid #f4f4f4;
+          }
+          input {
+            width: 5.2rem;
+          }
+        }
+      }
+    }
+    button {
+      width: 6.3rem;
+      height: 0.9rem;
+      border-radius: 0.15rem;
+      color: #fff;
+      background: #ccc;
+      margin: 0.3rem auto;
+      font-size: 0.3rem;
+      display: block;
+      &.btnactive{
+        background:#369836
+      }
+    }
+
+  .img_big {
+    position: relative;
+    i {
+      position: absolute;
+      top: 0;
+      right: 0;
+      font-size: 0.4rem;
+      color: #333 !important;
+      width:0.63rem;
+      height:0.58rem;
+      display: block;
+      background:url(http://bmdt.zgn365.com/Public/bb.png) no-repeat;
+      background-size:0.63rem auto;
+      background-position: 0 0;
+    }
+  }
+}

@@ -4,7 +4,8 @@ import '../../static/css/setup.less';
 import action from '../../store/action/index';
 import ImgCrop from 'antd-img-crop';
 import { Upload, Button, Modal, message } from 'antd'; //引入上传、按钮、弹窗等antd组件
-import {imgload} from '../../api/my'
+import { imgload, setMyinfo } from '../../api/my';
+const alert = Modal.alert;
 class SetUp extends Component {
     constructor(props, context) {
         super(props, context);
@@ -15,29 +16,30 @@ class SetUp extends Component {
             previewVisible: false,
             previewImage: '',
             fileList: [],
-            organCertUrl:''
+            organCertUrl: '',
+            isPrompt:true,
         }
     }
 
-    beforeUpload = (file)=> {
+    beforeUpload = (file) => {
         const _this = this;
         const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
         if (!isJpgOrPng) {
-          message.error('You can only upload JPG/PNG file!');
+            message.error('You can only upload JPG/PNG file!');
         }
         const isLt2M = file.size / 1024 / 1024 < 2;
         if (!isLt2M) {
-          message.error('Image must smaller than 2MB!');
+            message.error('Image must smaller than 2MB!');
         }
         return isJpgOrPng && isLt2M;
- 
+
     }
     async componentDidMount() {
         let { queryInfo } = this.props;
         await queryInfo();
         this.setState({
             name: this.props.uinfo.a_uname,
-            organCertUrl:this.props.uinfo.a_image,
+            organCertUrl: this.props.uinfo.a_image,
         })
         if (parseFloat(this.props.uinfo.a_sex) === 1) {
             this.setState({
@@ -49,13 +51,20 @@ class SetUp extends Component {
             })
         }
     }
+    async componentWillUnmount() {
+        // this.showDeleteConfirm()
+        let { a_image, a_sex, a_uname } = this.props.uinfo;
+        if (this.state.organCertUrl !== a_image || this.state.sex !== a_sex || this.state.name !== a_uname) {
+            this.showDeleteConfirm()
+        }
+    }
     render() {
         let { uinfo } = this.props;
-    
         const { previewVisible, previewImage, fileList } = this.state;
-        const $this=this;
+        const $this = this;
+
         const props = {
-            ref:"upload",
+            ref: "upload",
             action: '/api/api/upload/uploadimage', //这块是将后台给你的接口地址需要改一下你自己的交互地址
             listType: 'picture',
             className: 'upload-list-inline',
@@ -63,27 +72,49 @@ class SetUp extends Component {
                 if (file.status === 'done') {
                     console.log(1)
                     console.log(file)
-                  $this.setState({
-                    organCertUrl:file.response.data.src,//前面是我的存放地址的对象
-                  })
+                    $this.setState({
+                        organCertUrl: file.response.data.src,//前面是我的存放地址的对象
+                    })
                 }
-             }
-          }
-    
+            }
+        }
+
         return (
             <div className="setup">
-                  <ImgCrop grid>
+                <Prompt
+          when={this.state.isPrompt}
+          message={(location) => {
+            if (!isPrompt) {
+              return true;
+            }
+            Modal.alert('提示', '是否确认退出补充实名资料?', [
+              { text: '取消' },
+              {
+                text: '确认', 
+                onPress: () => this.setState({ 
+                  	isPrompt: false,
+                  },
+                  () => this.props.dispatch(routerRedux.goBack())
+                ),
+              },
+            ]);
+            return false;
+          }
+          }
+        />
+
+                <ImgCrop grid>
                     <Upload
                         {...props}
                         beforeUpload={this.beforeUpload}
                     >
                         {/* {fileList.length >= 1 ? null : (<Button>添加图片</Button>)}　 */}
-                 
-                <p className="head">
-                    {this.state.organCertUrl ? <img src={this.state.organCertUrl } /> : <img src="../../assets/mohead.png" />}
-                    <span>更换头像</span>
-                </p>
-                </Upload>
+
+                        <p className="head">
+                            {this.state.organCertUrl ? <img src={this.state.organCertUrl} /> : <img src="../../assets/mohead.png" />}
+                            <span>更换头像</span>
+                        </p>
+                    </Upload>
                 </ImgCrop>
                 <p>
                     <font>用户名</font>
@@ -116,14 +147,33 @@ class SetUp extends Component {
                             }}>女</li>
                         </ul>
                     </div></div> : ''}
-                  
             </div>
         )
     }
     handleChange = e => {
         this.setState({ name: e.target.value });
     }
+    showDeleteConfirm = () => {
+        let { organCertUrl, sex, name } = this.state;
+        Modal.confirm({
+            title: '即将离开当前页面，是否保存当前修改?',
+            content: '',
+            okText: '保存',
+            okType: 'danger',
+            cancelText: '取消',
+            onOk: async () => {
+                let result = await setMyinfo(organCertUrl, name, sex);
+                console.log(result)
+                if (result.code == 200) {
+                    this.props.queryInfo()
+                }
+            }
+            ,
+            onCancel() {
 
+            },
+        });
+    };
 }
 
 

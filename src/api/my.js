@@ -71,3 +71,12 @@ export function topicList(p){
         }
       })
     }
+    // /api/api/my/setMyinfo
+    //设置头像修改用户名
+    export function setMyinfo(image,auname,sex){
+        return axios.post("/api/api/my/setMyinfo",{
+            image,
+            auname,
+            sex
+        })
+    }

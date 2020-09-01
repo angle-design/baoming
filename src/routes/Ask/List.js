@@ -20,7 +20,7 @@ class List extends Component {
             dataArr: [],
         }
     }
-    async componentWillMount() {
+    async componentDidMount() {
         let { queryAsk, askListData } = this.props;
         if (askListData.topList.length == 0) {
             await queryAsk(this.state.pageNo)
@@ -36,6 +36,7 @@ class List extends Component {
             })
         }
     }
+
     // 滑动到底部时加载更多
     onEndReached = (event) => {
         // 加载中或没有数据了都不再加载
@@ -122,7 +123,14 @@ class List extends Component {
                         onEndReached={this.onEndReached}
                     />
                 </div>
-
+             
+                <p className="fileask" onClick={
+                    ()=>{
+                        this.props.history.push('/ask/fileload')
+                    }
+                }>
+                    <img src={require('../../static/image/wen.png')}  />
+                </p>
             </div>
         )
     }

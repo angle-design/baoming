@@ -12,7 +12,7 @@ class FeefBack extends Component {
     
     render() {
         return (
-            <div class="feedback">
+            <div className="feedback">
             <textarea placeholder="老师认真负责" value={this.state.msg} onChange={this.changeHandle}></textarea>
             <button onClick={this.toSend}>提交</button>
           </div>

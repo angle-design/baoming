@@ -90,7 +90,7 @@ class Question extends Component {
                 </Link>
                 <p class="time">
                     <font>{time}</font>
-                    {status == 1 ? <span style={{ color: '#36b937' }}>专家已答</span> : <span style={{ color: '#f1a91f' }}>待回答</span>}
+                    {status === 1 ? <span style={{ color: '#36b937' }}>专家已答</span> : <span style={{ color: '#f1a91f' }}>待回答</span>}
                 </p>
             </li>)
         }

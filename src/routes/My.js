@@ -12,7 +12,8 @@ import Collection from './My/Collection';
 import Comment from './My/Comment';
 import Lesson from './My/Lesson';
 import Topic from './My/Topic';
-import Forgot from './My/Forgot'
+import Forgot from './My/Forgot';
+
 
 /*css */
 
@@ -39,6 +40,7 @@ export class My extends Component {
                     <Route path='/my/topic' component={Topic} />
                     <Route path='/my/lesson' component={Lesson} />
                     <Route path='/my/forgot' component={Forgot} />
+                    
                     <Redirect from='/my' to='/my/info' />
                 </Switch>
             </section>

@@ -26,11 +26,13 @@ class List extends Component {
             flagreply: false,
             isLogin: false,//验证是否登录
             replaydata: [],//回复提交的参数
-            msg: ''//回复的内容
+            msg: '',//回复的内容
+            dataa: false,
         }
 
     }
     async componentWillMount() {
+        console.log(2)
         let res = await checkLogin(),
             isLogin = parseFloat(res.code) === 200 ? true : false;
         this.setState({ isLogin });
@@ -46,6 +48,16 @@ class List extends Component {
         let res = await checkLogin(),
             isLogin = parseFloat(res.code) === 200 ? true : false;
         this.setState({ isLogin });
+    }
+    async componentWillUpdate(nextProps, nextState) {
+        if (nextState.dataa) {
+            let result = await querytop(this.props.match.params.id, this.props.match.params.id);
+            if (result.code == 200) {
+                this.setState({
+                    data: result.list
+                })
+            }
+        }
     }
     async getData(ref = false) {
         //获取数据
@@ -228,6 +240,9 @@ class List extends Component {
             payLoad.content = msg;
             let result = await replyList(payLoad);
             if (result.code == 200) {
+                this.setState({
+                    dataa: true
+                })
                 Toast.info('提交成功~', 1);
             }
         }
