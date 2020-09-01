@@ -141,10 +141,10 @@ class Detail extends Component {
                 {hlist&&hlist.length!==0?<div className="otherquestion">
                     <span>TA开设的其他话题：</span>
                     <div>
-                        {/* {hlist.map((item, index) => {
+                        {hlist.map((item, index) => {
                             let { h_title, h_title2 } = item;
                             return <p key={index}>{h_title},{h_title2}</p>
-                        })} */}
+                        })}
                     </div>
                 </div>:''}
               

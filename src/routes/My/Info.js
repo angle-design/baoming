@@ -23,21 +23,15 @@ export class Info extends Component {
             queryInfo()
         }
     }
-
-    // async componentWillReceiveProps() {
-    //     let {queryLoginFlag,flag,queryInfo}=this.props;
-    //     if(!flag){
-    //         queryLoginFlag()
-    //         queryInfo()
-    //     }
-    // }
     render() {
         let {flag,uinfo}=this.props;
         return (
             <section className="my">
                 <p className="my_head">
                     {flag?<img src={uinfo.a_image} />:<img src={require('../../static/image/mohead.png')} />}
-                    {!flag?<span>点击登录或注册</span>:<span>{uinfo.a_uname}</span>}
+                    {!flag?<span onClick={()=>{
+                          this.props.history.push('/my/login');
+                    }}>点击登录或注册</span>:<span>{uinfo.a_uname}</span>}
                 </p>
                 <div className="my_hua">
                     <p  onClick={this.handleTo.bind(this,'/my/topic')}><img src={require('../../static/image/hua.png')} />我的话题</p>

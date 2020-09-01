@@ -52,7 +52,7 @@ class SetUp extends Component {
             })
         }
     }
- componentWillUnmount() {
+    componentWillUnmount() {
         let { a_image, a_sex, a_uname } = this.props.uinfo;
         if (this.state.organCertUrl != a_image || this.state.sex != a_sex || this.state.name != a_uname) {
             Modal.confirm({
@@ -62,7 +62,7 @@ class SetUp extends Component {
                 okType: 'danger',
                 cancelText: '取消',
                 onOk: async () => {
-                    let result = await setMyinfo(this.state.organCertUrl,this.state.name,this.state.sex);
+                    let result = await setMyinfo(this.state.organCertUrl, this.state.name, this.state.sex);
                     if (result.code == 200) {
                         console.log(1)
                         this.props.queryInfo();
@@ -70,7 +70,7 @@ class SetUp extends Component {
                         return false;
                     }
                 },
-                onCancel(){return false},
+                onCancel() { return false },
             });
         }
     }
@@ -100,8 +100,8 @@ class SetUp extends Component {
                 <Prompt
                     when={this.state.isPrompt}
                     message={(location) => {
-                        
-                        }
+
+                    }
                     }
                 />
 
@@ -110,8 +110,6 @@ class SetUp extends Component {
                         {...props}
                         beforeUpload={this.beforeUpload}
                     >
-                        {/* {fileList.length >= 1 ? null : (<Button>添加图片</Button>)}　 */}
-
                         <p className="head">
                             {this.state.organCertUrl ? <img src={this.state.organCertUrl} /> : <img src="../../assets/mohead.png" />}
                             <span>更换头像</span>
@@ -134,7 +132,7 @@ class SetUp extends Component {
                 <button onClick={async () => {
                     let result = await checkLoginOut();
                     if (result.statu == 200) {
-                        this.$router.history.push("/login");
+                        this.props.history.push("/my/login");
                     }
                 }}>退出账户</button>
                 {this.state.pupflag ? <div className="pup">
@@ -157,30 +155,8 @@ class SetUp extends Component {
             </div>
         )
     }
-    handleChange = e => {
-        this.setState({ name: e.target.value });
-    }
-    showDeleteConfirm = () => {
-        let { organCertUrl, sex, name } = this.state;
-        Modal.confirm({
-            title: '即将离开当前页面，是否保存当前修改?',
-            content: '',
-            okText: '保存',
-            okType: 'danger',
-            cancelText: '取消',
-            onOk: async () => {
-                let result = await setMyinfo(organCertUrl, name, sex);
-                console.log(result)
-                if (result.code == 200) {
-                    this.props.queryInfo()
-                }
-            }
-            ,
-            onCancel() {
 
-            },
-        });
-    };
+
 }
 
 

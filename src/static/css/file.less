@@ -34,8 +34,15 @@
         
         p {
           display: flex;
+          align-items: center;
           &:nth-child(2) {
             margin-top: 0.1rem;
+            .am-list-item {
+              padding-left:0;
+            }
+            font{
+              width:1.4rem;
+            }
           }
         }
         input {
@@ -47,7 +54,7 @@
           padding-bottom: 0.1rem;
         }
         font {
-          margin-left: 0.1rem;
+          // margin-left: 0.1rem;
         }
       }
       &:nth-child(3) {
@@ -58,7 +65,7 @@
             height: 3rem;
             width: 5.8rem;
             line-height: 0.4rem;
-            font-size: 0.28rem;
+            font-size: 0.3rem!important;
             padding: 0.08rem 0;
           }
         }
@@ -136,4 +143,14 @@
       background-position: 0 0;
     }
   }
+}
+.am-action-sheet-body{
+  padding-bottom:1.3rem;
+}
+.am-textarea-control{
+  padding-top:0;
+  padding-left:0;
+}
+.am-list-item{
+  padding-left:0;
 }
