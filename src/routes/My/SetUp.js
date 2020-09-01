@@ -1,10 +1,11 @@
 import React, { Component, useState } from 'react';
 import { connect } from 'react-redux';
+import { Prompt } from 'react-router-dom'
 import '../../static/css/setup.less';
 import action from '../../store/action/index';
 import ImgCrop from 'antd-img-crop';
 import { Upload, Button, Modal, message } from 'antd'; //引入上传、按钮、弹窗等antd组件
-import { imgload, setMyinfo } from '../../api/my';
+import { imgload, setMyinfo, checkLoginOut } from '../../api/my';
 const alert = Modal.alert;
 class SetUp extends Component {
     constructor(props, context) {
@@ -17,7 +18,7 @@ class SetUp extends Component {
             previewImage: '',
             fileList: [],
             organCertUrl: '',
-            isPrompt:true,
+            isPrompt: false,
         }
     }
 
@@ -51,18 +52,33 @@ class SetUp extends Component {
             })
         }
     }
-    async componentWillUnmount() {
-        // this.showDeleteConfirm()
+ componentWillUnmount() {
         let { a_image, a_sex, a_uname } = this.props.uinfo;
-        if (this.state.organCertUrl !== a_image || this.state.sex !== a_sex || this.state.name !== a_uname) {
-            this.showDeleteConfirm()
+        if (this.state.organCertUrl != a_image || this.state.sex != a_sex || this.state.name != a_uname) {
+            Modal.confirm({
+                title: '即将离开当前页面，是否保存当前修改?',
+                content: '',
+                okText: '保存',
+                okType: 'danger',
+                cancelText: '取消',
+                onOk: async () => {
+                    let result = await setMyinfo(this.state.organCertUrl,this.state.name,this.state.sex);
+                    if (result.code == 200) {
+                        console.log(1)
+                        this.props.queryInfo();
+                        this.props.history.push('/my');
+                        return false;
+                    }
+                },
+                onCancel(){return false},
+            });
         }
     }
     render() {
         let { uinfo } = this.props;
         const { previewVisible, previewImage, fileList } = this.state;
-        const $this = this;
 
+        const $this = this;
         const props = {
             ref: "upload",
             action: '/api/api/upload/uploadimage', //这块是将后台给你的接口地址需要改一下你自己的交互地址
@@ -82,26 +98,12 @@ class SetUp extends Component {
         return (
             <div className="setup">
                 <Prompt
-          when={this.state.isPrompt}
-          message={(location) => {
-            if (!isPrompt) {
-              return true;
-            }
-            Modal.alert('提示', '是否确认退出补充实名资料?', [
-              { text: '取消' },
-              {
-                text: '确认', 
-                onPress: () => this.setState({ 
-                  	isPrompt: false,
-                  },
-                  () => this.props.dispatch(routerRedux.goBack())
-                ),
-              },
-            ]);
-            return false;
-          }
-          }
-        />
+                    when={this.state.isPrompt}
+                    message={(location) => {
+                        
+                        }
+                    }
+                />
 
                 <ImgCrop grid>
                     <Upload
@@ -129,7 +131,12 @@ class SetUp extends Component {
                         })
                     }}>{parseFloat(this.state.sex) === 1 ? '男' : '女'}</span>
                 </p>
-                <button >退出账户</button>
+                <button onClick={async () => {
+                    let result = await checkLoginOut();
+                    if (result.statu == 200) {
+                        this.$router.history.push("/login");
+                    }
+                }}>退出账户</button>
                 {this.state.pupflag ? <div className="pup">
                     <div>
                         <ul>

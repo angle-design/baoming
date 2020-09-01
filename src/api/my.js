@@ -80,3 +80,8 @@ export function topicList(p){
             sex
         })
     }
+
+    // 退出登陆
+    export function checkLoginOut(){
+        return axios.get('/api/api/user/logout')
+    }

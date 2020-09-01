@@ -24,13 +24,13 @@ export class Info extends Component {
         }
     }
 
-    async componentWillReceiveProps() {
-        let {queryLoginFlag,flag,queryInfo}=this.props;
-        if(!flag){
-            queryLoginFlag()
-            queryInfo()
-        }
-    }
+    // async componentWillReceiveProps() {
+    //     let {queryLoginFlag,flag,queryInfo}=this.props;
+    //     if(!flag){
+    //         queryLoginFlag()
+    //         queryInfo()
+    //     }
+    // }
     render() {
         let {flag,uinfo}=this.props;
         return (
