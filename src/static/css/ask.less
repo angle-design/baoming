@@ -230,6 +230,7 @@
         }
       }
         .detailsBox{
+          padding-bottom:1rem;
           .details_top {
             width: 7.5rem;
             height: 2.95rem;
@@ -579,5 +580,45 @@
         img{
           width: 1.48rem;
           height: 1.48rem;
+        }
+      }
+      .fixed_bo{
+        position: fixed;
+        bottom:1rem;
+        padding-bottom:0.2rem;
+        left: 0;
+        height: 1rem;
+        display: flex;
+        align-items: center;
+        width: 100%;
+        background: #eff0ef;
+        p {
+          display: flex;
+          font-size: 0.3rem;
+          flex: 1;
+          justify-content: center;
+          align-items: center;
+          i {
+            // color: #369836;
+            // font-size: 0.4rem;
+            // margin-right: 0.1rem;
+            display: flex;
+            width: 0.41rem;
+            height: 0.44rem;
+            background: url(http://bmdt.zgn365.com/Public/bb.png) no-repeat;
+            background-size: 0.63rem auto;
+            background-position: -0.19rem -0.71rem;
+            margin-right: 0.1rem;
+          }
+          &:nth-child(2) {
+            i {
+              width: 0.43rem;
+              height: 0.38rem;
+              background-position: -0.19rem -1.27rem;
+              &.active {
+                background-position: -0.19rem -1.77rem;
+              }
+            }
+          }
         }
       }

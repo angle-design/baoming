@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { ListView, Toast } from 'antd-mobile';
-import { askInfo } from '../../api/ask';
+import { askInfo,fuZan } from '../../api/ask';
 
 import Qs from 'qs';
 import Listcon from './ListItem';
@@ -10,19 +10,27 @@ import action from '../../store/action/index';
 class Detail extends Component {
     constructor(props, context) {
         super(props, context);
-          // 创建ListViewDataSource对象
-          const dataSource = new ListView.DataSource({
+        // 创建ListViewDataSource对象
+        const dataSource = new ListView.DataSource({
             rowHasChanged: (row1, row2) => row1 !== row2 // rowHasChanged(prevRowData, nextRowData); 用其进行数据变更的比较
         })
         this.state = {
             data: {},
             height: 0,//=>字高度
             contentflag: true,//=>控制字展开收起
-            questdata:[],
+            questdata: [],
             dataSource,
             pageNo: this.props.askInfoList.page,
             isLoading: true,
             dataArr: [],
+            zanflag:false
+        }
+    }
+      //=>验证是否登录
+      async componentWillMount() {
+        let {queryLoginFlag,flag}=this.props;
+        if(!flag){
+            queryLoginFlag();
         }
     }
     async componentDidMount() {
@@ -79,7 +87,7 @@ class Detail extends Component {
     }
     render() {
         let { h_title, h_title2, h_etime, h_image, isnow, h_content, uinfo, hlist } = this.state.data;
-       
+
         if (h_etime) {
             h_etime = h_etime.split(" ")[0];
         }
@@ -122,8 +130,8 @@ class Detail extends Component {
                     <p>
                         <span className={this.state.contentflag ? 'heightauto' : ''} ref="conText">{h_content}</span>
                         <span>
-                            {this.state.height>100?
-                                this.state.contentflag?
+                            {this.state.height > 100 ?
+                                this.state.contentflag ?
                                     <font onClick={() => {
                                         this.setState({
                                             contentflag: false
@@ -134,11 +142,11 @@ class Detail extends Component {
                                             contentflag: true
                                         })
                                     }}>收起内容</font>
-                                    :''}
+                                : ''}
                         </span>
                     </p >
                 </div >
-                {hlist&&hlist.length!==0?<div className="otherquestion">
+                {hlist && hlist.length !== 0 ? <div className="otherquestion">
                     <span>TA开设的其他话题：</span>
                     <div>
                         {hlist.map((item, index) => {
@@ -146,8 +154,8 @@ class Detail extends Component {
                             return <p key={index}>{h_title},{h_title2}</p>
                         })}
                     </div>
-                </div>:''}
-              
+                </div> : ''}
+
                 {this.props.askInfoList.count ? (<div className="question">
                     <div className="question_tab">
                         <p>
@@ -155,8 +163,8 @@ class Detail extends Component {
                             <font>{this.props.askInfoList.count.acount}个提问</font>
                         </p>
                         <p>
-                            <span onClick={this.handleClick.bind(this,1)}>最新</span>
-                            <span onClick={this.handleClick.bind(this,2)}>最热</span>
+                            <span onClick={this.handleClick.bind(this, 1)}>最新</span>
+                            <span onClick={this.handleClick.bind(this, 2)}>最热</span>
                         </p>
                     </div>
                     <div className="new">
@@ -173,19 +181,37 @@ class Detail extends Component {
                         </ul>
                     </div>
                 </div>) : ''}
+                <div className="fixed_bo">
+                    <p><i></i>提问</p>
+                    <p onClick={this.handleZan} className={this.state.zanflag?'active':''}><i></i>点赞</p>
+                </div>
             </div >
         )
     }
-       // 最新最热切换
-       handleClick=async (order)=>{
+    // 下面浮窗点赞
+    handleZan=async ()=>{
+        let {flag}=this.props;
+        if(!flag){
+            this.props.history.push('/my/login');
+            return false;
+        }
+        let result=await fuZan(this.courseId);
+        if (result.code==200){
+            this.setState({
+                zanflag:true
+            })
+        }
+    }
+    // 最新最热切换
+    handleClick = async (order) => {
         this.setState({
-            questdata:[]
+            questdata: []
         })
         if (this.state.questdata.length == 0) {
             await this.props.queryList({
                 p: 1,
                 id: this.courseId,
-                order:order
+                order: order
             })
         }
         this.setState({
@@ -197,4 +223,4 @@ class Detail extends Component {
 
 
 
-export default connect(state => state.ask, action.ask)(Detail)
+export default connect(state => ({...state.ask,...state.my}), {...action.ask,...action.my})(Detail)

@@ -53,3 +53,17 @@ export function fuList(aid,p){
 export function replyList(payLoad){
   return axios.post('/api/api/Ask/addreply',payLoad)
 }
+
+
+// 提交问吧
+export function askCommit(payLoad){
+  return axios.post('/api/api/Ask/addhuati',payLoad)
+}
+
+// /api/api/Ask/haddzan
+
+// 详情浮窗点赞
+export function fuZan(aid){
+  return axios.post('/api/api/Ask/haddzan',aid)
+}
+

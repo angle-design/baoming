@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import ImgCrop from 'antd-img-crop';
+import {askCommit} from '../../api/ask'
 import { ActionSheet, InputItem, TextareaItem, Toast } from 'antd-mobile';
 import { Upload, Button, Modal, message } from 'antd'; //引入上传、按钮、弹窗等antd组件
 import '../../static/css/file.less';
@@ -27,6 +28,7 @@ class Fileload extends Component {
             },
             clicked: '小学',
             organCertUrl: '',
+            sendflag:false,
         }
     }
     showActionSheet = () => {
@@ -47,7 +49,6 @@ class Fileload extends Component {
             });
     }
     render() {
-        const data = this.state.data;
         const $this = this;
         const props = {
             ref: "upload",
@@ -65,13 +66,16 @@ class Fileload extends Component {
             }
         }
         const props1 = {
-            width: 500,  //裁剪宽度
-            height: 300, //裁剪高度
+            aspect: 710 / 248,
+            width: document.body.clientWidth,
+            height: parseInt(document.body.clientWidth) / 710 * 248,
             resize: false, //裁剪是否可以调整大小
             resizeAndDrag: true, //裁剪是否可以调整大小、可拖动
             modalTitle: "上传图片", //弹窗标题
             modalWidth: 600, //弹窗宽度
         };
+        let {sendflag,data}=this.state,
+         {title,title2,content,image,name,phone}=this.state.data;
         return (
             <div className="FileBox">
                 <div>
@@ -82,7 +86,7 @@ class Fileload extends Component {
                 </div>
                 <div>
                     <p>
-                        <font>标题：</font>
+                        <font className={sendflag&&!title?'tit_text error':'tit_text'}>标题：</font>
                         <span style={{ display: 'flex' }}> <InputItem
                             placeholder="我是"
                             onChange={(e) => {
@@ -108,8 +112,8 @@ class Fileload extends Component {
                     </p>
                 </div>
                 <div>
-                    <p>
-                        <font>内容：</font>
+                    <p > 
+                        <font  className={sendflag&&!content?'tit_text error':'tit_text'}>内容：</font>
                         <TextareaItem
                             placeholder="请详细描述您的问题简介（400空以内)"
                             data-seed="logId"
@@ -131,52 +135,77 @@ class Fileload extends Component {
                                 {...props}
                                 beforeUpload={this.beforeUpload}
                             >
-                                <span>
+                                {!this.state.organCertUrl ? <span>
                                     <i></i>
                                     <font>点击上传封面（可选）</font>
-                                </span>
-                              </Upload>
-                              </ImgCrop>
-                                        {/* <span className="img_big">
-                            <img className="dapic" />
-                            <i></i>
-                        </span> */}
-                        
+                                </span> : <span className="img_big">
+                                        <img className="dapic" src={this.state.organCertUrl } />
+                                        <i onClick={
+                                          this.close
+                                        }></i>
+                                    </span>}
+                            </Upload>
+                        </ImgCrop>
+
+
                     </p>
                 </div>
-                                <div>
-                                    <p>
-                                        <font>姓名：</font>
-                                        <InputItem
-                                            onChange={(e) => {
-                                                data.name = e;
-                                                this.setState({
-                                                    data
-                                                })
-                                            }}
-                                        ></InputItem>
-                                    </p>
-                                    <p>
-                                        <font >电话：</font>
-                                        <InputItem
-                                            type="number"
-                                            onChange={(e) => {
-                                                data.phone = e;
-                                                this.setState({
-                                                    data
-                                                })
-                                            }}
-                                        ></InputItem>
-                                    </p>
-                                </div>
+                <div>
+                    <p>
+                        <font  className={sendflag&&!name?'tit_text error':'tit_text'}>姓名：</font>
+                        <InputItem
+                            onChange={(e) => {
+                                data.name = e;
+                                this.setState({
+                                    data
+                                })
+                            }}
+                        ></InputItem>
+                    </p>
+                    <p>
+                        <font  className={sendflag&&!phone?'tit_text error':'tit_text'}>电话：</font>
+                        <InputItem
+                            type="number"
+                            onChange={(e) => {
+                                data.phone = e;
+                                this.setState({
+                                    data
+                                })
+                            }}
+                        ></InputItem>
+                    </p>
+                </div>
 
-                                <button onClick={this.handleToSend}>提交问吧</button>
+                <button onClick={this.handleToSend} className={title2&&title&&content&&name&&phone&&this.state.organCertUrl?'btnactive':''}>提交问吧</button>
             </div>
         )
     }
-    handleToSend = () => {
-                                console.log(this.state.data)
-                            }
+    handleToSend =async () => {
+        this.setState({
+            sendflag:true
+        })
+        const data = this.state.data;
+        data.image = this.state.organCertUrl;
+        data.tag = this.state.clicked;
+        this.setState({
+            data
+        })
+        if(!this.state.organCertUrl){
+            Toast.info('你还没有上传图片哦~')
+        }
+        let result=await askCommit(this.state.data);
+        if(result.code==200){
+            Toast.info('管理员将在2个工作日内完成审核。')
+        }else if(result.code==400){
+            Toast.info('您已提交成功，请勿重复提交。')
+        }
+    };
+    close=(ev)=>{
+        ev.preventDefault
+        this.setState({
+            organCertUrl:''
+        })
+    }
 }
 
 

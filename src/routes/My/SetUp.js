@@ -26,11 +26,11 @@ class SetUp extends Component {
         const _this = this;
         const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
         if (!isJpgOrPng) {
-            message.error('You can only upload JPG/PNG file!');
+            message.error('您上传的图片格式不正确～');
         }
         const isLt2M = file.size / 1024 / 1024 < 2;
         if (!isLt2M) {
-            message.error('Image must smaller than 2MB!');
+            message.error('图片大小不能超过2M,请重新上传～');
         }
         return isJpgOrPng && isLt2M;
 
@@ -86,14 +86,22 @@ class SetUp extends Component {
             className: 'upload-list-inline',
             onChange({ file, fileList }) {//file,和fileList是组件自带的参数，根据你上面赋值过去的接口给你返回的内容，file是个对象，fileList是个数组，其实file对象就相当于你用axios方法返回的response对象差不多啦~
                 if (file.status === 'done') {
-                    console.log(1)
-                    console.log(file)
                     $this.setState({
                         organCertUrl: file.response.data.src,//前面是我的存放地址的对象
                     })
                 }
             }
         }
+        const props1 = {
+            aspect:1/1,
+            width: 300,  //裁剪宽度
+            height: 300, //裁剪高度
+            // resize: false, //裁剪是否可以调整大小
+            resizeAndDrag: true, //裁剪是否可以调整大小、可拖动
+            modalTitle: "上传图片", //弹窗标题
+            modalWidth: 100, //弹窗宽度
+            scale:60,
+        };
 
         return (
             <div className="setup">
@@ -105,7 +113,7 @@ class SetUp extends Component {
                     }
                 />
 
-                <ImgCrop grid>
+                <ImgCrop {...props1}>
                     <Upload
                         {...props}
                         beforeUpload={this.beforeUpload}

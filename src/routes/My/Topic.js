@@ -75,7 +75,7 @@ class Topic extends Component {
             return (<div className="listitem">
                 <Link to={{
                     pathname: '/ask/detail',
-                    search: `?id=${hinfo.id}`
+                    search: `?id=${rowData.id}`
                 }}>
                     <p >{rowData.h_title},{rowData.h_title2}</p>
                 </Link>
