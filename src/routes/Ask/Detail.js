@@ -32,8 +32,10 @@ class Detail extends Component {
         if(!flag){
             queryLoginFlag();
         }
+        console.log(1)
     }
     async componentDidMount() {
+        console.log(2)
         let { location: { search } } = this.props,
             { id = 0 } = Qs.parse(search.substr(1)) || {};
         this.courseId = id;//=>挂载到实例上
@@ -183,7 +185,7 @@ class Detail extends Component {
                 </div>) : ''}
                 <div className="fixed_bo">
                     <p><i></i>提问</p>
-                    <p onClick={this.handleZan} className={this.state.zanflag?'active':''}><i></i>点赞</p>
+                    <p onClick={this.handleZan} ><i className={this.state.zanflag?'active':''}></i>点赞</p>
                 </div>
             </div >
         )
@@ -191,11 +193,13 @@ class Detail extends Component {
     // 下面浮窗点赞
     handleZan=async ()=>{
         let {flag}=this.props;
+        console.log(flag)
         if(!flag){
             this.props.history.push('/my/login');
             return false;
         }
         let result=await fuZan(this.courseId);
+        console.log(3)
         if (result.code==200){
             this.setState({
                 zanflag:true

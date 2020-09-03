@@ -31,13 +31,13 @@ class List extends Component {
         }
 
     }
-    async componentWillMount() {
+    async componentDidMount() {
         console.log(2)
         let res = await checkLogin(),
             isLogin = parseFloat(res.code) === 200 ? true : false;
         this.setState({ isLogin });
         this.getData(true)
-        let result = await querytop(this.props.match.params.id, this.props.match.params.id);
+        let result = await querytop(this.props.match.params.id);
         if (result.code == 200) {
             this.setState({
                 data: result.list
@@ -51,11 +51,12 @@ class List extends Component {
     }
     async componentWillUpdate(nextProps, nextState) {
         if (nextState.dataa) {
-            let result = await querytop(this.props.match.params.id, this.props.match.params.id);
+            let result = await querytop(this.props.match.params.id);
             if (result.code == 200) {
                 this.setState({
                     data: result.list
                 })
+               
             }
         }
     }
@@ -65,7 +66,6 @@ class List extends Component {
         const dataList = result.list;
         // const len = dataList.length;
         var len = dataList && dataList.length;
-        console.log(dataList)
         if (len <= 0) { // 判断是否已经没有数据了
             this.setState({
                 refreshing: false,
@@ -106,7 +106,7 @@ class List extends Component {
 
     }
     render() {
-        if (!this.state.data) return '';
+       
         const row = (rowData, sectionID, rowID) => {
             // 这里rowData,就是上面方法cloneWithRows的数组遍历的单条数据了，直接用就行
             let { uinfo, zan, countr, ctime, relist, content, id, aid, uid } = rowData;
@@ -188,6 +188,7 @@ class List extends Component {
                 </li>
             )
         }
+         if (!this.state.data &&this.state.data=='') return '11';
         return (
             <div className="replayBox">
                 <div style={{ padding: '0 0.3rem', borderBottom: '0.1rem solid #f4f4f4' }}>

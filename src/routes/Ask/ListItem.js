@@ -1,14 +1,39 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {Link,withRouter} from 'react-router-dom';
+import {wenZan} from '../../api/ask.js'
+import action from '../../store/action/index';
 import '../../static/css/listitem.less';
 
 class ListItem extends Component {
     constructor(props, context) {
-        super(props, context)
+        super(props, context);
+        this.state={
+          wendazan:0,
+          huifuzan:0,
+          wenflag:false,
+          huiflag:false,
+        }
     }
+    async componentWillMount() {
+      console.log(this.props.item)
+      this.setState({
+        wendazan:this.props.item.zan,
+        huifuzan:this.props.item.qlist?this.props.item.qlist.zan:0,
+      })
+      let {queryLoginFlag,flag}=this.props;
+      if(!flag){
+          queryLoginFlag();
+      }
+  }
+  async componentWillUpdate(nextProps, nextState) {
+    if (nextState.wendazan||nextState.huifuzan) {
+        console.log('new')
+    }
+}
     render() {
       let {uinfo,isvip,time,zan,huifu,content,qlist,id,isq}=this.props.item;
+
         return (
           <div className="new">
             <div className="list_body" style={{padding:'0.3rem 0 0.1rem',border:'none'}}>
@@ -26,9 +51,9 @@ class ListItem extends Component {
                   </dd>
                 </dl>:''}
                 <p>
-                  <span>
-                    <i></i>
-                    <font>{zan?zan:'0'}</font>
+                  <span onClick={this.handlewenzan.bind(this,this.state.wendazan)}>
+                    <i  className={this.state.wenflag?'active':''}></i>
+                    <font>{this.state.wendazan?this.state.wendazan:'0'}</font>
                   </span>
                   <span onClick={this.handleToDetail.bind(this,id)}>
                     <i></i>
@@ -52,9 +77,9 @@ class ListItem extends Component {
                   </dd>
                 </dl>
                 <p>
-                <span>
-                    <i></i>
-                    <font>{qlist.zan?qlist.zan:'0'}</font>
+                <span  onClick={this.handlehuizan.bind(this,this.state.huifuzan)}>
+                    <i   className={this.state.huiflag?'active':''}></i>
+                    <font>{this.state.huifuzan?this.state.huifuzan:'0'}</font>
                   </span>
                   <span onClick={this.handleToDetail.bind(this,id)}>
                     <i></i>
@@ -68,6 +93,40 @@ class ListItem extends Component {
         </div>
         )
     }
+    // 问点赞
+    handlewenzan=async (a)=>{
+      if (this.state.wenflag) return '';
+      let {flag}=this.props;
+      if(!flag){
+          this.props.history.push('/my/login');
+          return false;
+      }
+      var c=parseInt(a)+1;
+      let result=await wenZan(this.props.item.id);
+      if (result.code==200){
+          this.setState({
+            wenflag:true,
+            wendazan:c
+        })
+      }
+    }
+    // 回点赞
+    handlehuizan=async (a)=>{
+      if (this.state.huiflag) return '';
+      let {flag}=this.props;
+      if(!flag){
+          this.props.history.push('/my/login');
+          return false;
+      }
+      var c=parseInt(a)+1;
+      let result=await wenZan(this.props.item.qlist.id);
+      if (result.code==200){
+          this.setState({
+            huiflag:true,
+            huifuzan:c
+        })
+      }
+    }
     //点击进入详情
   handleToDetail=id=>{
     this.props.history.push({
@@ -76,4 +135,4 @@ class ListItem extends Component {
   }
 }
 
-export default withRouter(connect()(ListItem))
+export default withRouter(connect(state => ({...state.ask,...state.my}), {...action.ask,...action.my})(ListItem))

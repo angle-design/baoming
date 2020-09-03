@@ -29,7 +29,7 @@ export function questList(payload){
     params:payload
   })
 }
-
+// getreplyinfo
 // 回复详情
 export function querytop(aid){
   return axios.get("/api/api/Ask/getreplyinfo",{
@@ -64,6 +64,11 @@ export function askCommit(payLoad){
 
 // 详情浮窗点赞
 export function fuZan(aid){
-  return axios.post('/api/api/Ask/haddzan',aid)
+  return axios.post('/api/api/Ask/haddzan',{aid})
 }
 
+
+// 问答的点赞
+export function wenZan(aid){
+  return axios.post('/api/api/Ask/addzan',{aid})
+}
