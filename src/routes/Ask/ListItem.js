@@ -15,26 +15,28 @@ class ListItem extends Component {
           huiflag:false,
         }
     }
-    async componentWillMount() {
-      console.log(this.props.item)
-      this.setState({
-        wendazan:this.props.item.zan,
-        huifuzan:this.props.item.qlist?this.props.item.qlist.zan:0,
-      })
+    async componentDidMount() {
+     
+    
       let {queryLoginFlag,flag}=this.props;
       if(!flag){
           queryLoginFlag();
       }
   }
-  async componentWillUpdate(nextProps, nextState) {
+  componentWillReceiveProps(nextState){
+  
+  }
+  componentWillUpdate(nextProps, nextState) {
+    
     if (nextState.wendazan||nextState.huifuzan) {
         console.log('new')
     }
 }
+
     render() {
       let {uinfo,isvip,time,zan,huifu,content,qlist,id,isq}=this.props.item;
-
         return (
+
           <div className="new">
             <div className="list_body" style={{padding:'0.3rem 0 0.1rem',border:'none'}}>
             <div className="list_item">
@@ -51,9 +53,9 @@ class ListItem extends Component {
                   </dd>
                 </dl>:''}
                 <p>
-                  <span onClick={this.handlewenzan.bind(this,this.state.wendazan)}>
+                  <span onClick={this.handlewenzan.bind(this,zan)}>
                     <i  className={this.state.wenflag?'active':''}></i>
-                    <font>{this.state.wendazan?this.state.wendazan:'0'}</font>
+                    <font ref="aa">{zan?zan:0}</font>
                   </span>
                   <span onClick={this.handleToDetail.bind(this,id)}>
                     <i></i>
@@ -77,9 +79,9 @@ class ListItem extends Component {
                   </dd>
                 </dl>
                 <p>
-                <span  onClick={this.handlehuizan.bind(this,this.state.huifuzan)}>
+                <span  onClick={this.handlehuizan.bind(this,qlist.zan)}>
                     <i   className={this.state.huiflag?'active':''}></i>
-                    <font>{this.state.huifuzan?this.state.huifuzan:'0'}</font>
+                    <font  ref="bb">{qlist.zan?qlist.zan:0}</font>
                   </span>
                   <span onClick={this.handleToDetail.bind(this,id)}>
                     <i></i>
@@ -95,6 +97,7 @@ class ListItem extends Component {
     }
     // 问点赞
     handlewenzan=async (a)=>{
+      console.log(this.refs.aa.innerHTML)
       if (this.state.wenflag) return '';
       let {flag}=this.props;
       if(!flag){
@@ -104,9 +107,9 @@ class ListItem extends Component {
       var c=parseInt(a)+1;
       let result=await wenZan(this.props.item.id);
       if (result.code==200){
+        this.refs.aa.innerHTML=c;
           this.setState({
-            wenflag:true,
-            wendazan:c
+            wenflag:true
         })
       }
     }
@@ -121,9 +124,9 @@ class ListItem extends Component {
       var c=parseInt(a)+1;
       let result=await wenZan(this.props.item.qlist.id);
       if (result.code==200){
+        this.refs.bb.innerHTML=c;
           this.setState({
             huiflag:true,
-            huifuzan:c
         })
       }
     }

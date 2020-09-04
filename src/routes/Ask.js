@@ -18,7 +18,7 @@ export class Ask extends Component {
            <section className="askBox">
                 <Switch>
                     <Route path="/ask" exact component={List}/>
-                    <Route path="/ask/detail" component={Detail}/>
+                    <Route path="/ask/detail/:id" component={Detail}/>
                     <Route path="/ask/replay/:id" component={Replay}/>
                     <Route path='/ask/fileload' component={Fileload} />
                 </Switch>

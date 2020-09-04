@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import {Link} from 'react-router-dom';
+import {withRouter} from 'react-router-dom';
 
 class AskItem extends Component {
     constructor(props, context) {
@@ -9,13 +9,15 @@ class AskItem extends Component {
 
     render() {
         let {id,h_title,h_title2,ishot,h_image,isnow,uinfo:{a_uname,a_image},tagname:{name},zan,huifu}=this.props.item;
-
         return (
-                <div className="ask_item">
-                     <Link to={{
-                                    pathname: '/ask/detail',
-                                    search: `?id=${id}`
-                                }}>
+                <div className="ask_item" onClick={
+                    ()=>{
+                        this.props.history.push({
+                            pathname:'/ask/detail/'+id
+                          })
+                    }
+                }>
+                
                     <div className="ask_img">
                         <img src={h_image}/>
                         {ishot==2? <span>置顶</span>:''}
@@ -47,10 +49,10 @@ class AskItem extends Component {
                             </span>
                         </p>
                     </div>
-               </Link>
+        
                 </div>
         )
     }
 }
 
-export default connect()(AskItem)
+export default withRouter(connect()(AskItem)) 

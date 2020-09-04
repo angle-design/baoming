@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { ListView, Toast } from 'antd-mobile';
+import { Link } from 'react-router-dom';
+import { ListView, Toast} from 'antd-mobile';
 import { askInfo,fuZan } from '../../api/ask';
 
 import Qs from 'qs';
@@ -23,7 +24,8 @@ class Detail extends Component {
             pageNo: this.props.askInfoList.page,
             isLoading: true,
             dataArr: [],
-            zanflag:false
+            zanflag:false,
+            a:false,
         }
     }
       //=>验证是否登录
@@ -35,10 +37,8 @@ class Detail extends Component {
         console.log(1)
     }
     async componentDidMount() {
-        console.log(2)
-        let { location: { search } } = this.props,
-            { id = 0 } = Qs.parse(search.substr(1)) || {};
-        this.courseId = id;//=>挂载到实例上
+            
+        this.courseId = this.props.match.params.id;//=>挂载到实例上
         let result = await askInfo(this.courseId);
 
         if (result.code == 200) {
@@ -67,6 +67,19 @@ class Detail extends Component {
             pageNo: this.props.askInfoList.page
         })
     }
+    async componentWillReceiveProps(newProps) {
+        const id = newProps.match.params.id;
+        if(id!==this.courseId){
+            this.courseId = id;//=>挂载到实例上
+            let result = await askInfo(this.courseId);
+            if (result.code == 200) {
+                this.setState({
+                    data: result.list
+                })
+            }
+        }
+      }
+
     // 滑动到底部时加载更多
     onEndReached = (event) => {
         // 加载中或没有数据了都不再加载
@@ -89,7 +102,6 @@ class Detail extends Component {
     }
     render() {
         let { h_title, h_title2, h_etime, h_image, isnow, h_content, uinfo, hlist } = this.state.data;
-
         if (h_etime) {
             h_etime = h_etime.split(" ")[0];
         }
@@ -152,8 +164,14 @@ class Detail extends Component {
                     <span>TA开设的其他话题：</span>
                     <div>
                         {hlist.map((item, index) => {
-                            let { h_title, h_title2 } = item;
-                            return <p key={index}>{h_title},{h_title2}</p>
+                            let { h_title, h_title2,id } = item;
+                            return <p key={index} onClick={
+                                ()=>{
+                                    this.props.history.push({
+                                        pathname:'/ask/detail/'+id
+                                      })
+                                }
+                            }>{h_title},{h_title2}</p>
                         })}
                     </div>
                 </div> : ''}
@@ -224,7 +242,5 @@ class Detail extends Component {
         })
     }
 }
-
-
 
 export default connect(state => ({...state.ask,...state.my}), {...action.ask,...action.my})(Detail)

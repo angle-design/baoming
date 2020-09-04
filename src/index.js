@@ -21,7 +21,6 @@ import My from './routes/My';
 import Settlement from './routes/Settlement';
 import Headline from './routes/Headline';
 import Ask from './routes/Ask';
-
 /*render*/
 render(<Provider store={store}>
     <HashRouter>

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { ListView, Toast } from 'antd-mobile';
 import action from '../../store/action/index';
 import { Link, withRouter } from 'react-router-dom';
-import { querytop, fuList, replyList } from '../../api/ask';
+import { querytop, fuList, replyList,readZan} from '../../api/ask';
 import { checkLogin } from '../../api/my';
 import ListItem from './ListItem';
 class List extends Component {
@@ -28,27 +28,28 @@ class List extends Component {
             replaydata: [],//回复提交的参数
             msg: '',//回复的内容
             dataa: false,
+            wenflag:false,
         }
 
     }
     async componentDidMount() {
-        console.log(2)
         let res = await checkLogin(),
             isLogin = parseFloat(res.code) === 200 ? true : false;
         this.setState({ isLogin });
-        this.getData(true)
         let result = await querytop(this.props.match.params.id);
         if (result.code == 200) {
             this.setState({
                 data: result.list
             })
         }
+        
+        this.getData(true)
     }
-    async componentWillReceiveProps() {
-        let res = await checkLogin(),
-            isLogin = parseFloat(res.code) === 200 ? true : false;
-        this.setState({ isLogin });
-    }
+    // async componentWillReceiveProps() {
+    //     let res = await checkLogin(),
+    //         isLogin = parseFloat(res.code) === 200 ? true : false;
+    //     this.setState({ isLogin });
+    // }
     async componentWillUpdate(nextProps, nextState) {
         if (nextState.dataa) {
             let result = await querytop(this.props.match.params.id);
@@ -93,7 +94,6 @@ class List extends Component {
     // 滑动到底部时加载更多
     onEndReached = (event) => {
         // 加载中或没有数据了都不再加载
-        console.log(this.state.pageNo)
         if (this.state.isLoading || !this.state.hasMore) {
             return
         }
@@ -125,9 +125,9 @@ class List extends Component {
                                 </dd>
                             </dl>
                             <p>
-                                <span>
+                                <span onClick={this.zan.bind(this,zan,id)}>
                                     <i></i>
-                                    <font>{zan ? zan : '0'}</font>
+                                    <font ref="haha">{zan ? zan : '0'}</font>
                                 </span>
                                 <span onClick={ev => {
                                     if (this.state.isLogin) {
@@ -188,7 +188,7 @@ class List extends Component {
                 </li>
             )
         }
-         if (!this.state.data &&this.state.data=='') return '11';
+         if (!this.state.data &&this.state.data=='') return false;
         return (
             <div className="replayBox">
                 <div style={{ padding: '0 0.3rem', borderBottom: '0.1rem solid #f4f4f4' }}>
@@ -220,6 +220,23 @@ class List extends Component {
             </div>
         )
 
+    }
+    // 点赞
+    zan=async (a,id)=>{
+        if (this.state.wenflag) return '';
+        // let {flag}=this.props;
+        // if(!flag){
+        //     this.props.history.push('/my/login');
+        //     return false;
+        // }
+        // console.log(this.refs.haha.innerHTML)
+        var c=parseInt(a)+1;
+        let result=await readZan(id);
+        if (result.code==200){
+            this.setState({
+              wenflag:true
+          })
+        }
     }
     changeHandle = (e) => {
         this.setState({

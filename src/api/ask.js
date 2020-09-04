@@ -26,7 +26,8 @@ export function askInfo(id){
 ///=>获取问答列表
 export function questList(payload){
   return axios.get("/api/api/Ask/getAlist",{
-    params:payload
+    params:payload,
+    headers:{'isLoading':false}
   })
 }
 // getreplyinfo
@@ -71,4 +72,9 @@ export function fuZan(aid){
 // 问答的点赞
 export function wenZan(aid){
   return axios.post('/api/api/Ask/addzan',{aid})
+}
+
+// 三次点赞
+export function readZan(aid){
+  return axios.post('/api/api/Ask/readdzan',{aid})
 }

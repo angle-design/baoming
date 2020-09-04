@@ -141,6 +141,7 @@ class SetUp extends Component {
                     let result = await checkLoginOut();
                     if (result.statu == 200) {
                         this.props.history.push("/my/login");
+                        this.props.queryLoginFlag()
                     }
                 }}>退出账户</button>
                 {this.state.pupflag ? <div className="pup">

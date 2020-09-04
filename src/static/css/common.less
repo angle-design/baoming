@@ -76,3 +76,66 @@ html {
   .kong img{
     width:3.87rem;
   }
+  #loading {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background:#fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    font-size: 20px;
+  }
+  .ant-spin-nested-loading{
+    width:100%;
+  }
+  .footerNavBox a{
+    flex: 1;
+    padding-top: 0.5rem;
+    background: url(../../static/image/tab_01.png) no-repeat center 0.15rem;
+    background-size: 0.32rem 0.34rem;
+    &:nth-child(2) {
+      background: url(../../static/image/tab_02.png) no-repeat center 0.15rem;
+        background-size: 0.32rem 0.34rem;
+      &.active,
+      &.router-link-active {
+        background: url(../../static/image/tab_02cur.png) no-repeat center 0.15rem;
+            background-size: 0.32rem 0.34rem;
+      }
+    }
+    &:nth-child(3) {
+      background: url(../../static/image/tab_03.png) no-repeat center 0.15rem;
+           background-size: 0.32rem 0.34rem;
+      &.active,
+      &.router-link-active {
+        background: url(../../static/image/tab_03cur.png) no-repeat center 0.15rem;
+            background-size: 0.32rem 0.34rem;
+      }
+    }
+    &:nth-child(4) {
+      background: url(../../static/image/tab_04.png) no-repeat center 0.15rem;
+            background-size: 0.32rem 0.34rem;
+      &.active,
+      &.router-link-active {
+        background: url(../../static/image/tab_04cur.png) no-repeat center 0.15rem;
+       background-size: 0.32rem 0.34rem;
+      }
+    }
+    &:nth-child(5) {
+      background: url(../../static/image/tab_05.png) no-repeat center 0.15rem;
+        background-size: 0.32rem 0.34rem;
+      &.active,
+      &.router-link-active {
+        background: url(../../static/image/tab_05cur.png) no-repeat center 0.15rem;
+        background-size: 0.32rem 0.34rem;
+      }
+    }
+    &.active{
+      background: url(../../static/image/tab_01cur.png) no-repeat center 0.15rem;
+       background-size: 0.36rem 0.38rem;
+      color: #369836;
+    }
+  }
