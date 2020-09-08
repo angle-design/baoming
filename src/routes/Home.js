@@ -7,6 +7,7 @@ import Search from './Course/Search';
 
 /*css */
 import '../static/css/course.less';
+import LessonDetail from './Course/Lessondetails';
 
 export class Home extends Component {
     constructor(props,context) {
@@ -20,6 +21,7 @@ export class Home extends Component {
                     <Route path="/course" exact component={List}/>
                     <Route path="/course/info" component={Info}/>
                     <Route path="/course/search" component={Search}/>
+                    <Route path="/course/lessondetail" component={LessonDetail}/>
                 </Switch>
            </section>
         )

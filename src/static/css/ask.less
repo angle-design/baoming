@@ -135,6 +135,11 @@
         }
         .swiperLeft {
           overflow-x:auto;
+          &::-webkit-scrollbar{
+            width:0;
+            height:0;
+            display: none;
+          }
           ul {
             display: flex;
             flex-wrap: nowrap;
@@ -152,6 +157,7 @@
               font-size: 0.28rem;
               background: #f8f8f8;
               border-radius:0.1rem;
+              border:none;
               // overflow: hidden;
               &:last-child {
                 margin-right:0.3rem;
