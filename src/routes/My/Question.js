@@ -88,14 +88,14 @@ class Question extends Component {
                         <span>{hinfo.h_title},{hinfo.h_title2}</span>
                     </div>
                 </Link>
-                <p class="time">
+                <p className="time">
                     <font>{time}</font>
                     {status === 1 ? <span style={{ color: '#36b937' }}>专家已答</span> : <span style={{ color: '#f1a91f' }}>待回答</span>}
                 </p>
             </li>)
         }
         return (
-            <div class="questionBox">
+            <div className="questionBox">
                 {this.state.dataArr && this.state.dataArr.length !== 0 ? <ul>
                     <ListView
                         ref={el => this.lv = el}

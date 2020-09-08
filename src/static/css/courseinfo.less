@@ -1,0 +1,126 @@
+.infoBox{
+    padding-top:0.2rem;
+    .infotop{
+        margin:0 0.3rem;
+        h3{
+            height:0.7rem;
+            line-height:0.7rem;
+            font-size:0.44rem;
+            color:#333;
+            &>img{
+                width:0.43rem;
+                height:0.52rem;
+            }
+            span{
+                width:0.36rem;
+                height:0.36rem;
+                background:url(../image/shoucang.png) no-repeat center top;
+                background-size:0.37rem 0.8rem;
+                background-position:-0.01rem -0.01rem;
+                display: block;
+                float: right;
+                margin-top:0.22rem;
+            }
+        }
+        p.starcon{
+            b{
+                color:#ff4c11;
+                margin:0 0.15rem;
+            }
+        }
+        p.address{
+            position: relative;
+            padding-left:0.32rem;
+            &::after{
+                content:'';
+                position: absolute;
+                width:0.23rem;
+                height:0.36rem;
+                top:0.03rem;
+                left:0;
+                padding-left:0.5rem;
+                background:url(../image/star.png) no-repeat;
+                background-size:0.3rem 1.65rem;
+                background-position: -0.03rem -0.95rem;
+
+            }
+           
+        }
+        p.peoson{
+            position: relative;
+            padding-left:0.32rem;
+            &::after{
+                content:'';
+                position: absolute;
+                width:0.3rem;
+                height:0.36rem;
+                top:0.03rem;
+                left:0;
+                padding-left:0.5rem;
+                background:url(../image/star.png) no-repeat;
+                background-size:0.3rem 1.65rem;
+                background-position: -0.03rem -1.28rem;
+
+            }
+           
+        }
+    }
+    .topnav{
+        box-shadow: none;
+        margin-top:0.6rem;
+    }
+    .lessonCon{
+        margin:0 0.3rem;
+        
+    }
+    .jianjie{
+        font-size:0.26rem;
+        color:#333;
+        margin:0.6rem 0.3rem;
+        b{
+            font-size:0.3rem;
+            line-height:0.6rem;
+        }
+        span{
+            text-align: center;
+            display: block;
+            font-size:0.25rem;
+            color:#999
+        }
+    }
+    .pingjia{
+        font-size:0.26rem;
+        color:#333;
+        margin:0.6rem 0.3rem;
+        b{
+            font-size:0.3rem;
+            line-height:0.6rem;
+        }
+        &>ul {
+            &>li{
+                height:0.7rem;
+                display: flex;
+                align-items: center;
+                font{
+                    font-size:0.26rem;
+                    margin-right:0.2rem;
+                }
+                span{
+                    display: flex;
+                    align-items: center;
+                }
+            }
+        }
+    }
+    .anticon-star:before{
+        color:#dadada;
+    }
+    .ant-rate-star-full .anticon-star:before{
+        color:#ff4c11;
+    }
+    .ant-rate-text{
+        color:#ff4c11;
+        font-size:0.26rem;
+        line-height:0.2rem;
+    }
+}
