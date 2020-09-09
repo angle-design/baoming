@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import Qs from 'qs';
 import { Rate } from 'antd';
 import { ListView, Toast, Tabs, ImagePicker } from 'antd-mobile';
+import {LogoInfo} from '../../api/course';
 
 import '../../static/css/courseinfo.less';
 import Star from './Star';
@@ -35,37 +36,44 @@ class Info extends Component {
             value: 3,
             files: data,
             multiple: false,
+            lesson:{}
         }
     }
-    componentWillMount() {
+    async componentWillMount() {
         let { location: { search } } = this.props,
             { id = 0 } = Qs.parse(search.substr(1)) || {};
         this.id = id;//=>挂载到实例上
+        // 获取详情
+        let result =await LogoInfo(this.id);
+        if(result.code==200){
+            this.setState({lesson:result.list})
+            console.log(this.state.lesson)
+        }
     }
     render() {
         const { value } = this.state;
         const { files } = this.state;
+        if (!this.state.lesson) return '';
+        let {name,lever,cnum,bnum,piclist,content}=this.state.lesson;
         return (
             <div className="infoBox">
                 <div className="infotop">
-                    <h3>尚德教育（北苑分校）<img src={require('../../static/image/jin.png')} /> <span></span></h3>
-                    <p className="starcon"><Star star={8}></Star><b>4.0</b>634条</p>
-                    <p className="peoson">报名人数：<font>5000</font></p>
+                    <h3>{name}<img src={require('../../static/image/jin.png')} /> <span></span></h3>
+                    <p className="starcon"><Star star={lever*2}></Star><b>4.0</b>634条</p>
+                    <p className="peoson">报名人数：<font>{cnum}</font></p>
                     <p className="address">朝阳区红应南路天乐园1号楼</p>
                 </div>
-                <div className="swiperLeft">
+                {piclist&&piclist.length!==0?<div className="swiperLeft">
                     <ul className="cont" >
-                        <li>
-                            <p ><img src="https://zgnstatic.oss-cn-beijing.aliyuncs.com/zgnimage/20200602/5cea13997ec88e88495506621a1a1cd3.jpg" /><span><img src={require('../../static/image/bo.png')} /></span></p>
+                        {piclist.map((item,index)=>{
+                            let {image,mp4}=item;
+                            return  <li key={index}>
+                            <p><img src={image} />{mp4?<span><img src={require('../../static/image/bo.png')} /></span>:''}</p>
                         </li>
-                        <li>
-                        <p><img src="https://zgnstatic.oss-cn-beijing.aliyuncs.com/zgnimage/20200602/5cea13997ec88e88495506621a1a1cd3.jpg" /></p>
-                        </li>
-                        <li>
-                        <p><img src="https://zgnstatic.oss-cn-beijing.aliyuncs.com/zgnimage/20200602/5cea13997ec88e88495506621a1a1cd3.jpg" /></p>
-                        </li>
+                        })}
                     </ul>
-                </div>
+                </div>:''}
+                
                 <div className='topnav'>
                     <Tabs tabs={this.state.typedata} renderTabBar={props => <Tabs.DefaultTabBar {...props} page={5.6} />}>
                     </Tabs>
@@ -77,7 +85,7 @@ class Info extends Component {
                 </div>
                 <div className="jianjie">
                     <b>机构简介</b>
-                    <p>哦我哦我哦我哦我哦我我哦我哦我哦我哦我哦我哦我哦我哦我我哦借卡小卡马克摩卡出门开车开车开车没开车吗课程可是每次开车慢课程卡车看卡每次看每次卡每次卡每次卡每次卡车</p>
+                    <p>{content}</p>
                     <span>更多全部</span>
                 </div>
                 <div className="pingjia">

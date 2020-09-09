@@ -1,4 +1,5 @@
 import axios from './index';
+import { func } from 'prop-types';
 
 // banner图接口
 export function bannerList(){
@@ -29,3 +30,21 @@ export function seaList(key,p){
         }
     })
 }
+
+// 机构详情
+export function LogoInfo(sid){
+    return axios.get("/api/api/school/getSinfo", {
+        params: {
+            sid
+          }
+    })
+}
+
+// 判断用户是不是收藏了
+// export function isCollect(){
+//     return axios.get("/api/api/school/checkiscollect", {
+//         params: {
+//             sid
+//           }
+//     })
+// }
