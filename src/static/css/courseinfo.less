@@ -1,16 +1,23 @@
 .infoBox{
-    padding-top:0.2rem;
+   
     overflow-x: hidden;
+    background:#fff;
     .infotop{
-        margin:0 0.3rem;
+        padding:0.2rem 0.3rem 0.3rem;
+        // margin:0 0.3rem;
+        background:#f4f4f4;
         h3{
             height:0.7rem;
-            line-height:0.7rem;
+            padding-top:0.1rem;
             font-size:0.44rem;
             color:#333;
+            display: flex;
+            align-items: center;
+            position: relative;
             &>img{
                 width:0.43rem;
                 height:0.52rem;
+                margin-left:0.1rem;
             }
             span{
                 width:0.36rem;
@@ -21,17 +28,22 @@
                 display: block;
                 float: right;
                 margin-top:0.22rem;
+                position: absolute;
+                right:0;
+                top:50%;
+                margin-top:-0.18rem;
             }
         }
         p.starcon{
             b{
                 color:#ff4c11;
-                margin:0 0.15rem;
+                margin:0 0.2rem 0 0.1rem;
             }
         }
         p.address{
             position: relative;
             padding-left:0.32rem;
+            margin-top:0.05rem;
             &::after{
                 content:'';
                 position: absolute;
@@ -68,16 +80,17 @@
     }
     .topnav{
         box-shadow: none;
-        margin-top:0.6rem;
     }
     .lessonCon{
-        margin:0 0.3rem;
+        padding:0 0.3rem 0.4rem;
+        border-bottom: 0.16rem solid #f8f8f8;
         
     }
     .jianjie{
         font-size:0.26rem;
         color:#333;
-        margin:0.6rem 0.3rem;
+        padding:0.3rem 0.3rem;
+        border-bottom: 0.16rem solid #f8f8f8;
         b{
             font-size:0.3rem;
             line-height:0.6rem;
@@ -86,13 +99,15 @@
             text-align: center;
             display: block;
             font-size:0.25rem;
-            color:#999
+            color:#999;
+            margin-top:0.2rem;
         }
     }
     .pingjia{
         font-size:0.26rem;
         color:#333;
-        margin:0.6rem 0.3rem;
+        padding:0.3rem;
+        border-bottom: 0.16rem solid #f8f8f8;
         &>button{
             display: block;
             width:1.92rem;
@@ -100,7 +115,7 @@
             border-radius: 0.8rem;
             background:#ff4c11;
             color:#fff;
-            margin:0.6rem auto 0.9rem;
+            margin:0.6rem auto 0;
             font-size:0.3rem;
         }
         b{
@@ -131,7 +146,7 @@
         box-sizing: border-box;
         margin-top:0.3rem;
         position: relative;
-       
+       background: #f8f8f8;
         textarea{
             display: block;
             width:100%;
@@ -167,10 +182,11 @@
     .swiperLeft {
         width:100%;
         overflow:hidden;
-         height:1.96rem;
+         height:2.26rem;
          padding-right:0.1rem;
         //  box-sizing: border-box;
-         margin:0.3rem 0 0 0rem; 
+        background:#f4f4f4;
+         padding:0;
         ul {
           display: flex;
           flex-wrap: nowrap;
@@ -217,4 +233,7 @@
           }
         }
       }
+}
+html:not([data-scale]) .am-tabs-default-bar-top .am-tabs-default-bar-tab::after{
+    background: none;
 }

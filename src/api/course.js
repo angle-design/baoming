@@ -41,10 +41,28 @@ export function LogoInfo(sid){
 }
 
 // 判断用户是不是收藏了
-// export function isCollect(){
-//     return axios.get("/api/api/school/checkiscollect", {
-//         params: {
-//             sid
-//           }
-//     })
-// }
+export function isCollect(type,sid){
+    return axios.get("/api/api/school/checkiscollect", {
+        params: {
+            type,
+            sid
+          }
+    })
+}
+
+// 去收藏
+export function toCollect(type,sid){
+    return axios.post("/api/api/school/schoolCollect", {
+        type,sid
+    })
+}
+// 获取课程列表
+export function lessonList(sid,cid,c2id){
+    return axios.get("/api/api/school/getCourse",{
+        params:{
+           sid,
+           cid,
+           c2id
+        }
+    })
+}

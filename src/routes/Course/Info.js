@@ -3,12 +3,13 @@ import { connect } from 'react-redux';
 import Qs from 'qs';
 import { Rate } from 'antd';
 import { ListView, Toast, Tabs, ImagePicker } from 'antd-mobile';
-import {LogoInfo} from '../../api/course';
+import {LogoInfo,isCollect,toCollect} from '../../api/course';
 
 import '../../static/css/courseinfo.less';
 import Star from './Star';
 import LessonItem from './LessonItem';
 import Evaluate from './Evaluate';
+import action from '../../store/action/index';
 
 const desc = ['一级', '二级', '三级', '四级', '五级'];
 const data = [{
@@ -36,10 +37,18 @@ class Info extends Component {
             value: 3,
             files: data,
             multiple: false,
-            lesson:{}
+            lesson:{},
+            collectflag:false
         }
     }
     async componentWillMount() {
+        // 验证是否登陆
+        let {queryLoginFlag,flag}=this.props;
+        // if(!flag){
+        //     queryLoginFlag();
+        // }
+        console.log(1)
+        
         let { location: { search } } = this.props,
             { id = 0 } = Qs.parse(search.substr(1)) || {};
         this.id = id;//=>挂载到实例上
@@ -47,7 +56,11 @@ class Info extends Component {
         let result =await LogoInfo(this.id);
         if(result.code==200){
             this.setState({lesson:result.list})
-            console.log(this.state.lesson)
+        }
+        let res =await isCollect(1,this.id);
+        // console.log(res)
+        if(res.code==200){
+            this.setState({collectflag:true})
         }
     }
     render() {
@@ -58,8 +71,8 @@ class Info extends Component {
         return (
             <div className="infoBox">
                 <div className="infotop">
-                    <h3>{name}<img src={require('../../static/image/jin.png')} /> <span></span></h3>
-                    <p className="starcon"><Star star={lever*2}></Star><b>4.0</b>634条</p>
+                    <h3>{name}<img src={require('../../static/image/jin.png')} /> <span onClick={this.shoucang} className={this.state.collectflag?'active':''}></span></h3>
+                    <p className="starcon"><Star star={parseInt(lever*2)}></Star><b>4.0</b>634条</p>
                     <p className="peoson">报名人数：<font>{cnum}</font></p>
                     <p className="address">朝阳区红应南路天乐园1号楼</p>
                 </div>
@@ -131,8 +144,25 @@ class Info extends Component {
             files,
         });
     }
+    shoucang=async ()=>{
+        let result=await toCollect(1,this.id);
+        if(!this.props.flag){
+            this.props.history.push('/my/login');
+
+            return false;
+        }
+        if(result.code=200){
+            if (result.list.status == 2) {
+                this.collectflag = false;
+                return false;
+              } else if (result.list.status == 1) {
+                this.collectflag = true;
+                Toast.info('收藏成功')
+              }
+        }
+    }
 }
 
 
 
-export default connect()(Info)
+export default connect(state=>state.my,action.my)(Info)

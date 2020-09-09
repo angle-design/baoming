@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Form, Icon, Input, Button, Checkbox, Modal } from 'antd';
 import { Link } from 'react-router-dom';
 import { login, getCodeMa, codeLogin } from '../../api/my';
-// import action from '../../store/action/index';
+import action from '../../store/action/index';
 
 function loginFail() {
     const modal = Modal.error({
@@ -35,7 +35,8 @@ class Login extends Component {
                 });
                 console.log(result)
                 if (parseFloat(result.statu) === 200) {
-                    this.props.history.go(-1)
+                    this.props.history.go(-1);
+                    this.props.queryLoginFlag()
                     return;
                 }
                 loginFail();
@@ -205,4 +206,4 @@ class Login extends Component {
 }
 
 
-export default Form.create()(connect()(Login));
+export default Form.create()(connect(null,action.my)(Login));
