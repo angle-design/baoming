@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import Qs from 'qs';
 import { Rate } from 'antd';
 import { ListView, Toast, Tabs, ImagePicker } from 'antd-mobile';
-import {LogoInfo,isCollect,toCollect} from '../../api/course';
+import {LogoInfo,isCollect,toCollect,lessonList} from '../../api/course';
 
 import '../../static/css/courseinfo.less';
 import Star from './Star';
@@ -27,26 +27,38 @@ class Info extends Component {
         this.state = {
             typedata: [
                 { title: '小学' },
-                { title: '初中' },
+                { title: '初中初中' },
                 { title: '大学' },
                 { title: '小学' },
+                { title: '小学初中' },
+                { title: '初中' },
+                { title: '大学' }, 
                 { title: '小学' },
                 { title: '初中' },
+                { title: '大学初中' },
+                { title: '小学' },
+                { title: '小学' },
+                { title: '初中初中' },
                 { title: '大学' }
             ],
             value: 3,
             files: data,
             multiple: false,
             lesson:{},
-            collectflag:false
+            collectflag:false,
+            leList:[],
+            isLogin:false,
         }
     }
     async componentWillMount() {
         // 验证是否登陆
         let {queryLoginFlag,flag}=this.props;
-        // if(!flag){
-        //     queryLoginFlag();
-        // }
+        this.setState({
+            isLogin:flag
+        })
+        if(!flag){
+            queryLoginFlag();
+        }
         console.log(1)
         
         let { location: { search } } = this.props,
@@ -55,6 +67,7 @@ class Info extends Component {
         // 获取详情
         let result =await LogoInfo(this.id);
         if(result.code==200){
+            // console.log(result.list)
             this.setState({lesson:result.list})
         }
         let res =await isCollect(1,this.id);
@@ -62,7 +75,12 @@ class Info extends Component {
         if(res.code==200){
             this.setState({collectflag:true})
         }
+        let lessonresult = await lessonList(this.id,18);
+        if(lessonresult.code==200){
+            this.setState({leList:lessonresult.list})
+        }
     }
+    
     render() {
         const { value } = this.state;
         const { files } = this.state;
@@ -88,13 +106,15 @@ class Info extends Component {
                 </div>:''}
                 
                 <div className='topnav'>
-                    <Tabs tabs={this.state.typedata} renderTabBar={props => <Tabs.DefaultTabBar {...props} page={5.6} />}>
+                    <Tabs tabs={this.state.typedata} renderTabBar={props => <Tabs.DefaultTabBar {...props} page={6} />}>
                     </Tabs>
                 </div>
                 <div className="lessonCon">
-                    <LessonItem />
-                    <LessonItem />
-                    <LessonItem />
+                    {
+                        this.state.leList.map((item,index)=>{
+                            return <LessonItem item={item} key={index}/>
+                        })
+                    }
                 </div>
                 <div className="jianjie">
                     <b>机构简介</b>
@@ -134,9 +154,9 @@ class Info extends Component {
             </div>
         )
     }
-    handleChange = value => {
+    handleChange = (event,value) => {
+        event.stopPropagation( )
         this.setState({ value });
-        return false
     };
     onChange = (files, type, index) => {
         console.log(files, type, index);
@@ -146,17 +166,20 @@ class Info extends Component {
     }
     shoucang=async ()=>{
         let result=await toCollect(1,this.id);
-        if(!this.props.flag){
+        if(!this.state.isLogin){
             this.props.history.push('/my/login');
-
             return false;
         }
         if(result.code=200){
             if (result.list.status == 2) {
-                this.collectflag = false;
+                this.setState({
+                    collectflag:false
+                })
                 return false;
               } else if (result.list.status == 1) {
-                this.collectflag = true;
+                this.setState({
+                    collectflag:true
+                })
                 Toast.info('收藏成功')
               }
         }

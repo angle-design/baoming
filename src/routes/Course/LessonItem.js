@@ -9,22 +9,24 @@ class CourseItem extends Component {
     }
 
     render() {
+        // console.log(this.props.item)
+        let {id,image,name,price,objects}=this.props.item;
         return (
             <div className="lesson-item">
                 <Link to={{
                     pathname:'/course/lessondetail',
-                    search: `?id=1`
+                    search: `?id=${id}`
                 }}>
                 {/* 左边内容 */}
                 <p>
-                    <img src="https://zgnstatic.oss-cn-beijing.aliyuncs.com/zgnimage/20200608/6dde45203a5c95fcfd1d1b1e4150883e.jpg" />
+                    <img src={image} />
                 </p>
                 {/* 右边内容 */}
                 <div>
-                    <h4>小学数学思维训练</h4>
+                    <h4>{name}</h4>
                     <p className="shumu">课程数量：20</p>
-                   <p className="xue">小学 | 初级阶段 ｜ 小班</p>
-                   <p className="price"><b>¥188</b><font>¥188</font> <button>立即注册</button></p>
+            <p className="xue">{objects}</p>
+            <p className="price"><b>¥{price}</b><font>¥188</font> <button>立即注册</button></p>
                 </div>
                 </Link>
             </div>

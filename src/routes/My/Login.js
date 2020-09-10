@@ -35,8 +35,9 @@ class Login extends Component {
                 });
                 console.log(result)
                 if (parseFloat(result.statu) === 200) {
-                    this.props.history.go(-1);
                     this.props.queryLoginFlag()
+                    this.props.history.go(-1);
+                   
                     return;
                 }
                 loginFail();
@@ -55,6 +56,7 @@ class Login extends Component {
                 });
                 console.log(result)
                 if (parseFloat(result.statu) === 200) {
+                    this.queryLoginFlag()
                     this.props.history.go(-1)
                     return;
                 }

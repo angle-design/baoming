@@ -1,25 +1,41 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import Qs from 'qs';
+import {lessonInfo} from '../../api/course'
 
 import '../../static/css/lessondetail.less'
 import Star from './Star';
+
 class Evaluate extends Component {
 
     constructor(props, context) {
         super(props, context);
+        this.state={
+            data:{}
+        }
     }
-    componentWillMount() {
-
+   async componentWillMount() {
+        let { location: { search } } = this.props,
+            { id = 0 } = Qs.parse(search.substr(1)) || {};
+        this.id = id;//=>挂载到实例上
+        let result=await lessonInfo(this.id);
+        if(result.code==200){
+            console.log(result.list)
+            this.setState({
+                data:result.list
+            })
+        }
     }
     render() {
-
+        if(!this.state.data) return '';
+        let {name,price,content,image,features,objects}=this.state.data;
         return (
             <div className="lessonBox">
                 <div className="details_top">
-                    <img src="https://dss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=1830914723,3154965800&fm=26&gp=0.jpg" />
+                    <img src={image} />
                     <p>
-                        <span>一起学
-                            <span>￥<font>555</font><b>¥188</b></span>
+                        <span>{name}
+                            <span>￥<font>{price}</font><b>¥188</b></span>
                         </span>
                         <i></i>
                     </p>
@@ -49,15 +65,15 @@ class Evaluate extends Component {
                     <div className="details_con">
                         <div>
                             <h3>适用对象</h3>
-                            <p>我</p>
+                            <p>{objects}</p>
                         </div>
                         <div>
                             <h3>课程特色</h3>
-                            <p>我</p>
+                            <p>{features}</p>
                         </div>
                         <div>
                             <h3>课程简介</h3>
-                            <p>我</p>
+                            <p  dangerouslySetInnerHTML={{__html: content}}></p>
                         </div>
                     </div>
                     <div className="fix_bottom">

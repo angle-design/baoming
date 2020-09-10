@@ -18,7 +18,8 @@ export function logoList(cid,p){
         params: {
             cid,
             p
-          }
+          },
+          headers:{'isLoading':false}
     })
 }
 // 搜索结果
@@ -57,12 +58,22 @@ export function toCollect(type,sid){
     })
 }
 // 获取课程列表
-export function lessonList(sid,cid,c2id){
+export function lessonList(sid,cid,c2id=''){
     return axios.get("/api/api/school/getCourse",{
         params:{
            sid,
            cid,
            c2id
+        }
+    })
+}
+
+
+//或许课程详情
+export function lessonInfo(courseid){
+    return axios.get("/api/api/school/getCinfo", {
+        params: {
+            courseid
         }
     })
 }
