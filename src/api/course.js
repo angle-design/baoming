@@ -43,12 +43,10 @@ export function LogoInfo(sid){
 
 // 判断用户是不是收藏了
 export function isCollect(type,sid){
-    return axios.get("/api/api/school/checkiscollect", {
-        params: {
+    return axios.post("/api/api/school/checkiscollect", {
             type,
             sid
-          }
-    })
+          },{   headers:{'isLoading':false}})
 }
 
 // 去收藏
@@ -75,5 +73,21 @@ export function lessonInfo(courseid){
         params: {
             courseid
         }
+    })
+}
+
+//base64图片上传
+
+export function baseUpload(img){
+    return axios.post('/api/api/upload/uoloadbase64',{
+        img
+    })
+}
+
+
+//提交评价
+export function toPing(payload){
+    return axios.post('/api/api/school/comment',{
+        ...payload
     })
 }
