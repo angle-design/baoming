@@ -6,6 +6,7 @@
     "antd": "3.5.4",
     "antd-img-crop": "^3.10.0",
     "antd-mobile": "^2.3.3",
+    "antd-mobile-demo-data": "^0.3.0",
     "autoprefixer": "7.1.6",
     "axios": "^0.18.0",
     "babel-core": "6.26.0",

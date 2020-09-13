@@ -15,10 +15,7 @@ class Evaluate extends Component {
         }
     }
    async componentWillMount() {
-        let { location: { search } } = this.props,
-            { id = 0 } = Qs.parse(search.substr(1)) || {};
-        this.id = id;//=>挂载到实例上
-        let result=await lessonInfo(this.id);
+        let result=await lessonInfo(this.props.match.params.id);
         if(result.code==200){
             console.log(result.list)
             this.setState({

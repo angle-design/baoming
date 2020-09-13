@@ -16,7 +16,7 @@ export function login(payload={}){
 //发送验证码
 export function getCodeMa(phone){
     return axios.post('/api/user/send_SMS',{
-        ...phone
+        ...phone, headers:{'isLoading':false}
     })
 }
 
@@ -85,3 +85,18 @@ export function topicList(p){
     export function checkLoginOut(){
         return axios.get('/api/api/user/logout')
     }
+
+    //修改密码
+    export function savepassword(phone,code,passwd1,passwd2){
+        return axios.post('/api/api/user/Cpasswd',{
+            phone,code,passwd1,passwd2
+        })
+    }
+
+    // 注册
+     export function register(phone,passwd,code){
+        return axios.post(' /api/api/user/register',{
+            phone,passwd,code
+        })
+       
+     }

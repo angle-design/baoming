@@ -217,6 +217,8 @@ class Info extends Component {
         let result =await toPing(this.state.valueData);
         if(result.code==200){
             Toast.info('提交成功～')
+        }else if(result.code==205){
+            this.props.history.push('/my/login');
         }
     }
     // handleChange = (value,id) => {
@@ -240,6 +242,7 @@ class Info extends Component {
     }
     shoucang=async ()=>{
         let result=await toCollect(1,this.id);
+        console.log(result)
         // if(!this.state.isLogin){
         //     this.props.history.push('/my/login');
         //     return false;
@@ -256,6 +259,8 @@ class Info extends Component {
                 })
                 Toast.info('收藏成功')
               }
+        }else if(result.code==205){
+            this.props.history.push('/my/login');
         }
     }
 }
