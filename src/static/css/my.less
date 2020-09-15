@@ -271,6 +271,69 @@
     display: flex;
     align-items: center;
   }
-  .loginBox .phoneicon,.loginBox .codeicon,.loginBox .passwdicon{
-    
+  .loginBox .phone_icon,.loginBox .ma_icon,.loginBox .pass_icon,.loginBox .uname_icon{
+    background:url(http://bmdt.zgn365.com/Public/aa.png) no-repeat;
+    background-size:0.36rem auto;
+    width:0.36rem;
+    height:0.36rem;
+    background-position: 0 -3.15rem;
+    display: inline-block;
+  }
+  .loginBox .pass_icon{
+    height: .4rem;
+    background-position: 0 -2.7rem;
+  }
+  .loginBox .ma_icon{
+    height: .4rem;
+    background-position: 0 -3.54rem;
+  }
+  .loginBox .phone_icon{
+    height: .4rem;
+    background-position: 0 -3.95rem;
+  }
+  .myLesson{
+    margin:0 0.3rem;
+  }
+  .mycollect{
+    .collect_top {
+      display: flex;
+      align-items: center;
+      padding: 0 0.4rem 0;
+      color: #efeeee;
+      position: absolute;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 2;
+      width: 100%;
+      background: #fff;
+      box-sizing: border-box;
+      span {
+        display: flex;
+        justify-content: center;
+        flex: 1;
+        position: relative;
+        font-size: 0.3rem;
+        color: #999999;
+        padding: 0.2rem 0.4rem 0.3rem;
+        &.active {
+          color: #36b936;
+          &:after {
+            content: "";
+            position: absolute;
+            width: 0.3rem;
+            height: 0.08rem;
+            // background:#efeeee;
+            background: #36b936;
+            bottom: 0.1rem;
+            border-radius: 0.3rem;
+            left: 50%;
+            margin-left: -0.15rem;
+          }
+        }
+      }
+    }
+    .collect_con{
+      padding:1.2rem 0.3rem 0;
+    }
   }

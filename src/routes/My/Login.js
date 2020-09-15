@@ -78,7 +78,7 @@ class Login extends Component {
                             ]
                         })(
                             <Input
-                                prefix={<Icon type="user" />}
+                                prefix={<i className="phone_icon"></i>}
                                 placeholder="手机号"
                             />
 
@@ -88,7 +88,7 @@ class Login extends Component {
                     <Form.Item>
                         {getFieldDecorator('codeMa', {})(
                             <Input
-                                prefix={<Icon type="lock" />}
+                                prefix={<i className="ma_icon"></i>}
                                 placeholder="请输入验证码"
                             />
                         )}
@@ -116,7 +116,7 @@ class Login extends Component {
                             ]
                         })(
                             <Input
-                                prefix={<Icon type="user" />}
+                                prefix={<i className="uname_icon"></i>}
                                 placeholder="用户名"
                             />
                         )}
@@ -128,7 +128,7 @@ class Login extends Component {
                             ]
                         })(
                             <Input
-                                prefix={<Icon type="lock" />}
+                                prefix={<i className="pass_icon"></i>}
                                 type="password"
                                 placeholder="密码"
                             />

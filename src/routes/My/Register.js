@@ -52,7 +52,7 @@ class Register extends Component {
                             ]
                         })(
                             <Input
-                                prefix={<Icon type="user" />}
+                                prefix={<i className="phone_icon"></i>}
                                 placeholder="手机号"
                             />
 
@@ -62,7 +62,7 @@ class Register extends Component {
                     <Form.Item>
                         {getFieldDecorator('codeMa', {})(
                             <Input
-                                prefix={<Icon type="lock" />}
+                                prefix={<i className="ma_icon"></i>}
                                 placeholder="请输入验证码"
                             />
                         )}
@@ -70,7 +70,7 @@ class Register extends Component {
                     <Form.Item>
                         {getFieldDecorator('password', {})(
                             <Input
-                                prefix={<Icon type="lock" />}
+                                prefix={<i className="pass_icon"></i>}
                                 placeholder="密码由6-12位数字和字母组合形式"
                             />
                         )}

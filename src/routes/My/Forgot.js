@@ -52,7 +52,7 @@ class Forgot extends Component {
                             ]
                         })(
                             <Input
-                                prefix={<i className="phoneicon"></i>}
+                                prefix={<i className="phone_icon"></i>}
                                 placeholder="手机号"
                             />
 
@@ -62,7 +62,7 @@ class Forgot extends Component {
                     <Form.Item>
                         {getFieldDecorator('codeMa', {})(
                             <Input
-                                prefix={<i  className="codeicon"></i>}
+                                prefix={<i  className="ma_icon"></i>}
                                 placeholder="请输入验证码"
                             />
                         )}
@@ -70,7 +70,7 @@ class Forgot extends Component {
                     <Form.Item>
                         {getFieldDecorator('password', {})(
                             <Input
-                                prefix={<i className="passwdicon"></i>}
+                                prefix={<i className="pass_icon"></i>}
                                 placeholder="密码由6-12位数字和字母组合形式"
                             />
                         )}
@@ -78,7 +78,7 @@ class Forgot extends Component {
                     <Form.Item>
                         {getFieldDecorator('newpassword', {})(
                             <Input
-                            prefix={<i className="passwdicon"></i>}
+                            prefix={<i className="pass_icon"></i>}
                                 placeholder="请再输一次密码"
                             />
                         )}

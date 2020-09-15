@@ -100,3 +100,17 @@ export function topicList(p){
         })
        
      }
+
+    //  获取已报名课程
+    export function lessonbao(){
+        return axios.get('/api/api/my/getMycourse')
+    }
+
+    // 搜藏机构
+    export function logoList(type){
+        return axios.get('/api/api/my/getMycollect',{
+            params: {
+                type
+              }
+        })
+    }

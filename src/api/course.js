@@ -91,3 +91,25 @@ export function toPing(payload){
         ...payload
     })
 }
+// 获取学校
+export function SchoolName(sid){
+    return axios.get("/api/api/school/getSchoolName", {
+        params:{
+            sid
+        }
+    })
+}
+export function LessonName(cid){
+    return axios.get("/api/api/school/getCourseName", {
+        params:{
+            cid
+        }
+    })
+}
+
+export function BaoMing(payload){
+    return axios.post("/api/api/index/addBm", {
+            ...payload
+        }
+    )
+}

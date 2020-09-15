@@ -10,14 +10,14 @@ class CourseItem extends Component {
 
     render() {
         // console.log(this.props.item)
-        let { id, image, name, price, objects } = this.props.item;
+        let { id, image, name, price, objects,sid,cid} = this.props.item;
         return (
             <div className="lesson-item" >
                 <a onClick={(e) => {
                     if (e.target.tagName == "BUTTON") {
                         e.stopPropagation();
                         this.props.history.push(  {pathname: '/course/singup',
-                        search: `id=${id}&&a=2`})
+                        search: `id=${sid}&&cid=${id}`})
 
                         // this.props.history.push("/course/singup/" + id)
                         // 真正的处理过程在这里

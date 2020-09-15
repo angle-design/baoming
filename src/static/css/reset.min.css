@@ -10,7 +10,7 @@
 button,input{
     outline: none;
 }
-p,h1, h2, h3, h4, h5, h6,ol,li,dt,dd,ul{
+ol,li,dt,dd,ul{
     margin-bottom:0!important;
 }
 html,body{
@@ -18,4 +18,8 @@ html,body{
 }
 h3, h4{
     font-weight: bold;
+}
+
+.container p,.container h4{
+    margin-bottom:0;
 }
