@@ -37,7 +37,7 @@ class AskItem extends Component {
                     </div>
                     <p>{h_title+','+h_title2}</p>
                     <div className="ask_text">
-                        {isnow==1 ?<font>提问进行时</font>: <font>提问已关闭</font>}
+                        {isnow==1 ?<font>提问进行时</font>: <font style={{color:'#999'}}>提问已关闭</font>}
                         <p>
                             <span>
                                 <i></i>

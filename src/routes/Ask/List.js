@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import action from '../../store/action/index';
 import { ListView, Toast } from 'antd-mobile'
 import { askLeft } from '../../api/ask'
-
+import { checkLogin } from '../../api/my';
 import Item from './AskItem';
 // import Like from './LikeBtn';
 class List extends Component {
@@ -18,6 +18,7 @@ class List extends Component {
             pageNo: this.props.askListData.page,
             isLoading: true,
             dataArr: [],
+            isLogin:false
         }
     }
     async componentDidMount() {
@@ -35,6 +36,16 @@ class List extends Component {
                 askLeftList: result.list
             })
         }
+         let a=await checkLogin();
+         if(a.code==200){
+            this.setState({
+                isLogin:true
+            })
+         }else if(a.code==205){
+            this.setState({
+                isLogin:false
+            })
+         }
     }
 
     // 滑动到底部时加载更多
@@ -126,7 +137,12 @@ class List extends Component {
              
                 <p className="fileask" onClick={
                     ()=>{
-                        this.props.history.push('/ask/fileload')
+                        if(!this.state.isLogin){
+                            this.props.history.push('/my/login')
+                        }else{
+                            this.props.history.push('/ask/fileload')
+                        }
+                      
                     }
                 }>
                     <img src={require('../../static/image/wen.png')}  />

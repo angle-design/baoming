@@ -1,18 +1,18 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { SearchBar,ListView, Toast } from 'antd-mobile';
-import {seaList} from '../../api/course';
+import { SearchBar, ListView, Toast } from 'antd-mobile';
+import { seaList } from '../../api/course';
 import CourseItem from './CourseItem';
-
+import Kong from '../../component/kong';
 class Search extends Component {
     constructor(props, context) {
         super(props, context);
         const dataSource = new ListView.DataSource({
             rowHasChanged: (row1, row2) => row1 !== row2 // rowHasChanged(prevRowData, nextRowData); 用其进行数据变更的比较
         })
-        this.state={
-            key:'',
+        this.state = {
+            key: '',
             dataSource,
             datas: [],
             pageNo: 1,
@@ -24,11 +24,14 @@ class Search extends Component {
     componentDidMount() {
         this.autoFocusInst.focus();
 
-      }
-      async getData(ref = false,key) {
+    }
+    async getData(ref = false, key) {
+        //关键代码
+        var dataArr;
         //获取数据
-        let result = await seaList(key,this.state.pageNo);
-        if(result.code==404){
+        let result = await seaList(key, this.state.pageNo);
+        if (result.code == 404) {
+            dataArr = []
             this.setState({
                 datas: [],
                 pageNo: 1,
@@ -36,10 +39,12 @@ class Search extends Component {
                 hasMore: true,
                 isLoading: true,
             })
-            Toast.info('无数据~', 1);
+            console.log(this.state.dataArr)
             return false;
         }
+
         const dataList = result.list;
+        dataArr = this.state.dataArr.concat(dataList)
         // const len = dataList.length;
         var len = dataList && dataList.length;
         if (len <= 0) { // 判断是否已经没有数据了
@@ -53,69 +58,65 @@ class Search extends Component {
         }
 
         // 这里表示上拉加载更多
-        var dataArr = this.state.dataArr.concat(dataList) //关键代码
+
+
         this.setState({
             pageNo: this.state.pageNo,
-            dataSource: this.state.dataSource.cloneWithRows(dataArr), // 数据源中的数据本身是不可修改的,要更新datasource中的数据，请（每次都重新）调用cloneWithRows方法
+            dataSource: this.state.dataSource.cloneWithRows(dataArr),
             refreshing: false,
             isLoading: false,
             dataArr: dataArr // 保存新数据进state
         })
+        console.log(dataArr)
 
     }
-  // 滑动到底部时加载更多
-  onEndReached = (event) => {
-    // 加载中或没有数据了都不再加载
-    if (this.state.isLoading || !this.state.hasMore) {
-        
-        return
+    onEndReached = (event) => {
+        if (this.state.isLoading || !this.state.hasMore) {
+            return
+        }
+        this.setState({
+            isLoading: true,
+            pageNo: this.state.pageNo + 1, // 加载下一页
+        }, () => {
+            this.getData(false, this.setState.value)
+        })
     }
-    this.setState({
-        isLoading: true,
-        pageNo: this.state.pageNo + 1, // 加载下一页
-    }, () => {
-        this.getData(false,this.setState.value)
-    })
-
-}
     render() {
-      
         const row = (rowData, sectionID, rowID) => {
             return (
                 <CourseItem item={rowData}></CourseItem>
-                
             )
         }
         return (
-           <div className="searchBox">
-                  <SearchBar placeholder="搜索课程" ref={ref => this.autoFocusInst = ref} onChange={(value)=>{
+            <div className="searchBox">
+                <SearchBar placeholder="搜索课程" ref={ref => this.autoFocusInst = ref} onChange={(value) => {
                     this.setState({
-                        key:value,
+                        key: value,
                         datas: [],
                         pageNo: 1,
                         dataArr: [],
                         hasMore: true,
                         isLoading: true,
-                    },()=>{
-                        this.getData(true,this.state.key)
                     })
-                       
-                  }
-                      
-                  }/>
-                  <div className="logotop" style={{marginTop:'0.4rem'}}>
+                    this.getData(true, value)
+                }
+                }
+                    onCancel={() => {
+                        this.props.history.push('/course')
+                    }} />
+                <div className="logotop" style={{ marginTop: '0.4rem' }}>
                     <ListView
-                            ref={el => this.lv = el}
-                            dataSource={this.state.dataSource}
-                            renderFooter={() => (<div className="footer" style={{ textAlign: 'center' }}>{this.state.isLoading ? '加载中...' : '暂无更多数据'}</div>)}
-                            renderRow={row}
-                            useBodyScroll
-                            onEndReachedThreshold={10}
-                            onEndReached={this.onEndReached}
-                            pageSize={10}
-                        />
-                        </div>
-           </div>
+                        ref={el => this.lv = el}
+                        dataSource={this.state.dataSource}
+                        renderFooter={() => (<div className="footer" style={{ textAlign: 'center' }}>{this.state.isLoading ? '' : '暂无更多数据'}</div>)}
+                        renderRow={row}
+                        useBodyScroll
+                        onEndReachedThreshold={10}
+                        onEndReached={this.onEndReached}
+                        pageSize={10}
+                    />
+                </div>
+            </div>
         )
     }
 }

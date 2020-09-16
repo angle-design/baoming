@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter,Link } from 'react-router-dom';
 import Star from './Star'
-
+import '../../static/css/courseitem.less'
 class CourseItem extends Component {
     constructor(props, context) {
         super(props, context)

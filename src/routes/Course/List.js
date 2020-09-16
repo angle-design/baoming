@@ -26,6 +26,7 @@ class List extends Component {
         }
     }
     async componentWillMount(){
+        
         // 获取轮播图
         let result=await bannerList();
         if(result.code==200){
@@ -37,6 +38,8 @@ class List extends Component {
         if(res.code==200){
             this.setState({
                 typedata:res.list,
+            },()=>{
+                this.scrollTabX()
             })
             this.setState({
                 id:res.list[0].id
@@ -108,11 +111,13 @@ class List extends Component {
                     {/* <SearchBar placeholder="搜索课程" ref={ref => this.autoFocusInst = ref} /> */}
                 </div>
                 <div className='topnav'>
-                    <Tabs tabs={typedata} onTabClick={(tab)=>{
-                       this.handleClick(tab.id)
-                    }} renderTabBar={props =>  <Tabs.DefaultTabBar {...props} page={5.6} />}>
-                       
-                    </Tabs>
+                    <div className="nav">
+                        <ul id="nav" ref="nav">
+                            {typedata.map((item,index)=>{
+                                return  <li className={this.state.id==item.id?'active':''} key={index} onClick={this.handleClick.bind(this,item.id)}>{item.name}</li>
+                            })}
+                        </ul>
+                    </div>
                 </div>
                 {/* 轮播图 */}
                 {bannerData && bannerData.length !== 0 ? (<Carousel autoplay>
@@ -150,6 +155,24 @@ class List extends Component {
         },()=>{
             this.getData(true,this.state.id)
         })
+    }
+    scrollTabX = () => {
+        var doc = document
+        var WINDOW_OFFSETWIDTH = doc.documentElement.clientWidth;
+        var liArr = doc.querySelectorAll('#nav > li')
+        for (var i = 0; i < liArr.length; i++) {
+            liArr[i].className = ''
+            liArr[i].addEventListener('click', function (e) {
+                for (var j = 0; j < liArr.length; j++) {
+                    liArr[j].className = ''
+                }
+                this.className = 'active'
+                var itemWidth = this.offsetWidth;
+                var moveX = e.target.offsetLeft
+                var left = moveX - (WINDOW_OFFSETWIDTH / 2) + (itemWidth / 2)
+                doc.getElementById('nav').scrollLeft = left
+            })
+        }
     }
 }
 

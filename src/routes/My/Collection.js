@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { logoList } from '../../api/my'
 import Kong from '../../component/kong';
-import lessonItem from '../Course/LessonItem';
+import LessonItem from '../Course/LessonItem';
 import CourseItem from '../Course/CourseItem';
 class Collection extends Component {
     constructor(props, context) {
@@ -23,7 +23,7 @@ class Collection extends Component {
         let res = await logoList(2);
         if (res.code == 200) {
             this.setState({
-                data: res.list
+                lessondata: res.list
             })
         }
     }
@@ -40,12 +40,12 @@ class Collection extends Component {
                     }}>课程</span>
                 </p>
                 {num == 1 ? <div className="collect_con">
-                    {data && data.length !== 0 ? <div>{data.map((item, index) => {
-                        return <CourseItem item={item}></CourseItem>
+                    {data && data.length !== 0? <div>{data.map((item, index) => {
+                        return <CourseItem item={item} key={index}></CourseItem>
                     })}</div> : <Kong msg='暂无收藏机构'/>}
                 </div> : <div className="collect_con">
-                        {lessondata && lessondata.length !== 0 ? <div>{data.map((item, index) => {
-                            return <lessonItem item={item}></lessonItem>
+                        {lessondata && lessondata.length !== 0 ? <div>{lessondata.map((item, index) => {
+                            return <LessonItem item={item} key={index}></LessonItem>
                         })}</div> : <Kong msg='暂无收藏课程'/>}
                     </div>
                 }

@@ -16,6 +16,7 @@ class Detail extends Component {
             rowHasChanged: (row1, row2) => row1 !== row2 // rowHasChanged(prevRowData, nextRowData); 用其进行数据变更的比较
         })
         this.state = {
+            activeIndex:'',
             data: {},
             height: 0,//=>字高度
             contentflag: true,//=>控制字展开收起
@@ -183,8 +184,8 @@ class Detail extends Component {
                             <font>{this.props.askInfoList.count.acount}个提问</font>
                         </p>
                         <p>
-                            <span onClick={this.handleClick.bind(this, 1)}>最新</span>
-                            <span onClick={this.handleClick.bind(this, 2)}>最热</span>
+                            <span onClick={this.handleClick.bind(this, 1)} className={this.state.activeIndex==1?'active':''}>最新</span>
+                            <span onClick={this.handleClick.bind(this, 2)} className={this.state.activeIndex==2?'active':''}>最热</span>
                         </p>
                     </div>
                     <div className="new">
@@ -226,8 +227,10 @@ class Detail extends Component {
     }
     // 最新最热切换
     handleClick = async (order) => {
+        
         this.setState({
-            questdata: []
+            questdata: [],
+            activeIndex:order
         })
         if (this.state.questdata.length == 0) {
             await this.props.queryList({

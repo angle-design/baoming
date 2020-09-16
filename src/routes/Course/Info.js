@@ -18,22 +18,7 @@ class Info extends Component {
     constructor(props, context) {
         super(props, context);
         this.state = {
-            typedata: [
-                { title: '小学' },
-                { title: '初中初中' },
-                { title: '大学' },
-                { title: '小学' },
-                { title: '小学初中' },
-                { title: '初中' },
-                { title: '大学' }, 
-                { title: '小学' },
-                { title: '初中' },
-                { title: '大学初中' },
-                { title: '小学' },
-                { title: '小学' },
-                { title: '初中初中' },
-                { title: '大学' }
-            ],
+            activeid:'',
             valueData: {
                 'sid':0,
                 'zong':0,
@@ -71,32 +56,38 @@ class Info extends Component {
         // 获取详情
         let result =await LogoInfo(this.id);
         if(result.code==200){
-            // console.log(result.list)
-            this.setState({lesson:result.list})
+            console.log(result.list.clist)
+            if(result.list.clist&&result.list.clist.length!==0){
+                this.setState({lesson:result.list,activeid:result.list.clist[0].id});
+                let lessonresult = await lessonList(this.id,result.list.clist[0].id);
+                if(lessonresult.code==200){
+                    this.setState({leList:lessonresult.list})
+                }
+            }else{
+                this.setState({lesson:result.list})
+            }
+           
         }
         let res =await isCollect(1,this.id);
         // console.log(res)
         if(res.code==200){
             this.setState({collectflag:true})
         }
-        let lessonresult = await lessonList(this.id,18);
-        if(lessonresult.code==200){
-            this.setState({leList:lessonresult.list})
-        }
+    
     }
     
     render() {
-        const { zong,pinpai,kecheng,jiaoxue,fuwu,shizi,dianping } = this.state.valueData;
+        const { zong,pinpai,kecheng,jiaoxue,fuwu,shizi,dianping ,address} = this.state.valueData;
         const { files } = this.state;
         if (!this.state.lesson) return '';
-        let {name,lever,cnum,bnum,piclist,content}=this.state.lesson;
+        let {name,lever,cnum,bnum,piclist,content,clist}=this.state.lesson;
         return (
             <div className="infoBox">
                 <div className="infotop">
                     <h3>{name}<img src={require('../../static/image/jin.png')} /> <span onClick={this.shoucang} className={this.state.collectflag?'active':''}></span></h3>
                     <p className="starcon"><Star star={parseInt(lever*2)}></Star><b>4.0</b>634条</p>
                     <p className="peoson">报名人数：<font>{bnum}</font></p>
-                    <p className="address">朝阳区红应南路天乐园1号楼</p>
+                    <p className="address">{address}</p>
                 </div>
                 {piclist&&piclist.length!==0?<div className="swiperLeft">
                     <ul className="cont" >
@@ -108,11 +99,16 @@ class Info extends Component {
                         })}
                     </ul>
                 </div>:''}
+                {clist&&clist.length!==0?<div className='topnav'>
+                    <div className="nav">
+                        <ul id="nav" ref="nav">
+                            {clist.map((item,index)=>{
+                                return  <li onClick={this.handleClick.bind(this,item.id)} key={index} className={this.state.activeid==item.id?'active':''}>{item.name}</li>
+                            })}
+                        </ul>
+                    </div>
+                </div>:''}
                 
-                <div className='topnav'>
-                    <Tabs tabs={this.state.typedata} renderTabBar={props => <Tabs.DefaultTabBar {...props} page={6} />}>
-                    </Tabs>
-                </div>
                 <div className="lessonCon">
                     {
                         this.state.leList.map((item,index)=>{
@@ -198,7 +194,7 @@ class Info extends Component {
                     </div>
                     <button onClick={this.toping}>提交</button>
                 </div>
-                <Evaluate />
+                <Evaluate item={this.id}/>
             </div>
         )
     }
@@ -221,13 +217,15 @@ class Info extends Component {
             this.props.history.push('/my/login');
         }
     }
-    // handleChange = (value,id) => {
-    //     console.log(id)
-    //     const {valueData}= this.state;
-    //     valueData[id]=value;
-    //     this.setState({valueData})
-    //     console.log(valueData)
-    // };
+     handleClick=async (cid)=>{
+        this.setState({leList:'',activeid:cid})
+        let lessonresult = await lessonList(this.id,cid);
+        
+        if(lessonresult.code==200){
+            this.setState({leList:lessonresult.list})
+        }
+    }
+
     onChange = async (files) => {
         let result =await baseUpload(files[files.length-1].url);
         if(result.code==200){
@@ -247,7 +245,10 @@ class Info extends Component {
         //     this.props.history.push('/my/login');
         //     return false;
         // }
-        if(result.code=200){
+        if(result.code==205){
+            this.props.history.push('/my/login');
+            return false;
+        }else if(result.code=200){
             if (result.list.status == 2) {
                 this.setState({
                     collectflag:false
@@ -259,8 +260,6 @@ class Info extends Component {
                 })
                 Toast.info('收藏成功')
               }
-        }else if(result.code==205){
-            this.props.history.push('/my/login');
         }
     }
 }
