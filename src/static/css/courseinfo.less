@@ -1,5 +1,4 @@
 .infoBox{
-   
     overflow-x: hidden;
     background:#fff;
     .infotop{
@@ -245,3 +244,24 @@
 html:not([data-scale]) .am-tabs-default-bar-top .am-tabs-default-bar-tab::after{
     background: none;
 }
+.video_pup {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    video {
+      width: 7rem;
+      height: 6rem;
+    }
+    i {
+      font-size: 0.8rem;
+      color: #fff;
+      margin-top: 0.3rem;
+    }
+  }

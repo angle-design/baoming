@@ -53,26 +53,7 @@ class SetUp extends Component {
         }
     }
     componentWillUnmount() {
-        let { a_image, a_sex, a_uname } = this.props.uinfo;
-        if (this.state.organCertUrl != a_image || this.state.sex != a_sex || this.state.name != a_uname) {
-            Modal.confirm({
-                title: '即将离开当前页面，是否保存当前修改?',
-                content: '',
-                okText: '保存',
-                okType: 'danger',
-                cancelText: '取消',
-                onOk: async () => {
-                    let result = await setMyinfo(this.state.organCertUrl, this.state.name, this.state.sex);
-                    if (result.code == 200) {
-                        console.log(1)
-                        this.props.queryInfo();
-                        this.props.history.push('/my');
-                        return false;
-                    }
-                },
-                onCancel() { return false },
-            });
-        }
+      
     }
     render() {
         let { uinfo } = this.props;
@@ -108,7 +89,41 @@ class SetUp extends Component {
                 <Prompt
                     when={this.state.isPrompt}
                     message={(location) => {
-
+                        if(!this.state.isPrompt){
+                            return true;
+                        }
+                        let _this=this;
+                        let { a_image, a_sex, a_uname } = this.props.uinfo;
+                        if (this.state.organCertUrl != a_image || this.state.sex != a_sex || this.state.name != a_uname) {
+                            Modal.confirm({
+                                title: '即将离开当前页面，是否保存当前修改?',
+                                content: '',
+                                okText: '保存',
+                                okType: 'danger',
+                                cancelText: '取消',
+                                onOk: async () => {
+                                    let result = await setMyinfo(this.state.organCertUrl, this.state.name, this.state.sex);
+                                    if (result.code == 200) {
+                                        this.props.queryInfo();
+                                        _this.setState({
+                                            isPrompt:false,
+                                        },()=>{
+                                            _this.props.history.push(location.pathname)
+                                        })
+                                    }
+                                },
+                                onCancel() { 
+                                    _this.setState({
+                                        isPrompt:false,
+                                    },()=>{
+                                        _this.props.history.push(location.pathname)
+                                    })
+                                 },
+                            });
+                            return false;
+                        }else{
+                            return true
+                        }
                     }
                     }
                 />

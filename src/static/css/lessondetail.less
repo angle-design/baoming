@@ -69,7 +69,7 @@
 }
 .details_con {
   margin: 0 0.3rem 0;
-  div {
+  &>div {
     margin-top: 0.3rem;
     h3 {
       padding-left: 0.2rem;
@@ -77,6 +77,8 @@
       color: #333;
       position: relative;
       font-weight: 600;
+      margin-bottom:0;
+
       &:after {
         content: "";
         position: absolute;
@@ -89,12 +91,17 @@
         border-radius: 0.3rem;
       }
     }
-    p {
+    &>div{
       font-size: 0.28rem;
-      color: #666666;
-      padding: 0.1rem 0.2rem 0;
-
+      padding:0 0.2rem;
+      p {
+        
+        color: #666666;
+        padding:0;
+  
+      }
     }
+   
   }
 }
 .fix_bottom {

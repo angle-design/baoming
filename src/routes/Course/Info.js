@@ -3,7 +3,8 @@ import { connect } from 'react-redux';
 import Qs from 'qs';
 import { Rate } from 'antd';
 import { ListView, Toast, Tabs, ImagePicker } from 'antd-mobile';
-import {LogoInfo,isCollect,toCollect,lessonList,baseUpload,toPing} from '../../api/course';
+import lrz from 'lrz';
+import { LogoInfo, isCollect, toCollect, lessonList, baseUpload, toPing } from '../../api/course';
 
 import '../../static/css/courseinfo.less';
 import Star from './Star';
@@ -18,106 +19,106 @@ class Info extends Component {
     constructor(props, context) {
         super(props, context);
         this.state = {
-            activeid:'',
+            activeid: '',
             valueData: {
-                'sid':0,
-                'zong':0,
-                'pingpai':0,
-                'kecheng':0,
-                'jiaoxue':0,
-                'fuwu':0,
-                'shizi':0,      
-                'dianping':"老师认真负责",
-                'images':''
+                'sid': 0,
+                'zong': 0,
+                'pingpai': 0,
+                'kecheng': 0,
+                'jiaoxue': 0,
+                'fuwu': 0,
+                'shizi': 0,
+                'dianping': "老师认真负责",
+                'images': ''
             },
             files: [],
             multiple: false,
-            lesson:{},
-            collectflag:false,
-            leList:[],
-            isLogin:false,
-            imlist:[]
+            lesson: {},
+            collectflag: false,
+            leList: [],
+            isLogin: false,
+            imlist: [],
+            videoflag: false,
+            src: ''
         }
     }
     async componentWillMount() {
         // 验证是否登陆
-        let {queryLoginFlag,flag}=this.props;
+        let { queryLoginFlag, flag } = this.props;
         this.setState({
-            isLogin:flag
+            isLogin: flag
         })
-        if(!flag){
+        if (!flag) {
             queryLoginFlag();
         }
-        console.log(1)
-        
+
         let { location: { search } } = this.props,
             { id = 0 } = Qs.parse(search.substr(1)) || {};
         this.id = id;//=>挂载到实例上
         // 获取详情
-        let result =await LogoInfo(this.id);
-        if(result.code==200){
+        let result = await LogoInfo(this.id);
+        if (result.code == 200) {
             console.log(result.list.clist)
-            if(result.list.clist&&result.list.clist.length!==0){
-                this.setState({lesson:result.list,activeid:result.list.clist[0].id});
-                let lessonresult = await lessonList(this.id,result.list.clist[0].id);
-                if(lessonresult.code==200){
-                    this.setState({leList:lessonresult.list})
+            if (result.list.clist && result.list.clist.length !== 0) {
+                this.setState({ lesson: result.list, activeid: result.list.clist[0].id });
+                let lessonresult = await lessonList(this.id, result.list.clist[0].id);
+                if (lessonresult.code == 200) {
+                    this.setState({ leList: lessonresult.list })
                 }
-            }else{
-                this.setState({lesson:result.list})
+            } else {
+                this.setState({ lesson: result.list })
             }
-           
+
         }
-        let res =await isCollect(1,this.id);
+        let res = await isCollect(1, this.id);
         // console.log(res)
-        if(res.code==200){
-            this.setState({collectflag:true})
+        if (res.code == 200) {
+            this.setState({ collectflag: true })
         }
-    
+
     }
-    
+
     render() {
-        const { zong,pinpai,kecheng,jiaoxue,fuwu,shizi,dianping ,address} = this.state.valueData;
-       
+        const { zong, pinpai, kecheng, jiaoxue, fuwu, shizi, dianping, address } = this.state.valueData;
+
         const { files } = this.state;
         if (!this.state.lesson) return '';
-        let {name,star,cnum,bnum,piclist,content,clist}=this.state.lesson;
-        console.log(parseInt(this.state.lesson.star)*2,11)
+        let { name, star, cnum, bnum, piclist, content, clist } = this.state.lesson;
         return (
             <div className="infoBox">
                 <div className="infotop">
-                    <h3>{name}<img src={require('../../static/image/jin.png')} /> <span onClick={this.shoucang} className={this.state.collectflag?'active':''}></span></h3>
-        <p className="starcon"><Star star={parseInt(star)*2}></Star><b>{star}</b>{cnum}条</p>
+                    <h3>{name}<img src={require('../../static/image/jin.png')} /> <span onClick={this.shoucang} className={this.state.collectflag ? 'active' : ''}></span></h3>
+                    <p className="starcon">{star ? <Star star={parseInt(star) * 2}></Star> : ''}<b>{star}</b>{cnum}条</p>
                     <p className="peoson">报名人数：<font>{bnum}</font></p>
                     <p className="address">{address}</p>
                 </div>
-                {piclist&&piclist.length!==0?<div className="swiperLeft">
+                {piclist && piclist.length !== 0 ? <div className="swiperLeft">
                     <ul className="cont" >
-                        {piclist.map((item,index)=>{
-                            let {image,mp4}=item;
-                            return  <li key={index}>
-                            <p><img src={image} />{mp4?<span><img src={require('../../static/image/bo.png')} /></span>:''}</p>
-                        </li>
+                        {piclist.map((item, index) => {
+                            let { image, mp4 } = item;
+                            return <li key={index}>
+                                <p><img src={image} />{mp4 ? <span onClick={this.playvideo.bind(this, mp4)}><img src={require('../../static/image/bo.png')} /></span> : ''}</p>
+                            </li>
                         })}
                     </ul>
-                </div>:''}
-                {clist&&clist.length!==0?<div className='topnav'>
+                </div> : ''}
+                {clist && clist.length !== 0 ? <div className='topnav'>
                     <div className="nav">
                         <ul id="nav" ref="nav">
-                            {clist.map((item,index)=>{
-                                return  <li onClick={this.handleClick.bind(this,item.id)} key={index} className={this.state.activeid==item.id?'active':''}>{item.name}</li>
+                            {clist.map((item, index) => {
+                                return <li onClick={this.handleClick.bind(this, item.id)} key={index} className={this.state.activeid == item.id ? 'active' : ''}>{item.name}</li>
                             })}
                         </ul>
                     </div>
-                </div>:''}
-                {this.state.leList&&this.state.leList.length!==0?<div className="lessonCon">
+                </div> : ''}
+                {this.state.leList && this.state.leList.length !== 0 ? <div className="lessonCon">
                     {
-                        this.state.leList.map((item,index)=>{
-                            return <LessonItem item={item} key={index}/>
+                        this.state.leList.map((item, index) => {
+                            return <LessonItem item={item} key={index} />
                         })
                     }
-                </div>:''}
-                
+                </div> : ''}
+
                 <div className="jianjie">
                     <b>机构简介</b>
                     <p>{content}</p>
@@ -127,66 +128,66 @@ class Info extends Component {
                     <b>我要评价</b>
                     <ul>
                         <li><font>总体评价</font> <span>
-                            <Rate tooltips={desc} value={zong} onChange={(value)=>{
-                                const {valueData}= this.state;
-                                valueData.zong=value;
-                                this.setState({valueData})
+                            <Rate tooltips={desc} value={zong} onChange={(value) => {
+                                const { valueData } = this.state;
+                                valueData.zong = value;
+                                this.setState({ valueData })
                             }} />
                             {zong ? <span className="ant-rate-text">{desc[zong - 1]}</span> : ''}
                         </span></li>
                         <li><font>品牌指数</font><span>
-                            <Rate tooltips={desc} onChange={(value)=>{
-                                const {valueData}= this.state;
-                                valueData.pinpai=value;
-                                this.setState({valueData})
+                            <Rate tooltips={desc} onChange={(value) => {
+                                const { valueData } = this.state;
+                                valueData.pinpai = value;
+                                this.setState({ valueData })
                             }} value={pinpai} />
                             {pinpai ? <span className="ant-rate-text">{desc[pinpai - 1]}</span> : ''}
                         </span></li>
                         <li><font>课程体系</font><span>
-                            <Rate tooltips={desc} onChange={(value)=>{
-                                const {valueData}= this.state;
-                                valueData.kecheng=value;
-                                this.setState({valueData})
-                            }}  value={kecheng} />
+                            <Rate tooltips={desc} onChange={(value) => {
+                                const { valueData } = this.state;
+                                valueData.kecheng = value;
+                                this.setState({ valueData })
+                            }} value={kecheng} />
                             {kecheng ? <span className="ant-rate-text">{desc[kecheng - 1]}</span> : ''}
                         </span></li>
                         <li><font>教学成果</font><span>
-                            <Rate tooltips={desc} onChange={(value)=>{
-                                const {valueData}= this.state;
-                                valueData.jiaoxue=value;
-                                this.setState({valueData})
-                            }}  value={jiaoxue} />
+                            <Rate tooltips={desc} onChange={(value) => {
+                                const { valueData } = this.state;
+                                valueData.jiaoxue = value;
+                                this.setState({ valueData })
+                            }} value={jiaoxue} />
                             {jiaoxue ? <span className="ant-rate-text">{desc[jiaoxue - 1]}</span> : ''}
                         </span></li>
                         <li><font>师资力量</font><span>
-                            <Rate tooltips={desc} onChange={(value)=>{
-                                const {valueData}= this.state;
-                                valueData.shizi=value;
-                                this.setState({valueData})
-                            }}  value={shizi} />
+                            <Rate tooltips={desc} onChange={(value) => {
+                                const { valueData } = this.state;
+                                valueData.shizi = value;
+                                this.setState({ valueData })
+                            }} value={shizi} />
                             {shizi ? <span className="ant-rate-text">{desc[shizi - 1]}</span> : ''}
                         </span></li>
                         <li><font>服务质量</font><span>
-                            <Rate tooltips={desc} onChange={(value)=>{
-                                const {valueData}= this.state;
-                                valueData.fuwu=value;
-                                this.setState({valueData})
-                                console.log(valueData)
-                            }}  value={fuwu} />
+                            <Rate tooltips={desc} onChange={(value) => {
+                                const { valueData } = this.state;
+                                valueData.fuwu = value;
+                                this.setState({ valueData })
+                            }} value={fuwu} />
                             {fuwu ? <span className="ant-rate-text">{desc[fuwu - 1]}</span> : ''}
                         </span></li>
                     </ul>
                     <div className="sayping">
-                        <textarea placeholder="" value={dianping} rows="7" maxLength="200" onChange={(event)=>{
-                              const {valueData}= this.state;
-                              valueData.dianping=event.target.value;
-                              this.setState({valueData})
+                        <textarea placeholder="" value={dianping} rows="7" maxLength="200" onChange={(event) => {
+                            const { valueData } = this.state;
+                            valueData.dianping = event.target.value;
+                            this.setState({ valueData })
                         }}>
                         </textarea>
                         <div className="imgBox">
                             <ImagePicker
                                 files={files}
-                                onChange={this.onChange}
+                                onChange={this.onImageChange01}
+                                // onChange={this.onChange}
                                 onImageClick={(index, fs) => console.log(index, fs)}
                                 selectable={files.length < 3}
                                 multiple={this.state.multiple}
@@ -196,76 +197,124 @@ class Info extends Component {
                     </div>
                     <button onClick={this.toping}>提交</button>
                 </div>
-                <Evaluate item={this.id}/>
+                <Evaluate item={this.id} />
+                {/* 视频弹窗 */}
+                {
+                    this.state.videoflag ? <div className="video_pup">
+                        <video controls="controls" src={this.state.src} autoPlay>您的浏览器不支持 video 标签。</video>
+                        <i onClick={() => {
+                            this.setState({
+                                videoflag: false,
+                                src: ''
+                            })
+                        }
+
+                        }>关闭</i>
+                    </div> : ''
+                }
             </div>
         )
     }
-     toping=async ()=>{
-        //  let a={...this.state.imlist};
-   
-        const {valueData}= this.state;
-         let str;
-         this.state.imlist.map((item,index)=>{
-             str=item+'|'
-         })
-         valueData.sid=this.id;
-         valueData.images=str;
-         this.setState({valueData})
-        //  console.log(this.state.valueData)
-        let result =await toPing(this.state.valueData);
-        if(result.code==200){
-            Toast.info('提交成功～')
-        }else if(result.code==205){
-            this.props.history.push('/my/login');
-        }
+    // 播放视频
+    playvideo = (mp4) => {
+        this.setState({
+            videoflag: true,
+            src: mp4
+        })
     }
-     handleClick=async (cid)=>{
-        this.setState({leList:'',activeid:cid})
-        let lessonresult = await lessonList(this.id,cid);
-        
-        if(lessonresult.code==200){
-            this.setState({leList:lessonresult.list})
+    toping = async () => {
+        //  let a={...this.state.imlist};
+
+        const { valueData } = this.state;
+        let str;
+        this.state.imlist.map((item, index) => {
+            return str = item + '|';
+
+        })
+        console.log(str)
+        valueData.sid = this.id;
+        valueData.images = str;
+        this.setState({ valueData })
+        //  console.log(this.state.valueData)
+        // let result =await toPing(this.state.valueData);
+        // if(result.code==200){
+
+        //     Toast.info('提交成功～')
+        // }else if(result.code==205){
+        //     this.props.history.push('/my/login');
+        // }
+    }
+    handleClick = async (cid) => {
+        this.setState({ leList: '', activeid: cid })
+        let lessonresult = await lessonList(this.id, cid);
+
+        if (lessonresult.code == 200) {
+            this.setState({ leList: lessonresult.list })
         }
     }
 
-    onChange = async (files) => {
-        let result =await baseUpload(files[files.length-1].url);
-        if(result.code==200){
-            const {imlist}=this.state;
-            imlist.push(result.data.src);
-            this.setState({imlist})
-            console.log(this.state.imlist)
-        }
-        this.setState({
-            files,
-        });
-    }
-    shoucang=async ()=>{
-        let result=await toCollect(1,this.id);
+
+    shoucang = async () => {
+        let result = await toCollect(1, this.id);
         console.log(result)
         // if(!this.state.isLogin){
         //     this.props.history.push('/my/login');
         //     return false;
         // }
-        if(result.code==205){
+        if (result.code == 205) {
             this.props.history.push('/my/login');
             return false;
-        }else if(result.code=200){
+        } else if (result.code = 200) {
             if (result.list.status == 2) {
                 this.setState({
-                    collectflag:false
+                    collectflag: false
                 })
                 return false;
-              } else if (result.list.status == 1) {
+            } else if (result.list.status == 1) {
                 this.setState({
-                    collectflag:true
+                    collectflag: true
                 })
                 Toast.info('收藏成功')
-              }
+            }
         }
     }
+    onImageChange01 = (files, type, index) => {
+        console.log(files, type, index);
+        if (type === 'add') {
+            lrz(files[0].url, { quality: 0.1 })
+                .then(async (rst) => {
+                    let result = await baseUpload(files[files.length - 1].url);
+                    if (result.code == 200) {
+                        const { imlist } = this.state;
+                        imlist.push(result.data.src);
+                        this.setState({ imlist })
+                    }
+                    // this.setState({
+                    //     imagesrc01:rst.base64.split(',')[1],
+                    // })
+                })
+        } else {
+
+        }
+        this.setState({
+            files,
+        });
+    }
+
+    // onChange = async (files) => {
+    //     let result =await baseUpload(files[files.length-1].url);
+    //     if(result.code==200){
+    //         const {imlist}=this.state;
+    //         imlist.push(result.data.src);
+    //         this.setState({imlist})
+    //         console.log(this.state.imlist)
+    //     }
+    //     this.setState({
+    //         files,
+    //     });
+    // }
 }
 
 
 
-export default connect(state=>state.my,action.my)(Info)
+export default connect(state => state.my, action.my)(Info)

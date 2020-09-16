@@ -114,3 +114,10 @@ export function topicList(p){
               }
         })
     }
+
+    // 删除话题
+    export function deletTotic(id){
+        return axios.post('/api/api/my/delmyhuati',{
+                id
+        })
+    }

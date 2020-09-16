@@ -15,7 +15,6 @@ class Evaluate extends Component {
         }
     }
     async componentWillMount() {
-        console.log(this.props.item)
         let result = await PingJia(this.props.item);
         if (result.code == 200) {
            this.setState({
@@ -64,7 +63,6 @@ class Evaluate extends Component {
                     {dianping?<p>{dianping}</p>:''}
                     {image&&image.length!==0?<ul>
                         {image.map((item,index)=>{
-                            console.log(item)
                             if (item==''){
                                 return false;
                             }

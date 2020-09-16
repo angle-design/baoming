@@ -30,14 +30,14 @@ class Evaluate extends Component {
     }
     render() {
         if(!this.state.data) return '';
-        let {name,price,content,image,features,objects,sid}=this.state.data;
+        let {name,price,content,image,features,objects,sid,oldprice,classtype,classnum,xingshi}=this.state.data;
         return (
             <div className="lessonBox">
                 <div className="details_top">
                     <img src={image} />
                     <p>
                         <span>{name}
-                            <span>￥<font>{price}</font><b>¥188</b></span>
+        <span>￥<font>{price}</font>{oldprice?<b>¥{oldprice}</b>:''}</span>
                         </span>
                         <i onClick={this.handleCollect} className={this.state.collectflag?'active':''}></i>
                     </p>
@@ -45,37 +45,33 @@ class Evaluate extends Component {
                         <li>
                             <img src={require('../../static/image/a_01.jpg')}/>
                             <span>适用人群</span>
-                            <p>3-6岁</p>
+        <p>{objects}</p>
                         </li>
                         <li>
                             <img src={require('../../static/image/a_02.jpg')}/>
-                            <span>适合基础</span>
-                            <p>3-6岁</p>
+                            <span>上课形式</span>
+                            <p>{xingshi}</p>
                         </li>
                         <li>
                             <img src={require('../../static/image/a_03.jpg')}/>
                             <span>班型</span>
-                            <p>3-6岁</p>
+                            <p>{classtype}</p>
                         </li>
                         <li>
                             <img src={require('../../static/image/a_04.jpg')}/>
                             <span>课时数</span>
-                            <p>3-6岁</p>
+                            <p>{classnum}</p>
                         </li>
                     </ul>
                 </div>
                     <div className="details_con">
                         <div>
-                            <h3>适用对象</h3>
-                            <p>{objects}</p>
-                        </div>
-                        <div>
                             <h3>课程特色</h3>
-                            <p>{features}</p>
+                            <div>{features}</div>
                         </div>
                         <div>
                             <h3>课程简介</h3>
-                            <p  dangerouslySetInnerHTML={{__html: content}}></p>
+                            <div dangerouslySetInnerHTML={{__html: content}}></div>
                         </div>
                     </div>
                     <div className="fix_bottom">

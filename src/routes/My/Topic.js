@@ -1,10 +1,17 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { ListView, Toast } from 'antd-mobile';
-import { topicList } from '../../api/my';
+import { ListView, Toast ,ActionSheet} from 'antd-mobile';
+import { topicList,deletTotic } from '../../api/my';
 import '../../static/css/question.less';
 import Kong from '../../component/kong';
+const isIPhone = new RegExp('\\biPhone\\b|\\biPod\\b', 'i').test(window.navigator.userAgent);
+let wrapProps;
+if (isIPhone) {
+  wrapProps = {
+    onTouchStart: e => e.preventDefault(),
+  };
+}
 class Topic extends Component {
     constructor(props, context) {
         super(props, context);
@@ -19,6 +26,7 @@ class Topic extends Component {
             hasMore: true,
             isLoading: true,
             dataArr: [],
+            clicked:0
         }
     }
     async componentWillMount() {
@@ -85,6 +93,9 @@ class Topic extends Component {
                         {rowData.h_status == 1 ? <span style={{ color: '#36b937' }}>进行中</span> :
                             rowData.h_status == 2 ? <span style={{ color: '#f1a91f' }}>待审核</span> :
                                 <span style={{ color: '#999' }}>>已关闭</span>}
+                                <i onClick={
+                                    this.showActionSheet.bind(this,rowData.id)
+                            }>删除</i>
                     </p>
                 </div></div>)
         }
@@ -105,6 +116,32 @@ class Topic extends Component {
             </div>
         )
     }
+    showActionSheet = (id) => {
+        const BUTTONS = ['删除话题','取消'];
+        ActionSheet.showActionSheetWithOptions({
+          options: BUTTONS,
+          cancelButtonIndex: BUTTONS.length - 1,
+          destructiveButtonIndex: BUTTONS.length - 2,
+          // title: 'title',
+          maskClosable: true,
+          'data-seed': 'logId',
+          wrapProps,
+        },
+        (buttonIndex) => {
+          if(buttonIndex==0){
+            this.remove(id)
+          }
+        });
+      }
+      remove=async (id)=>{
+        let result=await deletTotic(id);
+        if (result.code == 200) {
+            let dataList=this.state.dataArr.filter(item => item.id != id);
+            this.setState({
+                dataArr:dataList
+            })
+          }
+      }
 }
 
 
