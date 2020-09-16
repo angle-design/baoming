@@ -9,7 +9,9 @@ class Evaluate extends Component {
     constructor(props, context) {
         super(props, context);
         this.state={
-            data:[]
+            aIndex:0,
+            data:[],
+            inlist:['全部','好评','中评','差评']
         }
     }
     async componentWillMount() {
@@ -25,25 +27,50 @@ class Evaluate extends Component {
         
         return (
             <div className="evaluateBox">
-                <b>全部评价<font>（ 5934条 ）</font></b>
-                <p><span className="active">全部</span><span>好评</span><span>中评</span><span>差评</span></p>
+                <b>全部评价<font>（ {this.state.data.count}条 ）</font></b>
+                <p>
+                    {this.state.inlist.map((item,index)=>{
+                        return <span key={index} className={this.state.aIndex==index?'active':''} onClick={ ()=>{
+                            this.setState({
+                                data:[],
+                                aIndex:index
+                            },async ()=>{
+                                let result = await PingJia(this.props.item,index);
+                                if (result.code == 200) {
+                                   this.setState({
+                                       data:result.list
+                                   })
+                                }
+                            })
+                        }}>{item}</span>
+                    })}
+                </p>
+               
                 {this.state.data && this.state.data.length !== 0 ? <div className="evallist">
                     {this.state.data.list.map((item,index)=>{
-                        let {time,dianping}=item;
+                        let {time,dianping,image,uinfo:{a_image,a_uname},zong}=item;
+                        var arr=[];
+                        if(image){
+                            image=image.split('|');
+                        }
                         return   <div className="evalitem" key={index}>
                         <div className="evaltop">
                             <p>
-                                <img src={require('../../static/image/mohead.png')} />
-                                <span><font>大男子主义</font><Star star={7}></Star></span>
+                                <img src={a_image} />
+                    <span><font>{a_uname}</font><Star star={(parseInt(zong)*2)}></Star></span>
                             </p>
                     <font>{time}</font>
                         </div>
-                    <p>{dianping}</p>
-                        <ul>
-                            <li><img src="https://dss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=1830914723,3154965800&fm=26&gp=0.jpg" /></li>
-                            <li><img src="https://dss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=1830914723,3154965800&fm=26&gp=0.jpg" /></li>
-                            <li><img src="https://dss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=1830914723,3154965800&fm=26&gp=0.jpg" /></li>
-                        </ul>
+                    {dianping?<p>{dianping}</p>:''}
+                    {image&&image.length!==0?<ul>
+                        {image.map((item,index)=>{
+                            console.log(item)
+                            if (item==''){
+                                return false;
+                            }
+                         return <li key={index}><img src={item} /></li>
+                        })}
+                        </ul>:''}
                     </div>
                     })}
                     <span className="more">更多评价</span>

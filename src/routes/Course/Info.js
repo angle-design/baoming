@@ -78,14 +78,16 @@ class Info extends Component {
     
     render() {
         const { zong,pinpai,kecheng,jiaoxue,fuwu,shizi,dianping ,address} = this.state.valueData;
+       
         const { files } = this.state;
         if (!this.state.lesson) return '';
-        let {name,lever,cnum,bnum,piclist,content,clist}=this.state.lesson;
+        let {name,star,cnum,bnum,piclist,content,clist}=this.state.lesson;
+        console.log(parseInt(this.state.lesson.star)*2,11)
         return (
             <div className="infoBox">
                 <div className="infotop">
                     <h3>{name}<img src={require('../../static/image/jin.png')} /> <span onClick={this.shoucang} className={this.state.collectflag?'active':''}></span></h3>
-                    <p className="starcon"><Star star={parseInt(lever*2)}></Star><b>4.0</b>634条</p>
+        <p className="starcon"><Star star={parseInt(star)*2}></Star><b>{star}</b>{cnum}条</p>
                     <p className="peoson">报名人数：<font>{bnum}</font></p>
                     <p className="address">{address}</p>
                 </div>
@@ -108,14 +110,14 @@ class Info extends Component {
                         </ul>
                     </div>
                 </div>:''}
-                
-                <div className="lessonCon">
+                {this.state.leList&&this.state.leList.length!==0?<div className="lessonCon">
                     {
                         this.state.leList.map((item,index)=>{
                             return <LessonItem item={item} key={index}/>
                         })
                     }
-                </div>
+                </div>:''}
+                
                 <div className="jianjie">
                     <b>机构简介</b>
                     <p>{content}</p>
