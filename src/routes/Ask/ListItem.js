@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {Link,withRouter} from 'react-router-dom';
+import {  Toast } from 'antd-mobile';
 import {wenZan} from '../../api/ask.js'
 import action from '../../store/action/index';
 import '../../static/css/listitem.less';
-
+import { toAswer} from '../../api/ask';
 class ListItem extends Component {
     constructor(props, context) {
         super(props, context);
@@ -13,6 +14,8 @@ class ListItem extends Component {
           huifuzan:0,
           wenflag:false,
           huiflag:false,
+          answerflag:false,
+          wovalue:''
         }
     }
     async componentDidMount() {
@@ -29,12 +32,12 @@ class ListItem extends Component {
   componentWillUpdate(nextProps, nextState) {
     
     if (nextState.wendazan||nextState.huifuzan) {
-        console.log('new')
+      
     }
 }
 
     render() {
-      let {uinfo,isvip,time,zan,huifu,content,qlist,id,isq}=this.props.item;
+      let {uinfo,isvip,time,zan,huifu,content,qlist,id,isq,hid}=this.props.item;
         return (
 
           <div className="new">
@@ -65,7 +68,17 @@ class ListItem extends Component {
               </div>
               <p className="new_text" onClick={this.handleToDetail.bind(this,id)}>{content}</p>
             </div>
-            {isq?<div className="jieda"> <img src={require('../../static/image/bi.png')}/>解答问题</div>:''}
+            {isq?<div className="jieda" onClick={()=>{
+              let { flag } = this.props;
+              if (!flag) {
+                  this.props.history.push('/my/login');
+                  return false;
+              }
+              this.setState({
+                  answerflag:true
+              })
+              return false;
+            }}> <img src={require('../../static/image/bi.png')}/>解答问题</div>:''}
             {qlist?<div className="list_item list_answer">
               <div>
                 <dl>
@@ -92,12 +105,47 @@ class ListItem extends Component {
             <p className="new_text new_text_ask" onClick={this.handleToDetail.bind(this,id)}>{qlist.content}</p>
             </div>:''}
           </div>
+            {/* 评论弹窗 */}
+            {this.state.answerflag?<div className="ping_pup"  onClick={(e)=>{
+                        if (e.target.className == "pup_con"||e.target.tagName=="TEXTAREA"||e.target.tagName=='P') {
+                            this.setState({
+                              answerflag: true
+                            })
+                            return false;
+                        }
+                        this.setState({
+                            answerflag: false
+                        })}}>
+                    <div className="pup_con">
+                        <textarea type="text"
+                            placeholder="写评论"
+                            maxLength="800"
+                            value={this.state.wovalue} rows="7" 
+                            onChange={(event) => {
+                                this.setState({ wovalue: event.target.value })}}
+                        ></textarea>
+                        <p>
+                            <font>{0 / 800}</font>
+                            <span onClick={async ()=>{
+                                if(this.state.wovalue){
+                                    let res=await toAswer(hid,id,this.state.wovalue);
+                                    if (res.code == 200) {
+                                        //提问成功
+                                        this.setState({
+                                          answerflag:false
+                                        })
+                                        Toast.info("解答成功~");
+                                      }
+                                }
+                            }}>发表</span>
+                        </p>
+                    </div>
+                </div>:''}
         </div>
         )
     }
     // 问点赞
     handlewenzan=async (a)=>{
-      console.log(this.refs.aa.innerHTML)
       if (this.state.wenflag) return '';
       let {flag}=this.props;
       if(!flag){

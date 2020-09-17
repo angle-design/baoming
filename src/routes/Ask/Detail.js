@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { ListView, Toast} from 'antd-mobile';
-import { askInfo,fuZan } from '../../api/ask';
+import { ListView, Toast } from 'antd-mobile';
+import { askInfo, fuZan,toQuest } from '../../api/ask';
 import Qs from 'qs';
 import Listcon from './ListItem';
 import action from '../../store/action/index';
@@ -15,7 +15,7 @@ class Detail extends Component {
             rowHasChanged: (row1, row2) => row1 !== row2 // rowHasChanged(prevRowData, nextRowData); 用其进行数据变更的比较
         })
         this.state = {
-            activeIndex:'',
+            activeIndex: '',
             data: {},
             height: 0,//=>字高度
             contentflag: true,//=>控制字展开收起
@@ -24,20 +24,21 @@ class Detail extends Component {
             pageNo: this.props.askInfoList.page,
             isLoading: true,
             dataArr: [],
-            zanflag:false,
-            a:false,
+            zanflag: false,
+            a: false,
+            tivalue:'',
+            wenflag:false,
         }
     }
-      //=>验证是否登录
-      async componentWillMount() {
-        let {queryLoginFlag,flag}=this.props;
-        if(!flag){
+    //=>验证是否登录
+    async componentWillMount() {
+        let { queryLoginFlag, flag } = this.props;
+        if (!flag) {
             queryLoginFlag();
         }
-        console.log(1)
     }
     async componentDidMount() {
-            
+
         this.courseId = this.props.match.params.id;//=>挂载到实例上
         let result = await askInfo(this.courseId);
 
@@ -69,7 +70,7 @@ class Detail extends Component {
     }
     async componentWillReceiveProps(newProps) {
         const id = newProps.match.params.id;
-        if(id!==this.courseId){
+        if (id !== this.courseId) {
             this.courseId = id;//=>挂载到实例上
             let result = await askInfo(this.courseId);
             if (result.code == 200) {
@@ -78,7 +79,7 @@ class Detail extends Component {
                 })
             }
         }
-      }
+    }
 
     // 滑动到底部时加载更多
     onEndReached = (event) => {
@@ -111,7 +112,7 @@ class Detail extends Component {
             // 这里rowData,就是上面方法cloneWithRows的数组遍历的单条数据了，直接用就行
             return (
                 <li>
-                    <Listcon item={rowData} />
+                    <Listcon item={rowData}/>
                 </li>
             )
         }
@@ -123,7 +124,7 @@ class Detail extends Component {
                         <p>{h_title},{h_title2}</p>
                         <span>
                             {h_etime} | {isnow == 1 ?
-                                <font v-if="hinfo.isnow==1">提问进行时</font>
+                                <font>提问进行时</font>
                                 : isnow == 2 ? <font className="cur">待审核</font>
                                     : <font className="cur">提问已关闭</font>
                             }
@@ -164,12 +165,12 @@ class Detail extends Component {
                     <span>TA开设的其他话题：</span>
                     <div>
                         {hlist.map((item, index) => {
-                            let { h_title, h_title2,id } = item;
+                            let { h_title, h_title2, id } = item;
                             return <p key={index} onClick={
-                                ()=>{
+                                () => {
                                     this.props.history.push({
-                                        pathname:'/ask/detail/'+id
-                                      })
+                                        pathname: '/ask/detail/' + id
+                                    })
                                 }
                             }>{h_title},{h_title2}</p>
                         })}
@@ -183,81 +184,135 @@ class Detail extends Component {
                             <font>{this.props.askInfoList.count.acount}个提问</font>
                         </p>
                         <p>
-                            <span onClick={this.handleClick.bind(this, 1)} className={this.state.activeIndex==1?'active':''}>最新</span>
-                            <span onClick={this.handleClick.bind(this, 2)} className={this.state.activeIndex==2?'active':''}>最热</span>
+                            <span onClick={this.handleClick.bind(this, 1)} className={this.state.activeIndex == 1 ? 'active' : ''}>最新</span>
+                            <span onClick={this.handleClick.bind(this, 2)} className={this.state.activeIndex == 2 ? 'active' : ''}>最热</span>
                         </p>
                     </div>
                     <div className="new">
                         {
-                            this.state.dataSource&&this.state.dataSource.length!==0?<ul>
-                            <ListView
-                                ref={el => this.lv = el}
-                                dataSource={this.state.dataSource}
-                                renderFooter={() => (<div className="footer" style={{ textAlign: 'center' }}>{this.state.isLoading ? <LoadPage/>: '暂无更多数据'}</div>)}
-                                renderRow={row}
-                                useBodyScroll
-                                onEndReachedThreshold={10}
-                                onEndReached={this.onEndReached}
-                            />
-                        </ul>: <LoadPage/>
+                            this.state.dataSource && this.state.dataSource.length !== 0 ? <ul>
+                                <ListView
+                                    ref={el => this.lv = el}
+                                    dataSource={this.state.dataSource}
+                                    renderFooter={() => (<div className="footer" style={{ textAlign: 'center',fontSize:'0.24rem' }}>{ this.props.askInfoList.flag? <LoadPage /> : '暂无更多数据'}</div>)}
+                                    renderRow={row}
+                                    useBodyScroll
+                                    onEndReachedThreshold={10}
+                                    onEndReached={this.onEndReached}
+                                />
+                            </ul> : <LoadPage />
                         }
-                        
+
                     </div>
                 </div>) : ''}
                 <div className="fixed_bo">
-                    <p><i></i>提问</p>
-                    <p onClick={this.handleZan} ><i className={this.state.zanflag?'active':''}></i>点赞</p>
+                    <p onClick={()=>{
+                          if(isnow==1){
+                            let { flag } = this.props;
+                            if (!flag) {
+                                this.props.history.push('/my/login');
+                                return false;
+                            }
+                            this.setState({
+                                wenflag:true
+                            })
+                            return false;
+                          }else if(isnow==2){
+                            Toast.info('提问正在审核～');
+                            return false;
+                          }else{
+                            Toast.info('提问已关闭');
+                            return false;
+                          }
+                    }}><i></i>提问</p>
+                    <p onClick={this.handleZan} ><i className={this.state.zanflag ? 'active' : ''}></i>点赞</p>
                 </div>
+                {/* 评论弹窗 */}
+                {this.state.wenflag?<div className="ping_pup"  onClick={(e)=>{
+                        if (e.target.className == "pup_con"||e.target.tagName=="TEXTAREA"||e.target.tagName=='P') {
+                            this.setState({
+                              wenflag: true
+                            })
+                            return false;
+                        }
+                        this.setState({
+                            wenflag: false
+                        })}}>
+                    <div className="pup_con">
+                        <textarea type="text"
+                            placeholder="写评论"
+                            maxLength="800"
+                            value={this.state.tivalue} rows="7" 
+                            onChange={(event) => {
+                                this.setState({ tivalue: event.target.value })}}
+                        ></textarea>
+                        <p>
+                            <font>{0 / 800}</font>
+                            <span onClick={async ()=>{
+                                if(this.state.tivalue){
+                                    let res=await toQuest(this.courseId,this.state.tivalue);
+                                    if (res.code == 200) {
+                                        //提问成功
+                                        this.setState({
+                                            wenflag:false
+                                        })
+                                        Toast.info("提问成功~");
+                                        this.props.queryList({
+                                            p: 1,
+                                            id: this.courseId
+                                        })
+                                      }
+                                }
+                            }}>发表</span>
+                        </p>
+                    </div>
+                </div>:''}
             </div >
         )
     }
     // 下面浮窗点赞
-    handleZan=async ()=>{
-        let {flag}=this.props;
-        console.log(flag)
-        if(!flag){
+    handleZan = async () => {
+        let { flag } = this.props;
+        if (!flag) {
             this.props.history.push('/my/login');
             return false;
         }
-        let result=await fuZan(this.courseId);
-        console.log(3)
-        if (result.code==200){
+        let result = await fuZan(this.courseId);
+        if (result.code == 200) {
             this.setState({
-                zanflag:true
+                zanflag: true
             })
         }
     }
     // 最新最热切换
-    handleClick =  (order) => {
-        this.props.askInfoList.flag=false;
+    handleClick = (order) => {
+        this.props.askInfoList.flag = false;
         this.setState({
-            isLoading:true,
-            pageNo:1,
+            pageNo: 1,
             questdata: [],
-            activeIndex:order,
+            activeIndex: order,
             dataArr: [],
             dataSource: this.state.dataSource.cloneWithRows({}),
-        },async ()=>{
-            
+        }, async () => {
+
             await this.props.queryList({
                 p: 1,
                 id: this.courseId,
                 order: order
             })
-            setTimeout(()=>{
-                
+            setTimeout(() => {
+
                 this.setState({
-                    isLoading:false,
                     dataSource: this.state.dataSource.cloneWithRows(this.props.askInfoList.data),
                     pageNo: this.props.askInfoList.page
                 })
-            },300)
-           
-            
+            }, 300)
+
+
         })
-      
-        
+
+
     }
 }
 
-export default connect(state => ({...state.ask,...state.my}), {...action.ask,...action.my})(Detail)
+export default connect(state => ({ ...state.ask, ...state.my }), { ...action.ask, ...action.my })(Detail)

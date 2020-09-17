@@ -28,7 +28,7 @@ export class Info extends Component {
         return (
             <section className="my">
                 <p className="my_head">
-                    {flag?<img src={uinfo.a_image} />:<img src={require('../../static/image/mohead.png')} />}
+                    {flag&&uinfo.a_image?<img src={uinfo.a_image} />:<img src={require('../../static/image/mohead.png')} />}
                     {!flag?<span onClick={()=>{
                           this.props.history.push('/my/login');
                     }}>点击登录或注册</span>:<span>{uinfo.a_uname}</span>}

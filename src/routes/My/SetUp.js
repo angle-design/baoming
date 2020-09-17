@@ -134,7 +134,7 @@ class SetUp extends Component {
                         beforeUpload={this.beforeUpload}
                     >
                         <p className="head">
-                            {this.state.organCertUrl ? <img src={this.state.organCertUrl} /> : <img src="../../assets/mohead.png" />}
+                            {this.state.organCertUrl ? <img src={this.state.organCertUrl} /> : <img  src={require('../../static/image/mohead.png')}/>}
                             <span>更换头像</span>
                         </p>
                     </Upload>

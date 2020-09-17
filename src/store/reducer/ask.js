@@ -19,7 +19,7 @@ export default function headline(state = INIT_STATE, action) {
     switch (action.type) {
         case TYPES.ASK_QUERY_LIST:
             let { result: { code, list } } = action;
-            // console.log(p,1111)
+            console.log(list,1111)
             if (parseFloat(code) === 200 && list) {
                 state.askListData.topList = list.slice(0, 3);
                 if (list.length < 10) {

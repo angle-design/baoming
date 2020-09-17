@@ -30,45 +30,35 @@ class Search extends Component {
         var dataArr;
         //获取数据
         let result = await seaList(key, this.state.pageNo);
-        if (result.code == 404) {
-            dataArr = []
+       if(result.code==200){
+            const dataList = result.list;
+            dataArr = this.state.dataArr.concat(dataList)
+            // const len = dataList.length;
+            var len = dataList && dataList.length;
+            if (len <= 0) { // 判断是否已经没有数据了
+                alert(1)
+                this.setState({
+                    refreshing: false,
+                    isLoading: false,
+                    hasMore: false
+                })
+                Toast.info('没有数据了~', 1)
+                return false
+            }
+    
+            // 这里表示上拉加载更多
+    
+    
             this.setState({
-                datas: [],
-                pageNo: 1,
-                dataArr: [],
-                hasMore: true,
-                isLoading: true,
-                dataSource: this.state.dataSource.cloneWithRows({}),
-            })
-            console.log(this.state.dataArr)
-            return false;
-        }
-
-        const dataList = result.list;
-        dataArr = this.state.dataArr.concat(dataList)
-        // const len = dataList.length;
-        var len = dataList && dataList.length;
-        if (len <= 0) { // 判断是否已经没有数据了
-            this.setState({
+                pageNo: this.state.pageNo,
+                dataSource: this.state.dataSource.cloneWithRows(dataArr),
                 refreshing: false,
                 isLoading: false,
-                hasMore: false
+                dataArr: dataArr // 保存新数据进state
             })
-            Toast.info('没有数据了~', 1)
-            return false
         }
 
-        // 这里表示上拉加载更多
-
-
-        this.setState({
-            pageNo: this.state.pageNo,
-            dataSource: this.state.dataSource.cloneWithRows(dataArr),
-            refreshing: false,
-            isLoading: false,
-            dataArr: dataArr // 保存新数据进state
-        })
-        console.log(dataArr)
+        
 
     }
     onEndReached = (event) => {
@@ -97,7 +87,8 @@ class Search extends Component {
                         pageNo: 1,
                         dataArr: [],
                         hasMore: true,
-                        isLoading: true,
+                        isLoading: false,
+                        dataSource: this.state.dataSource.cloneWithRows({}),
                     })
                     this.getData(true, value)
                 }

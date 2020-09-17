@@ -78,3 +78,18 @@ export function wenZan(aid){
 export function readZan(aid){
   return axios.post('/api/api/Ask/readdzan',{aid})
 }
+
+
+// 提交提问
+export function toQuest(hid,content){
+  return  axios.post("/api/Api/Ask/addask",{
+    hid,content
+  })
+}
+
+// 提交解答
+export function toAswer(hid,pid,content){
+  return axios.post('/api/api/ask/addq',{
+    hid,pid,content
+  })
+}

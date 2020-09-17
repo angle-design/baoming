@@ -223,31 +223,26 @@ class Info extends Component {
         })
     }
     toping = async () => {
-        console.log(this.state.imlist)
-        let str='',
-            imgList = [];
-        for (var i = 0; i < this.state.imlist.length; i++) {
-            let result = await baseUpload(this.state.imlist[i]);
-            if (result.code == 200) {
-                imgList.push(result.data.src)
-            }
-        }
-        console.log(imgList)
-        for (var i = 0; i < imgList.length; i++) {
-            str += imgList[i] + '|'
-        }
+        //  let a={...this.state.imlist};
+
         const { valueData } = this.state;
+        let str;
+        this.state.imlist.map((item, index) => {
+            return str = item + '|';
+
+        })
+        console.log(str)
         valueData.sid = this.id;
         valueData.images = str;
         this.setState({ valueData })
-        let result =await toPing(this.state.valueData);
+        //  console.log(this.state.valueData)
+        // let result =await toPing(this.state.valueData);
+        // if(result.code==200){
 
-        if(result.code==200){
-            Toast.info('提交成功～')
-        }else if(result.code==205){
-            this.props.history.push('/my/login');
-        }
-
+        //     Toast.info('提交成功～')
+        // }else if(result.code==205){
+        //     this.props.history.push('/my/login');
+        // }
     }
     handleClick = async (cid) => {
         this.setState({ leList: '', activeid: cid })
@@ -284,37 +279,26 @@ class Info extends Component {
         }
     }
     onImageChange01 = (files, type, index) => {
-
-        // console.log(files, type, index);
-        this.setState({
-            files,
-        });
-        const { imlist } = this.state;
+        console.log(files, type, index);
         if (type === 'add') {
-            lrz(files[files.length-1].url, { quality: 0.5 }).then(async (rst) => {
-
-                imlist.push(rst.base64)
-                this.setState({
-                    imlist
+            lrz(files[0].url, { quality: 0.1 })
+                .then(async (rst) => {
+                    let result = await baseUpload(files[files.length - 1].url);
+                    if (result.code == 200) {
+                        const { imlist } = this.state;
+                        imlist.push(result.data.src);
+                        this.setState({ imlist })
+                    }
+                    // this.setState({
+                    //     imagesrc01:rst.base64.split(',')[1],
+                    // })
                 })
-            })
-
         } else {
-            for (var i = 0; i < imlist.length; i++) {
-                if (i == index) {
-                    imlist.splice(i - 1, 1);
-                }
-            }
-            this.setState({
-                imlist
-            })
 
         }
-
         this.setState({
             files,
         });
-
     }
 
     // onChange = async (files) => {

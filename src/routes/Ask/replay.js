@@ -209,8 +209,18 @@ class List extends Component {
                     </ul>
                 </div> : ''}
                 {
-                    this.state.flagreply ? <div className="fixed_bottom">
-                        <div>
+                    this.state.flagreply ? <div className="fixed_bottom" onClick={(e)=>{
+                        if (e.target.className == "fixed_a"||e.target.tagName=="TEXTAREA"||e.target.tagName=='P') {
+                            this.setState({
+                                flagreply: true
+                            })
+                            return false;
+                        }
+                        this.setState({
+                            flagreply: false
+                        })
+                    }}>
+                        <div className="fixed_a">
                             <textarea type="text" placeholder="一起讨论吧" value={this.state.msg} onChange={this.changeHandle}></textarea>
                             <p onClick={this.toSend} className={this.state.msg ? 'lv' : ''}>发表</p>
                         </div>
