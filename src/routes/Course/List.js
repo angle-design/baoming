@@ -4,7 +4,7 @@ import { Carousel } from 'antd';
 import {ListView, Toast,Tabs } from 'antd-mobile';
 import {bannerList,typeList,logoList} from '../../api/course';
 import CourseItem from './CourseItem';
-
+import LoadPage from '../../component/LoadPage'
 class List extends Component {
     constructor(props, context) {
         super(props, context);
@@ -25,8 +25,7 @@ class List extends Component {
             dataArr: [],
         }
     }
-    async componentWillMount(){
-        
+    async componentWillMount(){ 
         // 获取轮播图
         let result=await bannerList();
         if(result.code==200){
@@ -53,6 +52,11 @@ class List extends Component {
         let result = await logoList(id,this.state.pageNo);
         const dataList = result.list;
         // const len = dataList.length;
+        if(result.code==200){
+            this.setState({
+                isLoading:true
+            })
+        }
         var len = dataList && dataList.length;
         if (len <= 0) { // 判断是否已经没有数据了
             this.setState({
@@ -134,7 +138,7 @@ class List extends Component {
                     <ListView
                             ref={el => this.lv = el}
                             dataSource={this.state.dataSource}
-                            renderFooter={() => (<div className="footer" style={{ textAlign: 'center' }}>{this.state.isLoading ? '加载中...' : '暂无更多数据'}</div>)}
+                            renderFooter={() => (<div className="footer" style={{ textAlign: 'center' }}>{this.state.isLoading ? <LoadPage/>: '暂无更多数据'}</div>)}
                             renderRow={row}
                             useBodyScroll
                             onEndReachedThreshold={10}
@@ -148,10 +152,12 @@ class List extends Component {
     // 列表切换
       handleClick = async (aid) => {
         this.setState({
+            isLoading:true,
             pageNo:1,
             id:aid,
             datas:[],
-            dataArr:[]
+            dataArr:[],
+            dataSource: this.state.dataSource.cloneWithRows({}),
         },()=>{
             this.getData(true,this.state.id)
         })

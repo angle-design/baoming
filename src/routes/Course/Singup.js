@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { Picker, Toast } from 'antd-mobile'
 import City from '../../component/City';
 import Qs from 'qs';
+import {ao} from '../../unti.js'
 import { Form, Input, Button, Modal, Select } from 'antd';
 import { SchoolName, LessonName, BaoMing } from '../../api/course'
 import '../../static/css/settlement.less';
@@ -42,7 +43,7 @@ class Singup extends Component {
 
     }
     async componentWillMount() {
-
+        ao();
         // console.log(this.props.history.location.search)
         let { location: { search } } = this.props,
             { id = 0, cid = 0 } = Qs.parse(search.substr(1)) || {};

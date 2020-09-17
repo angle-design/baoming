@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Form, Icon, Input, Button, Checkbox, Modal } from 'antd';
 import { Link } from 'react-router-dom';
+import {ao} from '../../unti.js'
 import { login, getCodeMa, codeLogin } from '../../api/my';
 import action from '../../store/action/index';
 
@@ -21,6 +22,9 @@ class Login extends Component {
             count: 60,
             liked: true
         }
+    }
+    componentDidMount(){
+        ao()
     }
     // 账号密码登陆提交
     handleSubmit = ev => {

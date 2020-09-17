@@ -3,11 +3,10 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { ListView, Toast} from 'antd-mobile';
 import { askInfo,fuZan } from '../../api/ask';
-
 import Qs from 'qs';
 import Listcon from './ListItem';
 import action from '../../store/action/index';
-
+import LoadPage from '../../component/LoadPage'
 class Detail extends Component {
     constructor(props, context) {
         super(props, context);
@@ -189,17 +188,20 @@ class Detail extends Component {
                         </p>
                     </div>
                     <div className="new">
-                        <ul>
+                        {
+                            this.state.dataSource&&this.state.dataSource.length!==0?<ul>
                             <ListView
                                 ref={el => this.lv = el}
                                 dataSource={this.state.dataSource}
-                                renderFooter={() => (<div className="footer" style={{ textAlign: 'center' }}>{this.props.askInfoList.flag ? '加载中...' : '暂无更多数据'}</div>)}
+                                renderFooter={() => (<div className="footer" style={{ textAlign: 'center' }}>{this.state.isLoading ? <LoadPage/>: '暂无更多数据'}</div>)}
                                 renderRow={row}
                                 useBodyScroll
                                 onEndReachedThreshold={10}
                                 onEndReached={this.onEndReached}
                             />
-                        </ul>
+                        </ul>: <LoadPage/>
+                        }
+                        
                     </div>
                 </div>) : ''}
                 <div className="fixed_bo">
@@ -226,23 +228,35 @@ class Detail extends Component {
         }
     }
     // 最新最热切换
-    handleClick = async (order) => {
-        
+    handleClick =  (order) => {
+        this.props.askInfoList.flag=false;
         this.setState({
+            isLoading:true,
+            pageNo:1,
             questdata: [],
-            activeIndex:order
-        })
-        if (this.state.questdata.length == 0) {
+            activeIndex:order,
+            dataArr: [],
+            dataSource: this.state.dataSource.cloneWithRows({}),
+        },async ()=>{
+            
             await this.props.queryList({
                 p: 1,
                 id: this.courseId,
                 order: order
             })
-        }
-        this.setState({
-            dataSource: this.state.dataSource.cloneWithRows(this.props.askInfoList.data),
-            pageNo: this.props.askInfoList.page
+            setTimeout(()=>{
+                
+                this.setState({
+                    isLoading:false,
+                    dataSource: this.state.dataSource.cloneWithRows(this.props.askInfoList.data),
+                    pageNo: this.props.askInfoList.page
+                })
+            },300)
+           
+            
         })
+      
+        
     }
 }
 

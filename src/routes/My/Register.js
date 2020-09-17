@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Form, Icon, Input, Button, Checkbox, Modal } from 'antd';
 import { Link } from 'react-router-dom';
+import {ao} from '../../unti.js'
 import { getCodeMa, register } from '../../api/my';
 import action from '../../store/action/index';
 
@@ -21,7 +22,9 @@ class Register extends Component {
             liked: true
         }
     }
- 
+ componentDidMount(){
+     ao()
+ }
     handleSubmit = ev => {
         ev.preventDefault();
         this.props.form.validateFields(async (err, values) => {
@@ -68,7 +71,12 @@ class Register extends Component {
                         )}
                     </Form.Item>
                     <Form.Item>
-                        {getFieldDecorator('password', {})(
+                        {getFieldDecorator('password', {
+                            rules: [
+                                { required: true, message: '请输入密码!' },
+                                {message:'输入的密码格式不正确',pattern: /^1[345678]\d{9}$/} 
+                            ]
+                        })(
                             <Input
                                 prefix={<i className="pass_icon"></i>}
                                 placeholder="密码由6-12位数字和字母组合形式"

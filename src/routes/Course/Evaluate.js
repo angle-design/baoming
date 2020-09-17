@@ -23,7 +23,6 @@ class Evaluate extends Component {
         }
     }
     render() {
-        
         return (
             <div className="evaluateBox">
                 <b>全部评价<font>（ {this.state.data.count}条 ）</font></b>
@@ -51,6 +50,7 @@ class Evaluate extends Component {
                         var arr=[];
                         if(image){
                             image=image.split('|');
+                            image.pop()
                         }
                         return   <div className="evalitem" key={index}>
                         <div className="evaltop">
@@ -63,9 +63,6 @@ class Evaluate extends Component {
                     {dianping?<p>{dianping}</p>:''}
                     {image&&image.length!==0?<ul>
                         {image.map((item,index)=>{
-                            if (item==''){
-                                return false;
-                            }
                          return <li key={index}><img src={item} /></li>
                         })}
                         </ul>:''}

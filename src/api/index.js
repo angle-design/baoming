@@ -15,7 +15,7 @@ import axios from 'axios';
 import Qs from 'qs';
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import { message, Spin, Icon, Alert } from 'antd';
+import {LoadPage} from '../component/LoadPage'
 const Axios=axios.create({
     timeout:20000,
 })
@@ -26,7 +26,7 @@ function showLoading(){
         var dom = document.createElement('div');
         dom.setAttribute('id', 'loading');
         document.body.appendChild(dom)
-        ReactDOM.render(<Spin wrapperClassName='react-loadings' size="large" tip="加载中..."> </Spin>, dom)
+        ReactDOM.render(<LoadPage > </LoadPage>, dom)
     }
     requestCount++
 }

@@ -45,7 +45,7 @@ class Evaluate extends Component {
                         <li>
                             <img src={require('../../static/image/a_01.jpg')}/>
                             <span>适用人群</span>
-        <p>{objects}</p>
+                            <p>{objects}</p>
                         </li>
                         <li>
                             <img src={require('../../static/image/a_02.jpg')}/>

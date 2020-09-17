@@ -38,6 +38,7 @@ class Search extends Component {
                 dataArr: [],
                 hasMore: true,
                 isLoading: true,
+                dataSource: this.state.dataSource.cloneWithRows({}),
             })
             console.log(this.state.dataArr)
             return false;

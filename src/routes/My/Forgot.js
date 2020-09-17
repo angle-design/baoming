@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Form, Icon, Input, Button, Checkbox, Modal } from 'antd';
 import { Link } from 'react-router-dom';
+import {ao} from '../../unti.js'
 import { getCodeMa, codeLogin,savepassword } from '../../api/my';
 import action from '../../store/action/index';
 
@@ -21,7 +22,9 @@ class Forgot extends Component {
             liked: true
         }
     }
- 
+    componentDidMount(){
+        ao()
+    }
     handleSubmit = ev => {
         ev.preventDefault();
         this.props.form.validateFields(async (err, values) => {
@@ -42,6 +45,16 @@ class Forgot extends Component {
   
     render() {
         const { getFieldDecorator } = this.props.form;
+         //  密码验证
+         const passwordValidator = (rule, value, callback) => {
+            const { getFieldValue } = this.props.form;
+            if (value && value !== getFieldValue('password')) {
+            callback('两次输入不一致！')
+          }
+            // 必须总是返回一个 callback，否则 validateFields 无法响应
+            callback();
+          }
+        
         return <div className="loginBox forgot">
             <h2>找回密码</h2>
            <Form onSubmit={this.handleSubmit} className="login-form">
@@ -68,15 +81,27 @@ class Forgot extends Component {
                         )}
                     </Form.Item>
                     <Form.Item>
-                        {getFieldDecorator('password', {})(
+                        {getFieldDecorator('password', {
+                             rules: [
+                                { required: true, message: '请输入密码!' },
+                                {message:'输入的密码格式不正确',pattern: /^1[345678]\d{9}$/} 
+                            ]
+                        })(
                             <Input
                                 prefix={<i className="pass_icon"></i>}
                                 placeholder="密码由6-12位数字和字母组合形式"
                             />
                         )}
+
                     </Form.Item>
                     <Form.Item>
-                        {getFieldDecorator('newpassword', {})(
+                        {getFieldDecorator('newpassword', { rules: [{
+                      required: true,
+                      message: '请再次输入密码',
+                    }, {
+                      validator: passwordValidator
+                    }]
+                })(
                             <Input
                             prefix={<i className="pass_icon"></i>}
                                 placeholder="请再输一次密码"

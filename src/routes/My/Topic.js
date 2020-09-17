@@ -5,6 +5,7 @@ import { ListView, Toast ,ActionSheet} from 'antd-mobile';
 import { topicList,deletTotic } from '../../api/my';
 import '../../static/css/question.less';
 import Kong from '../../component/kong';
+// import {  Empty} from 'antd';
 const isIPhone = new RegExp('\\biPhone\\b|\\biPod\\b', 'i').test(window.navigator.userAgent);
 let wrapProps;
 if (isIPhone) {
@@ -110,7 +111,7 @@ class Topic extends Component {
                     onEndReachedThreshold={10}
                     onEndReached={this.onEndReached}
                     pageSize={10}
-                /> : <Kong msg='暂无话题' />}
+                /> : <div style={{marginTop:'2rem'}}><Kong msg='暂无话题'></Kong></div>}
 
 
             </div>

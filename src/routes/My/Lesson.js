@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import {lessonbao} from '../../api/my'
-import LessonItem from '../Course/LessonItem'
+import {lessonbao} from '../../api/my';
+import Kong from '../../component/kong';
+import LessonItem from '../Course/LessonItem';
 // import '../../static/css/mylesson.less'
 class Lesson extends Component {
     constructor(props, context) {
@@ -28,7 +29,7 @@ class Lesson extends Component {
                         console.log(item)
                         return <LessonItem item={item} key={index}></LessonItem>
                     })}
-                </div>:'22'}
+                </div>: <div style={{marginTop:'2rem'}}><Kong msg='暂无报名课程~'></Kong></div>}
               
             </div>
         )

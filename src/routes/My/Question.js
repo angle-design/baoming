@@ -73,7 +73,7 @@ class Question extends Component {
             // 这里rowData,就是上面方法cloneWithRows的数组遍历的单条数据了，直接用就行
             let { content, time, hinfo, status } = rowData;
             return (<li>
-                <p class="title">
+                <p className="title">
                     <span>提问:</span>
                     {content}
                 </p>
@@ -107,7 +107,7 @@ class Question extends Component {
                         onEndReached={this.onEndReached}
                         pageSize={10}
                     />
-                </ul> : <Kong msg='暂无提问' />}
+                </ul> : <div style={{marginTop:'2rem'}}><Kong msg='暂无提问~'></Kong></div>}
             </div>
         )
     }

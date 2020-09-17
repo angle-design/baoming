@@ -42,11 +42,11 @@ class Collection extends Component {
                 {num == 1 ? <div className="collect_con">
                     {data && data.length !== 0? <div>{data.map((item, index) => {
                         return <CourseItem item={item} key={index}></CourseItem>
-                    })}</div> : <Kong msg='暂无收藏机构'/>}
+                    })}</div> : <div style={{marginTop:'2rem'}}><Kong msg='暂无收藏机构~'></Kong></div>}
                 </div> : <div className="collect_con">
                         {lessondata && lessondata.length !== 0 ? <div>{lessondata.map((item, index) => {
                             return <LessonItem item={item} key={index}></LessonItem>
-                        })}</div> : <Kong msg='暂无收藏课程'/>}
+                        })}</div> :<div style={{marginTop:'2rem'}}><Kong msg='暂无收藏课程~'></Kong></div>}
                     </div>
                 }
             </div>
