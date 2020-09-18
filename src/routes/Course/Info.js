@@ -43,6 +43,8 @@ class Info extends Component {
         }
     }
     async componentWillMount() {
+        document.getElementById('root').scrollIntoView(true);//为ture返回顶部，false为底部
+
         // 验证是否登陆
         let { queryLoginFlag, flag } = this.props;
         this.setState({

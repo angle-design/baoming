@@ -7,6 +7,7 @@ let INIT_STATE = {
         data: [],//=>数据
         page: 1
     },
+    
     askInfoList: {
         page: 1,
         data: [],

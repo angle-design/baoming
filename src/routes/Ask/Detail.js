@@ -51,6 +51,7 @@ class Detail extends Component {
         this.setState({
             height: conText.scrollHeight
         })
+
         if (this.state.height > 100) {
             this.setState({
                 contentflag: true
@@ -71,6 +72,10 @@ class Detail extends Component {
     async componentWillReceiveProps(newProps) {
         const id = newProps.match.params.id;
         if (id !== this.courseId) {
+            this.setState({
+                height: 0,//=>字高度
+                contentflag: true,//=>控制字展开收起
+            })
             this.courseId = id;//=>挂载到实例上
             let result = await askInfo(this.courseId);
             if (result.code == 200) {
@@ -78,6 +83,25 @@ class Detail extends Component {
                     data: result.list
                 })
             }
+            let { conText } = this.refs;
+            this.setState({
+                height: conText.scrollHeight
+            })
+            if (this.state.height > 100) {
+                this.setState({
+                    contentflag: true
+                })
+            }
+            //获取问答列表
+              await this.props.queryList({
+                    p: 1,
+                    id: this.courseId
+              })
+    
+            this.setState({
+                dataSource: this.state.dataSource.cloneWithRows(this.props.askInfoList.data),
+                pageNo: this.props.askInfoList.page
+            })
         }
     }
 

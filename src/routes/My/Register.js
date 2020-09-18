@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Form, Icon, Input, Button, Checkbox, Modal } from 'antd';
+import { Form, Input, Button, Modal } from 'antd';
 import { Link } from 'react-router-dom';
 import {ao} from '../../unti.js'
 import { getCodeMa, register } from '../../api/my';
@@ -74,7 +74,7 @@ class Register extends Component {
                         {getFieldDecorator('password', {
                             rules: [
                                 { required: true, message: '请输入密码!' },
-                                {message:'输入的密码格式不正确',pattern: /^1[345678]\d{9}$/} 
+                                {message:'输入的密码格式不正确',pattern: /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,12}$/} 
                             ]
                         })(
                             <Input

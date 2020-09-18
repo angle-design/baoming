@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
+
 import { connect } from 'react-redux';
+import { Affix, Button } from 'antd';
 import { PingJia } from '../../api/course'
 import '../../static/css/evaluat.less'
 import Star from './Star';
@@ -11,7 +13,8 @@ class Evaluate extends Component {
         this.state={
             aIndex:0,
             data:[],
-            inlist:['全部','好评','中评','差评']
+            inlist:['全部','好评','中评','差评'],
+            top:0,
         }
     }
     async componentWillMount() {
@@ -25,8 +28,10 @@ class Evaluate extends Component {
     render() {
         return (
             <div className="evaluateBox">
+               
                 <b>全部评价<font>（ {this.state.data.count}条 ）</font></b>
-                <p>
+                <Affix offsetTop={this.state.top}>
+                <p className="tab_pingjia">
                     {this.state.inlist.map((item,index)=>{
                         return <span key={index} className={this.state.aIndex==index?'active':''} onClick={ ()=>{
                             this.setState({
@@ -43,7 +48,7 @@ class Evaluate extends Component {
                         }}>{item}</span>
                     })}
                 </p>
-               
+               </Affix>
                 {this.state.data && this.state.data.length !== 0 ? <div className="evallist">
                     {this.state.data.list.map((item,index)=>{
                         let {time,dianping,image,uinfo:{a_image,a_uname},zong}=item;

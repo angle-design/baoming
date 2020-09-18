@@ -16,8 +16,8 @@ export function login(payload={}){
 //发送验证码
 export function getCodeMa(phone){
     return axios.post('/api/user/send_SMS',{
-        ...phone, headers:{'isLoading':false}
-    })
+        ...phone
+    },{headers:{'isLoading':false}})
 }
 
 //验证码登陆
