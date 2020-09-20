@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {Switch,Route,Redirect} from 'react-router-dom';
-
+import CacheRoute, {CacheSwitch} from 'react-router-cache-route'
 import List from './Course/List';
 import Info from './Course/Info';
 import Search from './Course/Search';
@@ -18,13 +18,13 @@ export class Home extends Component {
     render() {
         return (
            <section className="courseBox">
-                <Switch>
-                    <Route path="/course" exact component={List}/>
+                <CacheSwitch>
+                    <CacheRoute  saveScrollPosition={true} path="/course" exact component={List}/>
                     <Route path="/course/info" component={Info}/>
                     <Route path="/course/search" component={Search}/>
                     <Route path="/course/lessondetail/:id" component={LessonDetail}/>
                     <Route path="/course/singup/" component={Singup}/>
-                </Switch>
+                </CacheSwitch>
            </section>
         )
     }

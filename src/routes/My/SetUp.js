@@ -18,7 +18,7 @@ class SetUp extends Component {
             previewImage: '',
             fileList: [],
             organCertUrl: '',
-            isPrompt: false,
+            isPrompt: true,
         }
     }
 
@@ -108,6 +108,7 @@ class SetUp extends Component {
                                         _this.setState({
                                             isPrompt:false,
                                         },()=>{
+                                            console.log(location)
                                             _this.props.history.push(location.pathname)
                                         })
                                     }
@@ -116,6 +117,7 @@ class SetUp extends Component {
                                     _this.setState({
                                         isPrompt:false,
                                     },()=>{
+                                        console.log(location)
                                         _this.props.history.push(location.pathname)
                                     })
                                  },
@@ -141,7 +143,11 @@ class SetUp extends Component {
                 </ImgCrop>
                 <p>
                     <font>用户名</font>
-                    <input value={this.state.name || ''} onChange={this.handleChange} />
+                    <input value={this.state.name || ''} onChange={(event)=>{
+                        this.setState({
+                            name:event.target.value
+                        })
+                    }} />
                     {/* <b>该账户已存在</b> */}
                 </p>
                 <p >
@@ -156,7 +162,9 @@ class SetUp extends Component {
                     let result = await checkLoginOut();
                     if (result.statu == 200) {
                         this.props.history.push("/my/login");
-                       
+                        this.props.queryLoginFlag();
+                        // this.props.queryInfo();
+                        // this.props.uinfo={}
                     }
                 }}>退出账户</button>
                 {this.state.pupflag ? <div className="pup">

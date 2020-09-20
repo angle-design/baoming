@@ -40,6 +40,7 @@ class Login extends Component {
                 console.log(result)
                 if (parseFloat(result.statu) === 200) {
                     this.props.queryLoginFlag()
+                    this.props.queryInfo()
                     this.props.history.go(-1);
                    
                     return;
@@ -61,6 +62,7 @@ class Login extends Component {
                 console.log(result)
                 if (parseFloat(result.statu) === 200) {
                     this.queryLoginFlag()
+                    this.props.queryInfo()
                     this.props.history.go(-1)
                     return;
                 }

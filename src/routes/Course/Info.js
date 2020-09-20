@@ -28,7 +28,7 @@ class Info extends Component {
                 'jiaoxue': 0,
                 'fuwu': 0,
                 'shizi': 0,
-                'dianping': "老师认真负责",
+                'dianping': "",
                 'images': ''
             },
             files: [],
@@ -39,7 +39,10 @@ class Info extends Component {
             isLogin: false,
             imlist: [],
             videoflag: false,
-            src: ''
+            src: '',
+            zilength:200,
+            height: 0,//=>字高度
+            contentflag: true,//=>控制字展开收起
         }
     }
     async componentWillMount() {
@@ -50,10 +53,10 @@ class Info extends Component {
         this.setState({
             isLogin: flag
         })
-        if (!flag) {
-            queryLoginFlag();
-        }
-
+        // if (!flag) {
+        //     queryLoginFlag();
+        // }
+        console.log(this.state.isLogin,22222)
         let { location: { search } } = this.props,
             { id = 0 } = Qs.parse(search.substr(1)) || {};
         this.id = id;//=>挂载到实例上
@@ -70,7 +73,18 @@ class Info extends Component {
             } else {
                 this.setState({ lesson: result.list })
             }
-
+            let { conText } = this.refs;
+            this.setState({
+                height: conText.scrollHeight
+            },()=>{
+                if (this.state.height > 105) {
+                    this.setState({
+                        contentflag: true
+                    })
+                }
+            })
+            
+            
         }
         let res = await isCollect(1, this.id);
         // console.log(res)
@@ -79,7 +93,9 @@ class Info extends Component {
         }
 
     }
-
+    //  shouldComponentUpdate(newProps) {
+    //   return newProps.flag!==this.state.isLogin
+    //  }
     render() {
         const { zong, pinpai, kecheng, jiaoxue, fuwu, shizi, dianping, address } = this.state.valueData;
 
@@ -123,14 +139,32 @@ class Info extends Component {
 
                 <div className="jianjie">
                     <b>机构简介</b>
-                    <p>{content}</p>
-                    <span>更多全部</span>
+                   <p> <span className="neirong" className={this.state.contentflag ? 'neirong heightauto' : 'neirong'} ref="conText">{content}</span>
+                        <span>
+                            {this.state.height > 100 ?
+                                this.state.contentflag ?
+                                    <font onClick={() => {
+                                        this.setState({
+                                            contentflag: false
+                                        })
+                                    }}>查看完整简介</font>
+                                    : <font onClick={() => {
+                                        this.setState({
+                                            contentflag: true
+                                        })
+                                    }}>收起内容</font>
+                                : ''}
+                        </span></p>
                 </div>
                 <div className="pingjia">
                     <b>我要评价</b>
                     <ul>
                         <li><font>总体评价</font> <span>
                             <Rate tooltips={desc} value={zong} onChange={(value) => {
+                                 if(!this.state.isLogin){
+                                    this.props.history.push('/my/login');
+                                    return false;
+                                }
                                 const { valueData } = this.state;
                                 valueData.zong = value;
                                 this.setState({ valueData })
@@ -139,6 +173,10 @@ class Info extends Component {
                         </span></li>
                         <li><font>品牌指数</font><span>
                             <Rate tooltips={desc} onChange={(value) => {
+                                 if(!this.state.isLogin){
+                                    this.props.history.push('/my/login');
+                                    return false;
+                                }
                                 const { valueData } = this.state;
                                 valueData.pinpai = value;
                                 this.setState({ valueData })
@@ -147,6 +185,10 @@ class Info extends Component {
                         </span></li>
                         <li><font>课程体系</font><span>
                             <Rate tooltips={desc} onChange={(value) => {
+                                 if(!this.state.isLogin){
+                                    this.props.history.push('/my/login');
+                                    return false;
+                                }
                                 const { valueData } = this.state;
                                 valueData.kecheng = value;
                                 this.setState({ valueData })
@@ -155,6 +197,10 @@ class Info extends Component {
                         </span></li>
                         <li><font>教学成果</font><span>
                             <Rate tooltips={desc} onChange={(value) => {
+                                 if(!this.state.isLogin){
+                                    this.props.history.push('/my/login');
+                                    return false;
+                                }
                                 const { valueData } = this.state;
                                 valueData.jiaoxue = value;
                                 this.setState({ valueData })
@@ -163,6 +209,10 @@ class Info extends Component {
                         </span></li>
                         <li><font>师资力量</font><span>
                             <Rate tooltips={desc} onChange={(value) => {
+                                 if(!this.state.isLogin){
+                                    this.props.history.push('/my/login');
+                                    return false;
+                                }
                                 const { valueData } = this.state;
                                 valueData.shizi = value;
                                 this.setState({ valueData })
@@ -171,6 +221,10 @@ class Info extends Component {
                         </span></li>
                         <li><font>服务质量</font><span>
                             <Rate tooltips={desc} onChange={(value) => {
+                                 if(!this.state.isLogin){
+                                    this.props.history.push('/my/login');
+                                    return false;
+                                }
                                 const { valueData } = this.state;
                                 valueData.fuwu = value;
                                 this.setState({ valueData })
@@ -179,10 +233,14 @@ class Info extends Component {
                         </span></li>
                     </ul>
                     <div className="sayping">
-                        <textarea placeholder="" value={dianping} rows="7" maxLength="200" onChange={(event) => {
+                        <textarea placeholder="老师认真负责" value={dianping}  rows="7" maxLength="200" onChange={(event) => {
+                            if(!this.state.isLogin){
+                                this.props.history.push('/my/login');
+                                return false;
+                            }
                             const { valueData } = this.state;
                             valueData.dianping = event.target.value;
-                            this.setState({ valueData })
+                            this.setState({ valueData ,zilength:200-event.target.value.length})
                         }}>
                         </textarea>
                         <div className="imgBox">
@@ -195,7 +253,7 @@ class Info extends Component {
                                 multiple={this.state.multiple}
                             />
                         </div>
-                        <span>还剩<font>200</font>字～</span>
+                    <span>还剩<font>{this.state.zilength}</font>字～</span>
                     </div>
                     <button onClick={this.toping}>提交</button>
                 </div>
@@ -282,6 +340,10 @@ class Info extends Component {
     }
     onImageChange01 = (files, type, index) => {
         console.log(files, type, index);
+        if(!this.state.isLogin){
+            this.props.history.push('/my/login');
+            return false;
+        }
         if (type === 'add') {
             lrz(files[0].url, { quality: 0.1 })
                 .then(async (rst) => {

@@ -10,12 +10,18 @@ export default function course(state = INIT_STATE, action) {
     switch (action.type) {
         case TYPES.MY_LOGIN_FLAG:
             payload = action.payload;
-            parseFloat(payload.code) === 200 ? state.flag = true : false
+            if( parseFloat(payload.code) === 200  ){
+                state.flag = true
+            }else{
+                state.flag = false
+            }
             break;
         case TYPES.MY_LOGIN_INFO:
             let { code, list } = action.result;
             if (parseFloat(code) === 200) {
                 state.uinfo = list
+            }else{
+                state.uinfo = {}
             }
             break;
     }

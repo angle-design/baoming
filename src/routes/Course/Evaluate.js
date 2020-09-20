@@ -15,21 +15,25 @@ class Evaluate extends Component {
             data:[],
             inlist:['全部','好评','中评','差评'],
             top:0,
+            isLoading:false,
+            page:1,
+            count:0,
+            flag:true
         }
     }
     async componentWillMount() {
-        let result = await PingJia(this.props.item);
+        let result = await PingJia(this.props.item,0,1);
         if (result.code == 200) {
            this.setState({
-               data:result.list
+               data:result.list.list,
+               count:result.list.count
            })
         }
     }
     render() {
         return (
             <div className="evaluateBox">
-               
-                <b>全部评价<font>（ {this.state.data.count}条 ）</font></b>
+                <b>全部评价<font>（ {this.state.count}条 ）</font></b>
                 <Affix offsetTop={this.state.top}>
                 <p className="tab_pingjia">
                     {this.state.inlist.map((item,index)=>{
@@ -38,10 +42,11 @@ class Evaluate extends Component {
                                 data:[],
                                 aIndex:index
                             },async ()=>{
-                                let result = await PingJia(this.props.item,index);
+                                let result = await PingJia(this.props.item,index,1);
                                 if (result.code == 200) {
                                    this.setState({
-                                       data:result.list
+                                    count:result.list.count,
+                                       data:result.list.list
                                    })
                                 }
                             })
@@ -50,7 +55,7 @@ class Evaluate extends Component {
                 </p>
                </Affix>
                 {this.state.data && this.state.data.length !== 0 ? <div className="evallist">
-                    {this.state.data.list.map((item,index)=>{
+                    {this.state.data.map((item,index)=>{
                         let {time,dianping,image,uinfo:{a_image,a_uname},zong}=item;
                         var arr=[];
                         if(image){
@@ -73,13 +78,49 @@ class Evaluate extends Component {
                         </ul>:''}
                     </div>
                     })}
-                    <span className="more">更多评价</span>
+                  {this.state.flag?(
+                        <Button  onClick={this.loadMore} loading={this.state.isLoading} className="more">加载更多评价</Button>):''}
                 </div> : <Kong msg="暂无评价~"/>}
 
                
             </div>
         )
     }
+    loadMore = () => {
+
+        //=>防止重复点击
+        if (this.state.isLoading) return;
+        this.setState({isLoading: true});
+        this.setState({
+            page:this.state.page+1
+        },async ()=>{
+            let result = await PingJia(this.props.item,0,this.state.page);
+            if (result.code == 200) {
+                console.log(this.state.data)
+                if(result.list){
+                    this.setState({
+                        isLoading:false,
+                        data:this.state.data.concat(result.list.list)
+                    })
+                    if(result.list.list.length<3){
+                        alert(1)
+                        this.setState({
+                            flag:false,
+                            data:this.state.data.concat(result.list.list)
+                        })
+                        return false;
+                    }
+                }else{
+                  this.setState({
+                      flag:false
+                  })
+                }
+             
+            }else{
+
+            }
+        })
+    };
 
 }
 

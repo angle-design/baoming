@@ -29,7 +29,8 @@ class Question extends Component {
         let result = await questionList(this.state.pageNo);
         const dataList = result.list;
         var len = dataList && dataList.length;
-        console.log(dataList)
+        // console.log(dataList)
+
         if (len <= 0) { // 判断是否已经没有数据了
             this.setState({
                 isLoading: false,
@@ -37,17 +38,19 @@ class Question extends Component {
             })
             Toast.info('没有数据了~', 1)
             return false
+        } else {
+            // 这里表示上拉加载更多
+            var dataArr = this.state.dataArr.concat(dataList) //关键代码
+            this.setState({
+                pageNo: this.state.pageNo,
+                dataSource: this.state.dataSource.cloneWithRows(dataArr), // 数据源中的数据本身是不可修改的,要更新datasource中的数据，请（每次都重新）调用cloneWithRows方法
+                refreshing: false,
+                isLoading: false,
+                dataArr: dataArr // 保存新数据进state
+            })
+
         }
 
-        // 这里表示上拉加载更多
-        var dataArr = this.state.dataArr.concat(dataList) //关键代码
-        this.setState({
-            pageNo: this.state.pageNo,
-            dataSource: this.state.dataSource.cloneWithRows(dataArr), // 数据源中的数据本身是不可修改的,要更新datasource中的数据，请（每次都重新）调用cloneWithRows方法
-            refreshing: false,
-            isLoading: false,
-            dataArr: dataArr // 保存新数据进state
-        })
 
     }
 
@@ -55,7 +58,7 @@ class Question extends Component {
     onEndReached = (event) => {
         // 加载中或没有数据了都不再加载
         console.log(this.state.pageNo)
-        if (this.state.isLoading || !this.state.hasMore) {
+        if (!this.state.isLoading || !this.state.hasMore) {
             return
         }
         this.setState({
@@ -77,17 +80,16 @@ class Question extends Component {
                     <span>提问:</span>
                     {content}
                 </p>
-                <Link to={{
-                    pathname: '/ask/detail',
-                    search: `?id=${hinfo.id}`
-                }}>
-                    <div>
+                    <div onClick={()=>{
+                          this.props.history.push({
+                            pathname:'/ask/detail/'+hinfo.id
+                          })
+                    }}>
                         <p>
                             {hinfo.a_image ? <img src={hinfo.a_image} /> : <img src={require('../../static/image/mohead.png')} />}
                         </p>
                         <span>{hinfo.h_title},{hinfo.h_title2}</span>
                     </div>
-                </Link>
                 <p className="time">
                     <font>{time}</font>
                     {status === 1 ? <span style={{ color: '#36b937' }}>专家已答</span> : <span style={{ color: '#f1a91f' }}>待回答</span>}
@@ -107,7 +109,7 @@ class Question extends Component {
                         onEndReached={this.onEndReached}
                         pageSize={10}
                     />
-                </ul> : <div style={{marginTop:'2rem'}}><Kong msg='暂无提问~'></Kong></div>}
+                </ul> : <div style={{ marginTop: '2rem' }}><Kong msg='暂无提问~'></Kong></div>}
             </div>
         )
     }

@@ -13,8 +13,7 @@ import Comment from './My/Comment';
 import Lesson from './My/Lesson';
 import Topic from './My/Topic';
 import Forgot from './My/Forgot';
-
-
+import Teacher from './My/Teacher'
 /*css */
 
 import '../static/css/my.less';
@@ -40,7 +39,7 @@ export class My extends Component {
                     <Route path='/my/topic' component={Topic} />
                     <Route path='/my/lesson' component={Lesson} />
                     <Route path='/my/forgot' component={Forgot} />
-                    
+                    <Route path='/my/teacher' component={Teacher} />
                     <Redirect from='/my' to='/my/info' />
                 </Switch>
             </section>

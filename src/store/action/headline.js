@@ -12,21 +12,5 @@ let headline = {
             });
         }
     },
-     saveListState = (data) => {
-        return () => {
-            store.dispatch({
-                type: LIST_STATE,
-                ...data
-            })
-        }
-    },
-   
-    clearListState = () => {
-        return () => {
-            store.dispatch({
-                type: CLEAR_LIST_STATE
-            })
-        }
-    }
 }
 export default headline;

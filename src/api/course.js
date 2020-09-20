@@ -115,10 +115,10 @@ export function BaoMing(payload){
 }
 
 // 获取评价列表
-export function PingJia(sid,type){
+export function PingJia(sid,type,p){
     return axios.get('/api/api/school/getschoolcomment',{
         params:{
-            sid,type
+            sid,type,p
         }
     })
 }

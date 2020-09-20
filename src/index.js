@@ -2,6 +2,7 @@
 import React from 'react';
 import ReactDOM, { render } from 'react-dom';
 import { HashRouter, Switch, Route, Redirect } from 'react-router-dom';
+import CacheRoute, {CacheSwitch} from 'react-router-cache-route'
 
 /*redux store */
 import { Provider } from 'react-redux';
@@ -28,14 +29,14 @@ render(<Provider store={store}>
             <div>
                 {/* main=>route */}
                 <main className='container'>
-                    <Switch>
-                        <Route path="/course" component={Home}></Route>
+                    <CacheSwitch>
+                        <CacheRoute  saveScrollPosition={true} path="/course" component={Home}></CacheRoute>
                         <Route path="/headline" component={Headline}></Route>
                         <Route path="/ask" component={Ask}></Route>
                         <Route path="/settlement" component={Settlement}></Route>
                         <Route path="/my" component={My}></Route>
                         <Redirect to="/course"></Redirect>
-                    </Switch>
+                    </CacheSwitch>
                 </main>
 
                 {/* footer */}

@@ -7,6 +7,7 @@ import Qs from 'qs';
 import Listcon from './ListItem';
 import action from '../../store/action/index';
 import LoadPage from '../../component/LoadPage'
+import Kong from '../../component/kong'
 class Detail extends Component {
     constructor(props, context) {
         super(props, context);
@@ -28,6 +29,8 @@ class Detail extends Component {
             a: false,
             tivalue:'',
             wenflag:false,
+            onflag:false,
+            len:0,
         }
     }
     //=>验证是否登录
@@ -63,8 +66,10 @@ class Detail extends Component {
                 p: 1,
                 id: this.courseId
             })
+            
         }
         this.setState({
+            onflag:this.props.askInfoList.data&&this.props.askInfoList.data.length!==0?true:false,
             dataSource: this.state.dataSource.cloneWithRows(this.props.askInfoList.data),
             pageNo: this.props.askInfoList.page
         })
@@ -102,6 +107,7 @@ class Detail extends Component {
                 dataSource: this.state.dataSource.cloneWithRows(this.props.askInfoList.data),
                 pageNo: this.props.askInfoList.page
             })
+        
         }
     }
 
@@ -111,6 +117,7 @@ class Detail extends Component {
         if (!this.props.askInfoList.flag) {
             return
         }
+      
         this.setState({
             isLoading: true,
         }, async () => {
@@ -143,7 +150,7 @@ class Detail extends Component {
 
         return (
             <div className="detailsBox">
-                <div className="details_top" style={{ background: 'url(' + h_image + ') no-repeat center center' }}>
+                <div className="details_top" style={{ background: 'url(' + h_image + ') no-repeat center center',backgroundSize:'100% 100%' }}>
                     <div>
                         <p>{h_title},{h_title2}</p>
                         <span>
@@ -204,8 +211,8 @@ class Detail extends Component {
                 {this.props.askInfoList.count ? (<div className="question">
                     <div className="question_tab">
                         <p>
-                            <font>共{this.props.askInfoList.count.qcount}个回答</font>
-                            <font>{this.props.askInfoList.count.acount}个提问</font>
+                            <font>共{this.props.askInfoList.count.qcount?this.props.askInfoList.count.qcount:0}个回答</font>
+                            <font>{this.props.askInfoList.count.acount?this.props.askInfoList.count.acount:0}个提问</font>
                         </p>
                         <p>
                             <span onClick={this.handleClick.bind(this, 1)} className={this.state.activeIndex == 1 ? 'active' : ''}>最新</span>
@@ -214,7 +221,7 @@ class Detail extends Component {
                     </div>
                     <div className="new">
                         {
-                            this.state.dataSource && this.state.dataSource.length !== 0 ? <ul>
+                            this.state.onflag ? <ul>
                                 <ListView
                                     ref={el => this.lv = el}
                                     dataSource={this.state.dataSource}
@@ -224,7 +231,7 @@ class Detail extends Component {
                                     onEndReachedThreshold={10}
                                     onEndReached={this.onEndReached}
                                 />
-                            </ul> : <LoadPage />
+                            </ul> : <div style={{marginTop:'0rem'}}><Kong msg='暂无数据~'></Kong></div>
                         }
 
                     </div>
@@ -268,10 +275,10 @@ class Detail extends Component {
                             maxLength="800"
                             value={this.state.tivalue} rows="7" 
                             onChange={(event) => {
-                                this.setState({ tivalue: event.target.value })}}
+                                this.setState({ tivalue: event.target.value ,len:event.target.value.length})}}
                         ></textarea>
                         <p>
-                            <font>{0 / 800}</font>
+                            <font>{this.state.len}/ 800</font>
                             <span onClick={async ()=>{
                                 if(this.state.tivalue){
                                     let res=await toQuest(this.courseId,this.state.tivalue);
@@ -281,11 +288,16 @@ class Detail extends Component {
                                             wenflag:false
                                         })
                                         Toast.info("提问成功~");
-                                        this.props.queryList({
+                                        await  this.props.queryList({
                                             p: 1,
                                             id: this.courseId
                                         })
+                                        this.setState({
+                                            dataSource: this.state.dataSource.cloneWithRows(this.props.askInfoList.data),
+                                            pageNo: this.props.askInfoList.page
+                                        })
                                       }
+                                      
                                 }
                             }}>发表</span>
                         </p>
@@ -330,7 +342,7 @@ class Detail extends Component {
                     dataSource: this.state.dataSource.cloneWithRows(this.props.askInfoList.data),
                     pageNo: this.props.askInfoList.page
                 })
-            }, 300)
+            },30)
 
 
         })

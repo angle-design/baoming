@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { ListView, Toast } from 'antd-mobile';
 import action from '../../store/action/index';
 import { Link, withRouter } from 'react-router-dom';
-import { querytop, fuList, replyList,readZan} from '../../api/ask';
+import { querytop, fuList, replyList, readZan } from '../../api/ask';
 import { checkLogin } from '../../api/my';
 import ListItem from './ListItem';
 class List extends Component {
@@ -28,39 +28,31 @@ class List extends Component {
             replaydata: [],//回复提交的参数
             msg: '',//回复的内容
             dataa: false,
-            wenflag:false,
+            wenflag: false,
         }
 
     }
     async componentDidMount() {
-        let res = await checkLogin(),
-            isLogin = parseFloat(res.code) === 200 ? true : false;
-        this.setState({ isLogin });
+        let { queryLoginFlag, flag } = this.props;
+        this.setState({
+            isLogin: flag
+        })
         let result = await querytop(this.props.match.params.id);
         if (result.code == 200) {
             this.setState({
                 data: result.list
             })
         }
-        
+
         this.getData(true)
     }
-    // async componentWillReceiveProps() {
-    //     let res = await checkLogin(),
-    //         isLogin = parseFloat(res.code) === 200 ? true : false;
-    //     this.setState({ isLogin });
-    // }
-    async componentWillUpdate(nextProps, nextState) {
-        if (nextState.dataa) {
-            let result = await querytop(this.props.match.params.id);
-            if (result.code == 200) {
-                this.setState({
-                    data: result.list
-                })
-               
-            }
-        }
+    async componentWillReceiveProps(nextProps) {
+
     }
+    // shouldComponentUpdate(nextProps,nextState){
+    //     console.log(nextState)
+    //     return nextState.data !==this.state.data;
+    // }
     async getData(ref = false) {
         //获取数据
         let result = await fuList(this.props.match.params.id, this.state.pageNo);
@@ -106,7 +98,7 @@ class List extends Component {
 
     }
     render() {
-       
+
         const row = (rowData, sectionID, rowID) => {
             // 这里rowData,就是上面方法cloneWithRows的数组遍历的单条数据了，直接用就行
             let { uinfo, zan, countr, ctime, relist, content, id, aid, uid } = rowData;
@@ -125,9 +117,9 @@ class List extends Component {
                                 </dd>
                             </dl>
                             <p>
-                                <span onClick={this.zan.bind(this,zan,id)}>
+                                <span onClick={this.zan.bind(this, zan, id)}>
                                     <i></i>
-                                    <font ref="haha">{zan ? zan : '0'}</font>
+                                    <font>{zan ? zan : '0'}</font>
                                 </span>
                                 <span onClick={ev => {
                                     if (this.state.isLogin) {
@@ -161,21 +153,21 @@ class List extends Component {
                                             <font>{item.u_}</font>回复
                                 <font>{item.fu}</font>
                                         </font>
-                                        <span>{ctime}</span>
+                                        <span>{item.ctime}</span>
                                     </dd>
                                 </dl>
                                 <p>
                                     <span>
                                     </span>
                                     <span onClick={ev => {
-                                        if (this.state.isLogin) {
-                                            this.setState({
-                                                flagreply: true,
-                                                replaydata: [item.aid, item.id, id, item.uid]
-                                            })
-                                        } else {
-                                            this.props.history.push('/my/login')
+                                        if (!this.state.isLogin) {
+                                            this.props.history.push('/my/login');
+                                            return false;
                                         }
+                                        this.setState({
+                                            flagreply: true,
+                                            replaydata: [item.aid, item.id, id, item.uid]
+                                        })
 
                                     }}>
                                         <i></i>
@@ -188,11 +180,16 @@ class List extends Component {
                 </li>
             )
         }
-         if (!this.state.data &&this.state.data=='') return false;
+        if (!this.state.data && this.state.data == '') return false;
         return (
             <div className="replayBox">
                 <div style={{ padding: '0 0.3rem', borderBottom: '0.1rem solid #f4f4f4' }}>
-                    <ListItem item={this.state.data} />
+                    <ListItem item={this.state.data} huifupup={(id) => {
+                            this.setState({
+                                flagreply: true,
+                                replaydata: [id]
+                            })
+                    }} />
                 </div>
                 {this.state.fulist ? <div className="new_bottom">
                     <ul>
@@ -209,17 +206,11 @@ class List extends Component {
                     </ul>
                 </div> : ''}
                 {
-                    this.state.flagreply ? <div className="fixed_bottom" onClick={(e)=>{
-                        if (e.target.className == "fixed_a"||e.target.tagName=="TEXTAREA"||e.target.tagName=='P') {
-                            this.setState({
-                                flagreply: true
-                            })
-                            return false;
-                        }
+                    this.state.flagreply ? <div className="fixed_bottom"><div className="meng" onClick={(e) => {
                         this.setState({
                             flagreply: false
                         })
-                    }}>
+                    }}> </div>
                         <div className="fixed_a">
                             <textarea type="text" placeholder="一起讨论吧" value={this.state.msg} onChange={this.changeHandle}></textarea>
                             <p onClick={this.toSend} className={this.state.msg ? 'lv' : ''}>发表</p>
@@ -231,8 +222,11 @@ class List extends Component {
         )
 
     }
+    huifupup = (id) => {
+
+    }
     // 点赞
-    zan=async (a,id)=>{
+    zan = async (a, id) => {
         if (this.state.wenflag) return '';
         // let {flag}=this.props;
         // if(!flag){
@@ -240,12 +234,12 @@ class List extends Component {
         //     return false;
         // }
         // console.log(this.refs.haha.innerHTML)
-        var c=parseInt(a)+1;
-        let result=await readZan(id);
-        if (result.code==200){
+        var c = parseInt(a) + 1;
+        let result = await readZan(id);
+        if (result.code == 200) {
             this.setState({
-              wenflag:true
-          })
+                wenflag: true
+            })
         }
     }
     changeHandle = (e) => {
@@ -255,6 +249,7 @@ class List extends Component {
     };
     // 发表
     toSend = async () => {
+
         let { msg, replaydata } = this.state;
         if (msg) {
             this.setState({
@@ -272,11 +267,13 @@ class List extends Component {
                     dataa: true
                 })
                 Toast.info('提交成功~', 1);
+                this.props.history.go(0)
             }
+
         }
     }
 }
 
 
 
-export default withRouter(connect(state => state.ask, action.ask)(List))
+export default withRouter(connect(state => ({ ...state.my, ...state.ask }), { ...action.my, ...action.ask })(List))

@@ -21,6 +21,9 @@ class List extends Component {
             isLogin:false
         }
     }
+    componentWillMount(){
+        document.getElementById('root').scrollIntoView(true);//为ture返回顶部，false为底部
+    }
     async componentDidMount() {
         let { queryAsk, askListData } = this.props;
         if (askListData.topList.length == 0) {

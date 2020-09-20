@@ -32,6 +32,7 @@ export class Info extends Component {
                     {!flag?<span onClick={()=>{
                           this.props.history.push('/my/login');
                     }}>点击登录或注册</span>:<span>{uinfo.a_uname}</span>}
+                    <font  onClick={this.handleTo.bind(this,'/my/teacher')}>申请名师</font>
                 </p>
                 <div className="my_hua">
                     <p  onClick={this.handleTo.bind(this,'/my/topic')}><img src={require('../../static/image/hua.png')} />我的话题</p>
