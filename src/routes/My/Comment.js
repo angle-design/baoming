@@ -68,6 +68,7 @@ class Comment extends Component {
 
 
     render() {
+        document.title = "我的评论";
         const row = (rowData, sectionID, rowID) => {
             // 这里rowData,就是上面方法cloneWithRows的数组遍历的单条数据了，直接用就行
             let { content, hinfo,ctime} = rowData;

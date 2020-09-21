@@ -45,6 +45,7 @@ class Register extends Component {
     }
 
     render() {
+        document.title = "注册";
         const { getFieldDecorator } = this.props.form;
         return <div className="loginBox register">
             <h2>欢迎注册</h2>

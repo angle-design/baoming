@@ -44,6 +44,7 @@ class Forgot extends Component {
     }
 
     render() {
+        document.title = "忘记密码";
         const { getFieldDecorator } = this.props.form;
         //  密码验证
         const passwordValidator = (rule, value, callback) => {

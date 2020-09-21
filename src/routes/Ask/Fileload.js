@@ -49,6 +49,7 @@ class Fileload extends Component {
             });
     }
     render() {
+        document.title ='创建问吧';
         const $this = this;
         const props = {
             ref: "upload",

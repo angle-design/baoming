@@ -71,6 +71,7 @@ class Login extends Component {
         });
     }
     render() {
+        document.title = "登陆";
         const { getFieldDecorator } = this.props.form;
         return <div className="loginBox">
             <p className="regist"><span><Link to="/my/register">注册</Link></span></p>

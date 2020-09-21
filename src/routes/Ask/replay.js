@@ -98,10 +98,11 @@ class List extends Component {
 
     }
     render() {
-
+        document.title ='问吧';
         const row = (rowData, sectionID, rowID) => {
             // 这里rowData,就是上面方法cloneWithRows的数组遍历的单条数据了，直接用就行
             let { uinfo, zan, countr, ctime, relist, content, id, aid, uid } = rowData;
+
             return (
                 <li>
                     <div className="list_item">
@@ -184,12 +185,7 @@ class List extends Component {
         return (
             <div className="replayBox">
                 <div style={{ padding: '0 0.3rem', borderBottom: '0.1rem solid #f4f4f4' }}>
-                    <ListItem item={this.state.data} huifupup={(id) => {
-                            this.setState({
-                                flagreply: true,
-                                replaydata: [id]
-                            })
-                    }} />
+                    <ListItem item={this.state.data} huifupup={this.huifupup} />
                 </div>
                 {this.state.fulist ? <div className="new_bottom">
                     <ul>
@@ -223,7 +219,10 @@ class List extends Component {
 
     }
     huifupup = (id) => {
-
+        this.setState({
+            flagreply: true,
+            replaydata: [id]
+        })
     }
     // 点赞
     zan = async (a, id) => {
@@ -264,10 +263,13 @@ class List extends Component {
             let result = await replyList(payLoad);
             if (result.code == 200) {
                 this.setState({
-                    dataa: true
+                    pageNo: 1,
+                    dataSource: this.state.dataSource.cloneWithRows({}), 
+                    dataArr: [] 
                 })
                 Toast.info('提交成功~', 1);
-                this.props.history.go(0)
+                this.getData(true)
+                // this.props.history.go(0)
             }
 
         }

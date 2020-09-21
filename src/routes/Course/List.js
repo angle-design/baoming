@@ -97,7 +97,7 @@ class List extends Component {
     }
    
     render() {
-
+        document.title ='报名大厅';
         const row = (rowData, sectionID, rowID) => {
             return (
                 <CourseItem item={rowData}></CourseItem>

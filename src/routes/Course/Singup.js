@@ -111,7 +111,7 @@ class Singup extends Component {
     };
 
     render() {
-
+        document.title = '课程报名';
         const { getFieldDecorator, getFieldProps } = this.props.form;
         return (
             <div className="settlement">

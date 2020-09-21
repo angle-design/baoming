@@ -28,6 +28,7 @@ class Collection extends Component {
         }
     }
     render() {
+        document.title = "我的收藏";
         let { data, num, lessondata } = this.state;
         return (
             <div className="mycollect">

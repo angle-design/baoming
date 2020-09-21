@@ -20,6 +20,7 @@ class Lesson extends Component {
      }
     }
     render() {
+        document.title ='已报名课程';
         let {data}=this.state;
         if(!data) return false;
         return (

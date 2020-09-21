@@ -70,6 +70,7 @@ class List extends Component {
     }
 
     render() {
+        document.title ='问吧';
         let { askListData } = this.props,
             { topList, data } = askListData;
         const row = (rowData, sectionID, rowID) => {
@@ -95,8 +96,12 @@ class List extends Component {
                     <ul>
                         {
                             this.state.askLeftList.map((item, index) => {
-                                let { hinfo: { acount, hcount, qcount }, uinfo: { a_title, a_uname, a_image } } = item;
-                                return <li key={index}>
+                                let { hinfo: { acount, hcount, qcount ,hid}, uinfo: { a_title, a_uname, a_image } } = item;
+                                return <li key={index} onClick={()=>{
+                                        this.props.history.push({
+                                            pathname:'/ask/detail/'+hid
+                                          })
+                                }}>
                                     <dl>
                                         <dt>
                                             {a_image ? <img src={a_image} /> : <img src={require('../../static/image/mohead.png')} />}

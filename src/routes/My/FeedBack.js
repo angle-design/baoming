@@ -11,6 +11,7 @@ class FeefBack extends Component {
     }
     
     render() {
+        document.title = "意见反馈";
         return (
             <div className="feedback">
             <textarea placeholder="老师认真负责" value={this.state.msg} onChange={this.changeHandle}></textarea>

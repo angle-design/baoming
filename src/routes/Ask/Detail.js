@@ -133,7 +133,9 @@ class Detail extends Component {
         })
     }
     render() {
+        
         let { h_title, h_title2, h_etime, h_image, isnow, h_content, uinfo, hlist } = this.state.data;
+        document.title =h_title? h_title+','+h_title2:'';
         if (h_etime) {
             h_etime = h_etime.split(" ")[0];
         }

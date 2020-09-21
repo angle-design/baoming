@@ -56,6 +56,7 @@ class SetUp extends Component {
       
     }
     render() {
+        document.title = "设置";
         let { uinfo } = this.props;
         const { previewVisible, previewImage, fileList } = this.state;
 

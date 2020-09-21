@@ -36,7 +36,7 @@ class Settlement extends Component {
         });
     }
     render() {
-
+        document.title ='机构入驻';
         const { getFieldDecorator } = this.props.form;
         return (
             <div className="settlement">

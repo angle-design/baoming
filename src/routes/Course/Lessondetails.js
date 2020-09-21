@@ -29,6 +29,7 @@ class Evaluate extends Component {
         }
     }
     render() {
+        document.title = this.state.data.name?this.state.data.name:'';
         if(!this.state.data) return '';
         let {name,price,content,image,features,objects,sid,oldprice,classtype,classnum,xingshi}=this.state.data;
         return (

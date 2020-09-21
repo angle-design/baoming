@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 import { connect } from 'react-redux';
 import { Affix, Button } from 'antd';
+import Zmage from 'react-zmage';
 import { PingJia } from '../../api/course'
 import '../../static/css/evaluat.less'
 import Star from './Star';
@@ -73,7 +74,7 @@ class Evaluate extends Component {
                     {dianping?<p>{dianping}</p>:''}
                     {image&&image.length!==0?<ul>
                         {image.map((item,index)=>{
-                         return <li key={index}><img src={item} /></li>
+                         return <li key={index}><Zmage src={item} /></li>
                         })}
                         </ul>:''}
                     </div>

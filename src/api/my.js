@@ -121,3 +121,10 @@ export function topicList(p){
                 id
         })
     }
+
+    // 申请名师
+    export function teachForm(payload){
+        return axios.post('/api/api/my/addteacher',{
+            ...payload
+        })
+    }

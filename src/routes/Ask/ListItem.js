@@ -35,7 +35,14 @@ class ListItem extends Component {
 
     }
   }
-
+  fu = () => {
+    // let { flag } = this.props;
+    // if (!flag) {
+    //   this.props.history.go('/my/login');
+    //   return false;
+    // }
+    // this.props.huifupup(this.props.item.id) 
+  }
   render() {
     let { uinfo, isvip, time, zan, huifu, content, qlist, id, isq, hid } = this.props.item;
     return (
@@ -146,14 +153,7 @@ class ListItem extends Component {
       </div>
     )
   }
-  fu = () => {
-    let { flag } = this.props;
-    if (!flag) {
-      this.props.history.go('/my/login');
-      return false;
-    }
-    this.props.huifupup(this.props.item.id)
-  }
+ 
   // 问点赞
   handlewenzan = async (a) => {
     if (this.state.wenflag) return '';

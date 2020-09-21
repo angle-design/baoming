@@ -24,6 +24,7 @@ export class Info extends Component {
         }
     }
     render() {
+        document.title = "我的";
         let {flag,uinfo}=this.props;
         return (
             <section className="my">
