@@ -7,7 +7,8 @@ import Qs from 'qs';
 import Listcon from './ListItem';
 import action from '../../store/action/index';
 import LoadPage from '../../component/LoadPage'
-import Kong from '../../component/kong'
+import Kong from '../../component/kong';
+import {ao} from '../../unti'
 class Detail extends Component {
     constructor(props, context) {
         super(props, context);
@@ -248,6 +249,8 @@ class Detail extends Component {
                             }
                             this.setState({
                                 wenflag:true
+                            },()=>{
+                                ao()
                             })
                             return false;
                           }else if(isnow==2){
@@ -265,6 +268,8 @@ class Detail extends Component {
                         if (e.target.className == "pup_con"||e.target.tagName=="TEXTAREA"||e.target.tagName=='P') {
                             this.setState({
                               wenflag: true
+                            },()=>{
+                                ao()
                             })
                             return false;
                         }

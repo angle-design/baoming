@@ -20,6 +20,7 @@ export function ao () {
     }
     for (var i = 0; i < inputt.length; i++) {
         inputt[i].addEventListener('blur', function () {
+           
             var currentPosition, timer;
             var speed = 1;
             timer = setInterval(function () {

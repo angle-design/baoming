@@ -24,7 +24,6 @@ class Search extends Component {
 
     }
     async getData(ref = false, key) {
-        alert(1)
         //关键代码
         var dataArr;
         //获取数据

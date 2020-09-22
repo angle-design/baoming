@@ -5,6 +5,7 @@ import { Toast } from 'antd-mobile';
 import { wenZan } from '../../api/ask.js'
 import action from '../../store/action/index';
 import '../../static/css/listitem.less';
+import { ao } from '../../unti.js'
 import { toAswer } from '../../api/ask';
 class ListItem extends Component {
   constructor(props, context) {
@@ -19,8 +20,6 @@ class ListItem extends Component {
     }
   }
   async componentDidMount() {
-
-
     let { queryLoginFlag, flag } = this.props;
     if (!flag) {
       queryLoginFlag();
@@ -83,6 +82,8 @@ class ListItem extends Component {
             }
             this.setState({
               answerflag: true
+            },()=>{
+              ao()
             })
             return false;
           }}> <img src={require('../../static/image/bi.png')} />解答问题</div> : ''}
@@ -117,6 +118,8 @@ class ListItem extends Component {
           if (e.target.className == "pup_con" || e.target.tagName == "TEXTAREA" || e.target.tagName == 'P') {
             this.setState({
               answerflag: true
+            },()=>{
+              ao()
             })
             return false;
           }
@@ -134,7 +137,7 @@ class ListItem extends Component {
               }}
             ></textarea>
             <p>
-              <font>{0 / 800}</font>
+              <font>{parseInt(800-parseInt(this.state.wovalue.length))} / 800</font>
               <span onClick={async () => {
                 if (this.state.wovalue) {
                   let res = await toAswer(hid, id, this.state.wovalue);
@@ -153,7 +156,7 @@ class ListItem extends Component {
       </div>
     )
   }
- 
+
   // 问点赞
   handlewenzan = async (a) => {
     if (this.state.wenflag) return '';

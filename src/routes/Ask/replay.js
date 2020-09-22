@@ -5,6 +5,7 @@ import action from '../../store/action/index';
 import { Link, withRouter } from 'react-router-dom';
 import { querytop, fuList, replyList, readZan } from '../../api/ask';
 import { checkLogin } from '../../api/my';
+import { ao } from '../../unti.js'
 import ListItem from './ListItem';
 class List extends Component {
     constructor(props, context) {
@@ -33,6 +34,7 @@ class List extends Component {
 
     }
     async componentDidMount() {
+        
         let { queryLoginFlag, flag } = this.props;
         this.setState({
             isLogin: flag
@@ -46,9 +48,13 @@ class List extends Component {
 
         this.getData(true)
     }
-    async componentWillReceiveProps(nextProps) {
-
+    componentWillReceiveProps(nextProps){
+        if(this.props.flag !== nextProps.flag){
+            this.setState({
+                isLogin:nextProps.flag
+           })
     }
+}
     // shouldComponentUpdate(nextProps,nextState){
     //     console.log(nextState)
     //     return nextState.data !==this.state.data;
@@ -124,9 +130,12 @@ class List extends Component {
                                 </span>
                                 <span onClick={ev => {
                                     if (this.state.isLogin) {
+                                       
                                         this.setState({
                                             flagreply: true,
                                             replaydata: [aid, id, id, uid]
+                                        },()=>{
+                                            ao()
                                         })
                                     } else {
                                         this.props.history.push('/my/login')
@@ -168,6 +177,8 @@ class List extends Component {
                                         this.setState({
                                             flagreply: true,
                                             replaydata: [item.aid, item.id, id, item.uid]
+                                        },()=>{
+                                            ao()
                                         })
 
                                     }}>
@@ -219,6 +230,7 @@ class List extends Component {
 
     }
     huifupup = (id) => {
+        ao()
         this.setState({
             flagreply: true,
             replaydata: [id]
