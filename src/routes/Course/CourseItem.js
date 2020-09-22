@@ -18,7 +18,7 @@ class CourseItem extends Component {
                 }}>
                 {/* 左边内容 */}
                 <p>
-                    <font></font>
+                    <font className="paiming"></font>
                     <img src={logo} />
                 </p>
                 {/* 右边内容 */}

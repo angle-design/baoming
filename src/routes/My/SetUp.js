@@ -36,6 +36,7 @@ class SetUp extends Component {
 
     }
     async componentDidMount() {
+        console.log(this.props.uinfo)
         let { queryInfo } = this.props;
         await queryInfo();
         this.setState({
@@ -57,6 +58,8 @@ class SetUp extends Component {
     }
     render() {
         document.title = "设置";
+        if(this.props.uinfo&&this.props.uinfo=={}) return '';
+  
         let { uinfo } = this.props;
         const { previewVisible, previewImage, fileList } = this.state;
 
@@ -95,6 +98,7 @@ class SetUp extends Component {
                         }
                         let _this=this;
                         let { a_image, a_sex, a_uname } = this.props.uinfo;
+                       
                         if (this.state.organCertUrl != a_image || this.state.sex != a_sex || this.state.name != a_uname) {
                             Modal.confirm({
                                 title: '即将离开当前页面，是否保存当前修改?',

@@ -7,6 +7,7 @@ import { PingJia } from '../../api/course'
 import '../../static/css/evaluat.less'
 import Star from './Star';
 import Kong from '../../component/kong';
+import { compose } from 'redux';
 class Evaluate extends Component {
 
     constructor(props, context) {
@@ -19,9 +20,12 @@ class Evaluate extends Component {
             isLoading:false,
             page:1,
             count:0,
-            flag:true
+            flag:true,
+            idid:this.props.idid
         }
     }
+  
+
     async componentWillMount() {
         let result = await PingJia(this.props.item,0,1);
         if (result.code == 200) {
@@ -31,10 +35,20 @@ class Evaluate extends Component {
            })
         }
     }
-    
+  async componentWillReceiveProps(nextProps) {
+     if(this.state.idid!==nextProps.idid){
+        let result = await PingJia(this.props.item,0,1);
+        if (result.code == 200) {
+           this.setState({
+               data:result.list.list,
+               count:result.list.count
+           })
+        }
+     }
+ }
     render() {
         return (
-            <div className="evaluateBox">
+            <div className="evaluateBox" data-id={this.state.idid}>
                 <b>全部评价<font>（ {this.state.count}条 ）</font></b>
                 <Affix offsetTop={this.state.top}>
                 <p className="tab_pingjia">
@@ -53,6 +67,10 @@ class Evaluate extends Component {
                                     count:result.list.count,
                                        data:result.list.list
                                    })
+                                }else if(result.code == 404){
+                                    this.setState({
+                                        count:0
+                                       })
                                 }
                             })
                         }}>{item}</span>
@@ -121,7 +139,6 @@ class Evaluate extends Component {
                 }
              
             }else{
-                alert(2)
                 this.setState({
                     flag:false  
                 })

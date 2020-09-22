@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import ImgCrop from 'antd-img-crop';
+import lrz from 'lrz';
 import {askCommit} from '../../api/ask'
 import { ActionSheet, InputItem, TextareaItem, Toast } from 'antd-mobile';
 import { Upload, Button, Modal, message } from 'antd'; //引入上传、按钮、弹窗等antd组件
@@ -67,9 +68,9 @@ class Fileload extends Component {
             }
         }
         const props1 = {
-            aspect: 710 / 248,
+            aspect: 375 / 124,
             width: document.body.clientWidth,
-            height: parseInt(document.body.clientWidth) / 710 * 248,
+            height: parseInt(document.body.clientWidth) / 375 * 124,
             resize: false, //裁剪是否可以调整大小
             resizeAndDrag: true, //裁剪是否可以调整大小、可拖动
             modalTitle: "上传图片", //弹窗标题

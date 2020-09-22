@@ -274,17 +274,17 @@ class Info extends Component {
                 {
                     this.state.videoflag ? <div className="video_pup">
                         <video controls="controls" src={this.state.src} autoPlay>您的浏览器不支持 video 标签。</video>
-                        <i onClick={() => {
+                        <span onClick={() => {
                             this.setState({
                                 videoflag: false,
                                 src: ''
                             })
                         }
 
-                        }>关闭</i>
+                        }><i></i></span>
                     </div> : ''
                 }
-                {this.state.ii?<LoadPage></LoadPage>:''}
+                {this.state.ii?<div className="loadload"><LoadPage></LoadPage></div>:''}
             </div>
         )
     }
@@ -296,7 +296,9 @@ class Info extends Component {
         })
     }
     toping = async () => {
-        console.log(this.state.imlist)
+        this.setState({
+            ii:true
+        })
         let str='',
             imgList = [];
         for (var i = 0; i < this.state.imlist.length; i++) {
@@ -313,16 +315,14 @@ class Info extends Component {
         valueData.sid = this.id;
         valueData.images = str;
         this.setState({ valueData })
-        this.setState({
-            ii:true
-        })
+       
         let result =await toPing(this.state.valueData);
         if(result.code==200){
             this.setState({
-                idid:this.state.idid++,
+                idid:this.state.idid+1,
                 ii:false
             })
-            Toast.info('提交成功～');
+            Toast.info('提交成功～',1);
         }else if(result.code==205){
             this.props.history.push('/my/login');
         }
@@ -358,7 +358,7 @@ class Info extends Component {
                 this.setState({
                     collectflag: true
                 })
-                Toast.info('收藏成功')
+                Toast.info('收藏成功',1)
             }
         }
     }
@@ -374,7 +374,6 @@ class Info extends Component {
         const { imlist } = this.state;
         if (type === 'add') {
             lrz(files[files.length-1].url, { quality: 0.5 }).then(async (rst) => {
-
                 imlist.push(rst.base64)
                 this.setState({
                     imlist
@@ -390,9 +389,7 @@ class Info extends Component {
             this.setState({
                 imlist
             })
-
         }
-
         this.setState({
             files,
         });

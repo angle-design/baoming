@@ -98,7 +98,7 @@ class Topic extends Component {
                                 <span style={{ color: '#999' }}>>已关闭</span>}
                         <i onClick={
                             this.showActionSheet.bind(this, rowData.id)
-                        }>删除</i>
+                        }></i>
                     </p>
                 </div></div>)
         }

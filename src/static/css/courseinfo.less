@@ -275,14 +275,40 @@ html:not([data-scale]) .am-tabs-default-bar-top .am-tabs-default-bar-tab::after{
     flex-direction: column;
     video {
       width: 7rem;
-      height: 6rem;
+      height: 4rem;
+      background:#333;
     }
-    i {
-      font-size: 0.8rem;
-      color: #fff;
-      margin-top: 0.3rem;
+    span {
+        background:#fff;
+        display: inline-block;
+        width:0.6rem;
+        height:0.6rem;
+        border-radius:50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color:#333;
+        margin-top:0.2rem;
+        i{
+            background:url(../../static/image/cha.png) no-repeat center center;
+            background-size:0.31rem auto;
+            display: inline-block;
+            background-position: 0 0;
+            width:0.31rem;
+            height:0.26rem;
+        }
     }
   }
   .ant-rate{
       color:#ff4c11
+  }
+  .loadload{
+      width:1.2rem;
+      height:1.2rem;
+      position: fixed;
+      top:50%;
+      left:50%;
+      margin-top:-0.6rem;
+      height:-0.6rem;
+
   }

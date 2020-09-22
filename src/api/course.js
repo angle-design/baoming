@@ -72,7 +72,7 @@ export function lessonInfo(courseid){
     return axios.get("/api/api/school/getCinfo", {
         params: {
             courseid
-        }
+        }, headers:{'isLoading':false}
     })
 }
 

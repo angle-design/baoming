@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Form, Input, Button, Modal } from 'antd';
+import {Toast } from 'antd-mobile';
 import { Link } from 'react-router-dom';
 import { ao } from '../../unti.js'
 import { getCodeMa, register } from '../../api/my';
@@ -20,7 +21,8 @@ class Register extends Component {
         this.state = {
             count: 60,
             liked: true,
-            flag:false
+            flag:false,
+            agree:false
         }
     }
     componentDidMount() {
@@ -29,7 +31,11 @@ class Register extends Component {
     handleSubmit = ev => {
         ev.preventDefault();
         this.props.form.validateFields(async (err, values) => {
-            if (!err) {
+            if(!this.state.agree){
+                Toast.info('请先勾选协议～',1);
+                return false;
+            }
+            if (!err&&this.state.agree) {
                 let { phonename, password, codeMa } = values;
                 // userPass = md5(userPass);
                 let result = await register(
@@ -90,7 +96,11 @@ class Register extends Component {
                 </Form.Item>
                 <Form.Item>
                     <p className="xieyi">
-                        <i ></i>阅读并同意
+                        <i className={this.state.agree?'active':''} onClick={()=>{
+                            this.setState({
+                                agree:!this.state.agree
+                            })
+                        }} ></i>阅读并同意
                         <font onClick={()=>{
                             this.setState({
                                 flag:true
@@ -111,7 +121,7 @@ class Register extends Component {
                             this.setState({
                                 flag:false
                             })
-                        }}>关闭</i>
+                        }}></i>
                     <h3>报名大厅服务协议</h3>
                     <p>国内功能很强大且图标内容很丰富的矢量图标库,提供矢量图标下载、在线存储、格式转换等功能。国内功能很强大且图标内容很丰富的矢量图标库,提供矢量图标下载、在线存储、格式转换等功能。国内功能很强大且图标内容很丰富的矢量图标库,提供矢量图标下载、在线存储、格式转换等功能。国内功能很强大且图标内容很丰富的矢量图标库,提供矢量图标下载、在线存储、格式转换等功能。国内功能很强大且图标内容很丰富的矢量图标库,提供矢量图标下载、在线存储、格式转换等功能。国内功能很强大且图标内容很丰富的矢量图标库,提供矢量图标下载、在线存储、格式转换等功能。国内功能很强大且图标内容很丰富的矢量图标库,提供矢量图标下载、在线存储、格式转换等功能。</p>
                 </div>
