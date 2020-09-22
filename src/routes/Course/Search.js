@@ -12,13 +12,11 @@ class Search extends Component {
             rowHasChanged: (row1, row2) => row1 !== row2 // rowHasChanged(prevRowData, nextRowData); 用其进行数据变更的比较
         })
         this.state = {
-            key: '',
             dataSource,
-            datas: [],
             pageNo: 1,
             hasMore: true,
             isLoading: true,
-            dataArr: [],
+            dataArr: []
         }
     }
     componentDidMount() {
@@ -26,50 +24,50 @@ class Search extends Component {
 
     }
     async getData(ref = false, key) {
+        alert(1)
         //关键代码
         var dataArr;
         //获取数据
         let result = await seaList(key, this.state.pageNo);
-       if(result.code==200){
-            const dataList = result.list;
-            dataArr = this.state.dataArr.concat(dataList)
-            // const len = dataList.length;
-            var len = dataList && dataList.length;
-            if (len <= 0) { // 判断是否已经没有数据了
-                alert(1)
+        if (result.code == 200) {
+            if (result.list && result.list.length !== 0) {
+                dataArr = this.state.dataArr.concat(result.list)
                 this.setState({
+                    pageNo: this.state.pageNo,
+                    dataSource: this.state.dataSource.cloneWithRows(dataArr),
                     refreshing: false,
                     isLoading: false,
-                    hasMore: false
+                    dataArr: dataArr // 保存新数据进state
                 })
-                Toast.info('没有数据了~', 1)
-                return false
+            } else {
+                this.setState({
+                    hasMore: false,
+                    pageNo: 1,
+                    dataSource: this.state.dataSource.cloneWithRows({}),
+                    isLoading: false,
+                    dataArr: [] // 保存新数据进state
+                })
             }
-    
-            // 这里表示上拉加载更多
-    
-    
+
+        } else if (result.code == 404) {
             this.setState({
-                pageNo: this.state.pageNo,
-                dataSource: this.state.dataSource.cloneWithRows(dataArr),
-                refreshing: false,
+                hasMore: false,
+                pageNo: 1,
+                dataSource: this.state.dataSource.cloneWithRows({}),
                 isLoading: false,
-                dataArr: dataArr // 保存新数据进state
+                dataArr: [] // 保存新数据进state
             })
         }
-
-        
-
     }
     onEndReached = (event) => {
-        if (this.state.isLoading || !this.state.hasMore) {
-            return
+        if (!this.state.hasMore) {
+            return false;
         }
         this.setState({
             isLoading: true,
             pageNo: this.state.pageNo + 1, // 加载下一页
         }, () => {
-            this.getData(false, this.setState.value)
+            this.getData(false, this.state.key)
         })
     }
     render() {
@@ -83,7 +81,6 @@ class Search extends Component {
                 <SearchBar placeholder="搜索课程" ref={ref => this.autoFocusInst = ref} onChange={(value) => {
                     this.setState({
                         key: value,
-                        datas: [],
                         pageNo: 1,
                         dataArr: [],
                         hasMore: true,
@@ -91,22 +88,22 @@ class Search extends Component {
                         dataSource: this.state.dataSource.cloneWithRows({}),
                     })
                     this.getData(true, value)
-                }
-                }
+                }}
                     onCancel={() => {
                         this.props.history.push('/course')
                     }} />
                 <div className="logotop" style={{ marginTop: '0.4rem' }}>
-                    <ListView
+                    {this.state.dataArr && this.state.dataArr.length !== 0 ? <ListView
                         ref={el => this.lv = el}
                         dataSource={this.state.dataSource}
-                        renderFooter={() => (<div className="footer" style={{ textAlign: 'center' }}>{this.state.isLoading ? '' : '暂无更多数据'}</div>)}
+                        renderFooter={() => (<div className="footer" style={{ textAlign: 'center' }}>{this.state.hasMore ? '' : '暂无更多数据'}</div>)}
                         renderRow={row}
                         useBodyScroll
                         onEndReachedThreshold={10}
                         onEndReached={this.onEndReached}
                         pageSize={10}
-                    />
+                    /> : <Kong msg="暂无数据"></Kong>}
+
                 </div>
             </div>
         )

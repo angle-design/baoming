@@ -12,6 +12,7 @@ import Star from './Star';
 import LessonItem from './LessonItem';
 import Evaluate from './Evaluate';
 import action from '../../store/action/index';
+import LoadPage from '../../component/LoadPage'
 
 const desc = ['差评', '差评', '中评', '好评', '好评'];
 
@@ -44,6 +45,8 @@ class Info extends Component {
             zilength:200,
             height: 0,//=>字高度
             contentflag: true,//=>控制字展开收起
+            idid:0,
+            ii:false
         }
     }
     async componentWillMount() {
@@ -94,6 +97,13 @@ class Info extends Component {
         }
 
     }
+    componentWillReceiveProps(nextProps){
+        if(this.props.flag !== nextProps.flag){
+            this.setState({
+                isLogin:nextProps.flag
+           })
+    }
+}
     //  shouldComponentUpdate(newProps) {
     //   return newProps.flag!==this.state.isLogin
     //  }
@@ -259,7 +269,7 @@ class Info extends Component {
                     </div>
                     <button onClick={this.toping}>提交</button>
                 </div>
-                <Evaluate item={this.id} />
+                <Evaluate item={this.id} idid={this.state.idid}/>
                 {/* 视频弹窗 */}
                 {
                     this.state.videoflag ? <div className="video_pup">
@@ -274,6 +284,7 @@ class Info extends Component {
                         }>关闭</i>
                     </div> : ''
                 }
+                {this.state.ii?<LoadPage></LoadPage>:''}
             </div>
         )
     }
@@ -302,10 +313,16 @@ class Info extends Component {
         valueData.sid = this.id;
         valueData.images = str;
         this.setState({ valueData })
+        this.setState({
+            ii:true
+        })
         let result =await toPing(this.state.valueData);
-         
         if(result.code==200){
-            Toast.info('提交成功～')
+            this.setState({
+                idid:this.state.idid++,
+                ii:false
+            })
+            Toast.info('提交成功～');
         }else if(result.code==205){
             this.props.history.push('/my/login');
         }

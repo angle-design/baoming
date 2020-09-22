@@ -119,6 +119,7 @@ export function PingJia(sid,type,p){
     return axios.get('/api/api/school/getschoolcomment',{
         params:{
             sid,type,p
-        }
+        },
+        headers:{'isLoading':false}
     })
 }

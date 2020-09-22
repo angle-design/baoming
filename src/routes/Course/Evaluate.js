@@ -31,6 +31,7 @@ class Evaluate extends Component {
            })
         }
     }
+    
     render() {
         return (
             <div className="evaluateBox">
@@ -41,7 +42,10 @@ class Evaluate extends Component {
                         return <span key={index} className={this.state.aIndex==index?'active':''} onClick={ ()=>{
                             this.setState({
                                 data:[],
-                                aIndex:index
+                                page:1,
+                                aIndex:index,
+                                flag:true,
+                                isLoading:false
                             },async ()=>{
                                 let result = await PingJia(this.props.item,index,1);
                                 if (result.code == 200) {
@@ -80,7 +84,7 @@ class Evaluate extends Component {
                     </div>
                     })}
                   {this.state.flag?(
-                        <Button  onClick={this.loadMore} loading={this.state.isLoading} className="more">加载更多评价</Button>):''}
+                        <Button  onClick={this.loadMore} loading={this.state.isLoading} className="more">加载更多评价</Button>):<p style={{fontSize:'0.24rem',color:'#999',textAlign:'center',padding:'0 0 0.2rem'}}>没有更多数据</p>}
                 </div> : <Kong msg="暂无评价~"/>}
 
                
@@ -95,16 +99,15 @@ class Evaluate extends Component {
         this.setState({
             page:this.state.page+1
         },async ()=>{
-            let result = await PingJia(this.props.item,0,this.state.page);
+            let result = await PingJia(this.props.item,this.state.aIndex,this.state.page);
             if (result.code == 200) {
                 console.log(this.state.data)
-                if(result.list){
+                if(result.list.list&&result.list.list.length!==0){
                     this.setState({
                         isLoading:false,
                         data:this.state.data.concat(result.list.list)
                     })
                     if(result.list.list.length<3){
-                        alert(1)
                         this.setState({
                             flag:false,
                             data:this.state.data.concat(result.list.list)
@@ -118,7 +121,10 @@ class Evaluate extends Component {
                 }
              
             }else{
-
+                alert(2)
+                this.setState({
+                    flag:false  
+                })
             }
         })
     };

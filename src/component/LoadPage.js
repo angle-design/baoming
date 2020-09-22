@@ -6,11 +6,11 @@ export class LoadPage extends Component {
     }
     render() {
         return (
-            <div className="la-ball-pulse-sync">
-                <div></div>
-                <div></div>
-                <div></div>
-            </div>
+            <div className="loader">
+        <div className="loader-inner ball-clip-rotate">
+          <div></div>
+        </div>
+      </div>
         )
     }
 }
