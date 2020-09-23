@@ -37,14 +37,14 @@ export default function headline(state = INIT_STATE, action) {
             break;
         case TYPES.ASK_LISTITEM_DETAIL:
             if (parseFloat(action.result.code) === 200 && action.result.list) {
+                console.log(action.result.list)
+                state.askInfoList.count = action.result.count;
+                state.askInfoList.data = state.askInfoList.data.concat(action.result.list);
+                state.askInfoList.page++
                 if (action.result.list.length < 10) {
                     state.askInfoList.count = action.result.count;
-                    state.askInfoList.data =action.result.list;
-                    state.askInfoList.flag = false;
-                }else{
-                    state.askInfoList.count = action.result.count;
                     state.askInfoList.data = state.askInfoList.data.concat(action.result.list);
-                    state.askInfoList.page++
+                    state.askInfoList.flag = false;
                 }
             } else {
                 state.askInfoList.flag = false;

@@ -14,11 +14,11 @@ let ask = {
     },
     //=>问吧详情列表
     queryList(payload = {}) {
-        let {id,page=1, order='',flagA = 'push'} = payload;
+        let {id,p=1, order='',flagA = 'push'} = payload;
         return async dispatch => {
             let result = await questList({
                 id,
-                page,
+                p,
                 order
             });
             dispatch({

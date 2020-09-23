@@ -29,7 +29,8 @@ class List extends Component {
             replaydata: [],//回复提交的参数
             msg: '',//回复的内容
             dataa: false,
-            wenflag: false,
+            zanwenflag: false,
+            zanxin:0
         }
 
     }
@@ -125,7 +126,7 @@ class List extends Component {
                             </dl>
                             <p>
                                 <span onClick={this.zan.bind(this, zan, id)}>
-                                    <i></i>
+                                    <i  className={this.state.zanwenflag ? 'active' : ''}></i>
                                     <font>{zan ? zan : '0'}</font>
                                 </span>
                                 <span onClick={ev => {
@@ -238,18 +239,14 @@ class List extends Component {
     }
     // 点赞
     zan = async (a, id) => {
-        if (this.state.wenflag) return '';
-        // let {flag}=this.props;
-        // if(!flag){
-        //     this.props.history.push('/my/login');
-        //     return false;
-        // }
-        // console.log(this.refs.haha.innerHTML)
+        console.log(this)
+        if (this.state.zanwenflag) return '';
         var c = parseInt(a) + 1;
         let result = await readZan(id);
         if (result.code == 200) {
+           console.log(this.refs)
             this.setState({
-                wenflag: true
+                zanwenflag: true
             })
         }
     }

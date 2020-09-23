@@ -100,7 +100,7 @@ class Detail extends Component {
             }
             //获取问答列表
               await this.props.queryList({
-                    p: 1,
+                    p:  this.props.askInfoList.page,
                     id: this.courseId
               })
     
@@ -121,6 +121,7 @@ class Detail extends Component {
       
         this.setState({
             isLoading: true,
+            pageNo:this.props.askInfoList.page
         }, async () => {
             let { queryList } = this.props;
             await queryList({
@@ -290,19 +291,28 @@ class Detail extends Component {
                                 if(this.state.tivalue){
                                     let res=await toQuest(this.courseId,this.state.tivalue);
                                     if (res.code == 200) {
+                                        this.props.askInfoList.flag=true;
+                                        this.props.askInfoList.page=1;
+                                        this.props.askInfoList.data=[];
                                         //提问成功
                                         this.setState({
                                             wenflag:false
                                         })
-                                        Toast.info("提问成功~");
-                                        await  this.props.queryList({
-                                            p: 1,
-                                            id: this.courseId
-                                        })
+                                        Toast.info("提问成功~",1);
                                         this.setState({
-                                            dataSource: this.state.dataSource.cloneWithRows(this.props.askInfoList.data),
                                             pageNo: this.props.askInfoList.page
+                                        },async ()=>{
+                                            await  this.props.queryList({
+                                                p:  this.state.pageNo,
+                                                id: this.courseId,
+                                                order:0
+                                            })
+                                            this.setState({
+                                                dataSource: this.state.dataSource.cloneWithRows(this.props.askInfoList.data),
+                                            })
                                         })
+                                      
+                                       
                                       }
                                       
                                 }
@@ -328,31 +338,27 @@ class Detail extends Component {
         }
     }
     // 最新最热切换
-    handleClick = (order) => {
-        this.props.askInfoList.flag = false;
+    handleClick =(order) => {
+        this.props.askInfoList.flag=true;
+        this.props.askInfoList.page=1;
+        this.props.askInfoList.data=[];
         this.setState({
-            pageNo: 1,
-            questdata: [],
-            activeIndex: order,
-            dataArr: [],
-            dataSource: this.state.dataSource.cloneWithRows({}),
-        }, async () => {
-
+            activeIndex:order,
+            pageNo: this.props.askInfoList.page
+        },async ()=>{
             await this.props.queryList({
-                p: 1,
+                p: this.state.pageNo,
                 id: this.courseId,
                 order: order
             })
-            setTimeout(() => {
-
-                this.setState({
-                    dataSource: this.state.dataSource.cloneWithRows(this.props.askInfoList.data),
-                    pageNo: this.props.askInfoList.page
-                })
-            },30)
-
-
+            
+            this.setState({
+                dataSource: this.state.dataSource.cloneWithRows(this.props.askInfoList.data)
+               
+            })
+        
         })
+      
 
 
     }
