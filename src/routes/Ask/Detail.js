@@ -179,7 +179,7 @@ class Detail extends Component {
                     <p>
                         <span className={this.state.contentflag ? 'heightauto' : ''} ref="conText">{h_content}</span>
                         <span>
-                            {this.state.height > 100 ?
+                            {this.state.height > 110 ?
                                 this.state.contentflag ?
                                     <font onClick={() => {
                                         this.setState({

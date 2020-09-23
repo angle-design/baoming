@@ -25,7 +25,7 @@ class Info extends Component {
             valueData: {
                 'sid': 0,
                 'zong': 0,
-                'pingpai': 0,
+                'pinpai': 0,
                 'kecheng': 0,
                 'jiaoxue': 0,
                 'fuwu': 0,
@@ -172,8 +172,8 @@ class Info extends Component {
                     <b>我要评价</b>
                     <ul>
                         <li><font>总体评价</font> <span>
-                            <Rate tooltips={desc} value={zong} onChange={(value) => {
-                                 if(!this.state.isLogin){
+                            <Rate tooltips={desc} value={zong} allowClear={false} onFocus={this.toLogin} onChange={(value) => {
+                                if(!this.state.isLogin){
                                     this.props.history.push('/my/login');
                                     return false;
                                 }
@@ -184,7 +184,7 @@ class Info extends Component {
                             {zong ? <span className="ant-rate-text">{desc[zong - 1]}</span> : ''}
                         </span></li>
                         <li><font>品牌指数</font><span>
-                            <Rate tooltips={desc} onChange={(value) => {
+                            <Rate tooltips={desc} onFocus={this.toLogin} allowClear={false}  onChange={(value) => {
                                  if(!this.state.isLogin){
                                     this.props.history.push('/my/login');
                                     return false;
@@ -196,7 +196,7 @@ class Info extends Component {
                             {pinpai ? <span className="ant-rate-text">{desc[pinpai - 1]}</span> : ''}
                         </span></li>
                         <li><font>课程体系</font><span>
-                            <Rate tooltips={desc} onChange={(value) => {
+                            <Rate tooltips={desc}  onFocus={this.toLogin}  allowClear={false} onChange={(value) => {
                                  if(!this.state.isLogin){
                                     this.props.history.push('/my/login');
                                     return false;
@@ -208,7 +208,7 @@ class Info extends Component {
                             {kecheng ? <span className="ant-rate-text">{desc[kecheng - 1]}</span> : ''}
                         </span></li>
                         <li><font>教学成果</font><span>
-                            <Rate tooltips={desc} onChange={(value) => {
+                            <Rate tooltips={desc} onFocus={this.toLogin}  allowClear={false} onChange={(value) => {
                                  if(!this.state.isLogin){
                                     this.props.history.push('/my/login');
                                     return false;
@@ -220,7 +220,7 @@ class Info extends Component {
                             {jiaoxue ? <span className="ant-rate-text">{desc[jiaoxue - 1]}</span> : ''}
                         </span></li>
                         <li><font>师资力量</font><span>
-                            <Rate tooltips={desc} onChange={(value) => {
+                            <Rate tooltips={desc} onFocus={this.toLogin}  allowClear={false}  onChange={(value) => {
                                  if(!this.state.isLogin){
                                     this.props.history.push('/my/login');
                                     return false;
@@ -232,7 +232,7 @@ class Info extends Component {
                             {shizi ? <span className="ant-rate-text">{desc[shizi - 1]}</span> : ''}
                         </span></li>
                         <li><font>服务质量</font><span>
-                            <Rate tooltips={desc} onChange={(value) => {
+                            <Rate tooltips={desc}  onFocus={this.toLogin} allowClear={false} onChange={(value) => {
                                  if(!this.state.isLogin){
                                     this.props.history.push('/my/login');
                                     return false;
@@ -244,12 +244,16 @@ class Info extends Component {
                             {fuwu ? <span className="ant-rate-text">{desc[fuwu - 1]}</span> : ''}
                         </span></li>
                     </ul>
-                    <div className="sayping">
-                        <textarea placeholder="老师认真负责" value={dianping}  rows="7" maxLength="200" onChange={(event) => {
-                            if(!this.state.isLogin){
-                                this.props.history.push('/my/login');
-                                return false;
-                            }
+                    <div className="sayping" onClick={()=>{
+                          if(!this.state.isLogin){
+                            this.props.history.push('/my/login');
+                            return false;
+                        }
+                    }
+
+                    }>
+                        <textarea placeholder="老师认真负责" value={dianping}  rows="7" maxLength="200" readOnly={this.state.isLogin?false:true} onChange={(event) => {
+                          
                             const { valueData } = this.state;
                             valueData.dianping = event.target.value;
                             this.setState({ valueData ,zilength:200-event.target.value.length})
@@ -288,6 +292,12 @@ class Info extends Component {
             </div>
         )
     }
+    toLogin=()=>{
+        if(!this.state.isLogin){
+            this.props.history.push('/my/login');
+            return false;
+        }
+    }
     // 播放视频
     playvideo = (mp4) => {
         this.setState({
@@ -296,6 +306,12 @@ class Info extends Component {
         })
     }
     toping = async () => {
+        let {zong,pinpai,kecheng,jiaoxue,fuwu,shizi}=this.state.valueData;
+        if(zong==0||pinpai==0||kecheng==0||fuwu==0||shizi==0||jiaoxue==0){
+            Toast.info('请为商家评分哦~',1);
+            return false;
+        }
+
         this.setState({
             ii:true
         })
