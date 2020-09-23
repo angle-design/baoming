@@ -25,7 +25,7 @@ class Info extends Component {
             valueData: {
                 'sid': 0,
                 'zong': 0,
-                'pingpai': 0,
+                'pinpai': 0,
                 'kecheng': 0,
                 'jiaoxue': 0,
                 'fuwu': 0,
@@ -172,7 +172,7 @@ class Info extends Component {
                     <b>我要评价</b>
                     <ul>
                         <li><font>总体评价</font> <span>
-                            <Rate tooltips={desc} value={zong} onChange={(value) => {
+                            <Rate value={zong} onChange={(value) => {
                                  if(!this.state.isLogin){
                                     this.props.history.push('/my/login');
                                     return false;
@@ -184,7 +184,7 @@ class Info extends Component {
                             {zong ? <span className="ant-rate-text">{desc[zong - 1]}</span> : ''}
                         </span></li>
                         <li><font>品牌指数</font><span>
-                            <Rate tooltips={desc} onChange={(value) => {
+                            <Rate onChange={(value) => {
                                  if(!this.state.isLogin){
                                     this.props.history.push('/my/login');
                                     return false;
@@ -196,7 +196,7 @@ class Info extends Component {
                             {pinpai ? <span className="ant-rate-text">{desc[pinpai - 1]}</span> : ''}
                         </span></li>
                         <li><font>课程体系</font><span>
-                            <Rate tooltips={desc} onChange={(value) => {
+                            <Rate onChange={(value) => {
                                  if(!this.state.isLogin){
                                     this.props.history.push('/my/login');
                                     return false;
@@ -208,7 +208,7 @@ class Info extends Component {
                             {kecheng ? <span className="ant-rate-text">{desc[kecheng - 1]}</span> : ''}
                         </span></li>
                         <li><font>教学成果</font><span>
-                            <Rate tooltips={desc} onChange={(value) => {
+                            <Rate  onChange={(value) => {
                                  if(!this.state.isLogin){
                                     this.props.history.push('/my/login');
                                     return false;
@@ -220,7 +220,7 @@ class Info extends Component {
                             {jiaoxue ? <span className="ant-rate-text">{desc[jiaoxue - 1]}</span> : ''}
                         </span></li>
                         <li><font>师资力量</font><span>
-                            <Rate tooltips={desc} onChange={(value) => {
+                            <Rate  onChange={(value) => {
                                  if(!this.state.isLogin){
                                     this.props.history.push('/my/login');
                                     return false;
@@ -232,7 +232,7 @@ class Info extends Component {
                             {shizi ? <span className="ant-rate-text">{desc[shizi - 1]}</span> : ''}
                         </span></li>
                         <li><font>服务质量</font><span>
-                            <Rate tooltips={desc} onChange={(value) => {
+                            <Rate onChange={(value) => {
                                  if(!this.state.isLogin){
                                     this.props.history.push('/my/login');
                                     return false;
