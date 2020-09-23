@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Link,withRouter} from 'react-router-dom';
 // import { checkLogin } from '../../api/my';
 import action from '../../store/action/index';
-
+import Star from '../../component/star'
 export class Info extends Component {
     constructor(props, context) {
         super(props, context);
@@ -13,7 +13,12 @@ export class Info extends Component {
             { name: "收藏", routeto: "/my/collection" },
             { name: "反馈", routeto: "/my/feedback" },
             { name: "设置", routeto: "/my/setup" }
-        ]
+        ],
+        this.state={
+            one:0,
+            two:0,
+            three:0
+        }
     }
     //=>验证是否登录
     async componentWillMount() {
@@ -49,9 +54,11 @@ export class Info extends Component {
                         </li>
                     })}
                 </ul>
+              
             </section>
         )
     }
+
     handleTo=routepath=>{
         let {flag}=this.props;
         if(flag){

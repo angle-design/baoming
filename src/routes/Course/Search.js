@@ -60,7 +60,7 @@ class Search extends Component {
     }
     onEndReached = (event) => {
         if (!this.state.hasMore) {
-            return false;
+            return;
         }
         this.setState({
             isLoading: true,

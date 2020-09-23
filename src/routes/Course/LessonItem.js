@@ -5,38 +5,39 @@ import '../../static/css/lessonitem.less';
 
 class CourseItem extends Component {
     constructor(props, context) {
-        super(props, context)
+        super(props, context);
+        this.state={
+            bmflag:true
+        }
     }
 
     render() {
         // console.log(this.props.item)
-        let { id, image, name, price, objects,sid,cid} = this.props.item;
+        let { id, image, name, price, objects,sid,cid,num,oldprice} = this.props.item;
         return (
             <div className="lesson-item" >
                 <a onClick={(e) => {
                     if (e.target.tagName == "BUTTON") {
+                        if(this.props.item.num<=0){
+                            return false;
+                        }
                         e.stopPropagation();
-                        this.props.history.push(  {pathname: '/course/singup',
+                        this.props.history.push({pathname: '/course/singup',
                         search: `id=${sid}&&cid=${id}`})
-
-                        // this.props.history.push("/course/singup/" + id)
-                        // 真正的处理过程在这里
                         return false;
                     }
                     this.props.history.push("/course/lessondetail/" + id)
                 }}>
-                    {/* 左边内容 */}
                     <p>
                         <img src={image} />
                     </p>
-                    {/* 右边内容 */}
                     <div>
                         <h4>{name}</h4>
-                        <p className="shumu">课程数量：20</p>
+                        <p className="shumu">课程数量：{num?num:0}</p>
                         <p className="xue">{objects}</p>
-                        <p className="price"><b>¥{price}</b><font>¥188</font> <button onClick={() => {
+                        <p className="price"><b>¥{price}</b><font>¥{oldprice}</font> <button onClick={() => {
 
-                        }}>立即注册</button></p>
+                        }} className={num<=0?'sale':''}>立即注册</button></p>
                     </div>
                 </a>
             </div>

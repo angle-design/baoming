@@ -14,7 +14,10 @@ export default function headline(state = INIT_STATE, action) {
             let { result:{code, list} } = action;
             if (parseFloat(code) === 200 && list) {
                 state.headLineData.data=state.headLineData.data.concat(list);
-                state.headLineData.page++
+                state.headLineData.page++;
+                if(list.length<10){
+                    state.headLineData.flag = false;
+                }
             }else{
                 state.headLineData.flag = false;
             }

@@ -34,7 +34,7 @@ class List extends Component {
 
     }
     async componentDidMount() {
-        
+
         let { queryLoginFlag, flag } = this.props;
         this.setState({
             isLogin: flag
@@ -48,13 +48,13 @@ class List extends Component {
 
         this.getData(true)
     }
-    componentWillReceiveProps(nextProps){
-        if(this.props.flag !== nextProps.flag){
+    componentWillReceiveProps(nextProps) {
+        if (this.props.flag !== nextProps.flag) {
             this.setState({
-                isLogin:nextProps.flag
-           })
+                isLogin: nextProps.flag
+            })
+        }
     }
-}
     // shouldComponentUpdate(nextProps,nextState){
     //     console.log(nextState)
     //     return nextState.data !==this.state.data;
@@ -104,7 +104,7 @@ class List extends Component {
 
     }
     render() {
-        document.title ='问吧';
+        document.title = '问吧';
         const row = (rowData, sectionID, rowID) => {
             // 这里rowData,就是上面方法cloneWithRows的数组遍历的单条数据了，直接用就行
             let { uinfo, zan, countr, ctime, relist, content, id, aid, uid } = rowData;
@@ -130,11 +130,11 @@ class List extends Component {
                                 </span>
                                 <span onClick={ev => {
                                     if (this.state.isLogin) {
-                                       
+
                                         this.setState({
                                             flagreply: true,
                                             replaydata: [aid, id, id, uid]
-                                        },()=>{
+                                        }, () => {
                                             ao()
                                         })
                                     } else {
@@ -177,7 +177,7 @@ class List extends Component {
                                         this.setState({
                                             flagreply: true,
                                             replaydata: [item.aid, item.id, id, item.uid]
-                                        },()=>{
+                                        }, () => {
                                             ao()
                                         })
 
@@ -276,8 +276,8 @@ class List extends Component {
             if (result.code == 200) {
                 this.setState({
                     pageNo: 1,
-                    dataSource: this.state.dataSource.cloneWithRows({}), 
-                    dataArr: [] 
+                    dataSource: this.state.dataSource.cloneWithRows({}),
+                    dataArr: []
                 })
                 Toast.info('提交成功~', 1);
                 this.getData(true)
