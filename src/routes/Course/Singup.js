@@ -40,10 +40,9 @@ class Singup extends Component {
             name: '',
             lesson: ''
         };
-
     }
+
     async componentWillMount() {
-        ao();
         // console.log(this.props.history.location.search)
         let { location: { search } } = this.props,
             { id = 0, cid = 0 } = Qs.parse(search.substr(1)) || {};
@@ -70,11 +69,10 @@ class Singup extends Component {
 
     }
     componentDidMount() {
-
+        ao();
     }
 
     handleSubmit = ev => {
-
         ev.preventDefault();
         this.props.form.validateFields(async (err, values) => {
             var pickeritem=this.state.pickerValue.split(',');
@@ -122,7 +120,7 @@ class Singup extends Component {
                             rules: [
                                 { message: '请输入机构名称!' }
                             ]
-                        })(<Input readOnly value="122" />)}
+                        })(<Input readOnly />)}
                     </FormItem>
                     <FormItem label='主打课程'>
                         {getFieldDecorator('kecheng', {

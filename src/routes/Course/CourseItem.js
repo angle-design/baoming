@@ -24,9 +24,9 @@ class CourseItem extends Component {
                 {/* 右边内容 */}
                 <div>
                     <h4><p>{name}<span></span></p></h4>
-                    <p className="starbox"><Star star={star * 2}></Star><b>{star}</b><font>{bnum}条</font></p>
-                    <p className="peobox">报名人数：{cnum}</p>
-                    {courselist&&courselist.length!==0?<p className="lessona">优势课程：<font>学习拼搭直播/学习拼搭直播</font></p>:''}
+                    <p className="starbox"><Star star={star * 2}></Star><b>{star}</b><font>{cnum}条</font></p>
+                    <p className="peobox">报名人数：{bnum?bnum:'0'}</p>
+                    {courselist&&courselist.length!==0?<p className="lessona">优势课程：<font>{courselist}</font></p>:''}
                 </div>
                 </Link>
             </div>

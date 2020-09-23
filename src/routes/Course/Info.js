@@ -306,6 +306,10 @@ class Info extends Component {
         })
     }
     toping = async () => {
+        if(!this.state.isLogin){
+            this.props.history.push('/my/login');
+            return false;
+        }
         let {zong,pinpai,kecheng,jiaoxue,fuwu,shizi}=this.state.valueData;
         if(zong==0||pinpai==0||kecheng==0||fuwu==0||shizi==0||jiaoxue==0){
             Toast.info('请为商家评分哦~',1);
