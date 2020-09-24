@@ -19,7 +19,7 @@ class ListItem extends Component {
       wovalue: ''
     }
   }
-  async componentDidMount() {
+  async componentWillUnmount() {
     let { queryLoginFlag, flag } = this.props;
     if (!flag) {
       queryLoginFlag();
@@ -35,12 +35,15 @@ class ListItem extends Component {
     }
   }
   fu = () => {
-    // let { flag } = this.props;
-    // if (!flag) {
-    //   this.props.history.go('/my/login');
-    //   return false;
-    // }
-    // this.props.huifupup(this.props.item.id) 
+    // alert(1)
+    let { flag } = this.props;
+
+    if (!flag) {
+      console.log(flag, 111)
+      this.props.history.push('/my/login');
+      return false;
+    }
+    this.props.huifupup(this.props.item.id);
   }
   render() {
     let { uinfo, isvip, time, zan, huifu, content, qlist, id, isq, hid } = this.props.item;
@@ -62,13 +65,27 @@ class ListItem extends Component {
                   </dd>
                 </dl> : ''}
               <p>
-                <span onClick={this.handlewenzan.bind(this, zan)}>
-                  <i className={this.state.wenflag ? 'active' : ''}></i>
-                  <font ref="aa">{zan ? zan : 0}</font>
-                </span>
-                <span onClick={this.handleToDetail.bind(this, id)}>
+                <span onClick={async (event) => {
+                  if (event.currentTarget.children[0].className == 'active') return '';
+                  let { flag } = this.props;
+                  if (!flag) {
+                    this.props.history.push('/my/login');
+                    return false;
+                  }
+                  event.currentTarget.children[0].className = 'active';
+                  event.currentTarget.children[1].innerHTML = parseInt(event.currentTarget.children[1].innerHTML) + 1;
+
+                  let result = await wenZan(this.props.item.id);
+                  if (result.code == 200) {
+                    Toast.info('点赞成功', 1)
+                  }
+                }}>
                   <i></i>
-                  <font onClick={this.fu}>{huifu}</font>
+                  <font>{zan ? zan : 0}</font>
+                </span>
+                <span onClick={this.props.al ? this.handleToDetail.bind(this, id) : this.fu}>
+                  <i></i>
+                  <font>{huifu}</font>
                 </span>
               </p>
             </div>
@@ -82,7 +99,7 @@ class ListItem extends Component {
             }
             this.setState({
               answerflag: true
-            },()=>{
+            }, () => {
               ao()
             })
             return false;
@@ -100,11 +117,25 @@ class ListItem extends Component {
                 </dd>
               </dl>
               <p>
-                <span onClick={this.handlehuizan.bind(this, qlist.zan)}>
-                  <i className={this.state.huiflag ? 'active' : ''}></i>
-                  <font ref="bb">{qlist.zan ? qlist.zan : 0}</font>
+                <span onClick={async (event) => {
+                  if (event.currentTarget.children[0].className == 'active') return '';
+                  let { flag } = this.props;
+                  if (!flag) {
+                    this.props.history.push('/my/login');
+                    return false;
+                  }
+                  event.currentTarget.children[0].className = 'active';
+                  event.currentTarget.children[1].innerHTML = parseInt(event.currentTarget.children[1].innerHTML) + 1;
+
+                  let result = await wenZan(this.props.item.qlist.id);
+                  if (result.code == 200) {
+                    Toast.info('点赞成功', 1)
+                  }
+                }}>
+                  <i></i>
+                  <font>{qlist.zan ? qlist.zan : 0}</font>
                 </span>
-                <span onClick={this.handleToDetail.bind(this, id)}>
+                <span onClick={this.props.al ? this.handleToDetail.bind(this, id) : this.fu}>
                   <i></i>
                   <font>{qlist.huifu}</font>
                 </span>
@@ -118,7 +149,7 @@ class ListItem extends Component {
           if (e.target.className == "pup_con" || e.target.tagName == "TEXTAREA" || e.target.tagName == 'P') {
             this.setState({
               answerflag: true
-            },()=>{
+            }, () => {
               ao()
             })
             return false;
@@ -137,7 +168,7 @@ class ListItem extends Component {
               }}
             ></textarea>
             <p>
-              <font>{parseInt(800-parseInt(this.state.wovalue.length))} / 800</font>
+              <font>{parseInt(800 - parseInt(this.state.wovalue.length))} / 800</font>
               <span onClick={async () => {
                 if (this.state.wovalue) {
                   let res = await toAswer(hid, id, this.state.wovalue);
@@ -157,40 +188,6 @@ class ListItem extends Component {
     )
   }
 
-  // 问点赞
-  handlewenzan = async (a) => {
-    if (this.state.wenflag) return '';
-    let { flag } = this.props;
-    if (!flag) {
-      this.props.history.push('/my/login');
-      return false;
-    }
-    var c = parseInt(a) + 1;
-    let result = await wenZan(this.props.item.id);
-    if (result.code == 200) {
-      this.refs.aa.innerHTML = c;
-      this.setState({
-        wenflag: true
-      })
-    }
-  }
-  // 回点赞
-  handlehuizan = async (a) => {
-    if (this.state.huiflag) return '';
-    let { flag } = this.props;
-    if (!flag) {
-      this.props.history.push('/my/login');
-      return false;
-    }
-    var c = parseInt(a) + 1;
-    let result = await wenZan(this.props.item.qlist.id);
-    if (result.code == 200) {
-      this.refs.bb.innerHTML = c;
-      this.setState({
-        huiflag: true,
-      })
-    }
-  }
   //点击进入详情
   handleToDetail = id => {
     this.props.history.push({

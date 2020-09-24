@@ -30,7 +30,7 @@ class List extends Component {
             msg: '',//回复的内容
             dataa: false,
             zanwenflag: false,
-            zanxin:0
+            zanxin: 0
         }
 
     }
@@ -125,8 +125,22 @@ class List extends Component {
                                 </dd>
                             </dl>
                             <p>
-                                <span onClick={this.zan.bind(this, zan, id)}>
-                                    <i  className={this.state.zanwenflag ? 'active' : ''}></i>
+                                <span onClick={async (event)=>{
+                                     if (event.currentTarget.children[0].className == 'active') return '';
+                                     let { flag } = this.props;
+                                     if (!flag) {
+                                       this.props.history.push('/my/login');
+                                       return false;
+                                     }
+                                     event.currentTarget.children[0].className = 'active';
+                                     event.currentTarget.children[1].innerHTML = parseInt(event.currentTarget.children[1].innerHTML) + 1;
+                   
+                                     let result = await readZan(id);
+                                     if (result.code == 200) {
+                                       Toast.info('点赞成功', 1)
+                                     }
+                                }}>
+                                    <i></i>
                                     <font>{zan ? zan : '0'}</font>
                                 </span>
                                 <span onClick={ev => {
@@ -197,7 +211,7 @@ class List extends Component {
         return (
             <div className="replayBox">
                 <div style={{ padding: '0 0.3rem', borderBottom: '0.1rem solid #f4f4f4' }}>
-                    <ListItem item={this.state.data} huifupup={this.huifupup} />
+                    <ListItem item={this.state.data} huifupup={this.huifupup.bind(this)} al={false} />
                 </div>
                 {this.state.fulist ? <div className="new_bottom">
                     <ul>
@@ -231,25 +245,14 @@ class List extends Component {
 
     }
     huifupup = (id) => {
-        ao()
         this.setState({
             flagreply: true,
             replaydata: [id]
+        },()=>{
+            ao()
         })
     }
-    // 点赞
-    zan = async (a, id) => {
-        console.log(this)
-        if (this.state.zanwenflag) return '';
-        var c = parseInt(a) + 1;
-        let result = await readZan(id);
-        if (result.code == 200) {
-           console.log(this.refs)
-            this.setState({
-                zanwenflag: true
-            })
-        }
-    }
+
     changeHandle = (e) => {
         this.setState({
             msg: e.target.value

@@ -93,3 +93,8 @@ export function toAswer(hid,pid,content){
     hid,pid,content
   })
 }
+
+// 是否是名师
+export function MingShi(){
+  return axios.get('/api/api/ask/isshowcreate')
+}

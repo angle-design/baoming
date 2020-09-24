@@ -21,7 +21,7 @@ class Evaluate extends Component {
             page:1,
             count:0,
             flag:true,
-            idid:this.props.idid
+            idid:this.props.idid,
         }
     }
   
@@ -31,17 +31,22 @@ class Evaluate extends Component {
         if (result.code == 200) {
            this.setState({
                data:result.list.list,
-               count:result.list.count
+               count:result.list.count,
            })
         }
     }
   async componentWillReceiveProps(nextProps) {
      if(this.state.idid!==nextProps.idid){
+        this.setState({
+            data:[],
+            count:0
+        })
         let result = await PingJia(this.props.item,0,1);
         if (result.code == 200) {
            this.setState({
                data:result.list.list,
-               count:result.list.count
+               count:result.list.count,
+             
            })
         }
      }

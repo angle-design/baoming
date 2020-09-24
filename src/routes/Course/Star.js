@@ -3,7 +3,7 @@ class Star extends Component{
     constructor(props){
         super(props);
         this.state={
-            starNum:['star0','star0','star0','star0','star0'] //设置默认背景图
+            starNum:['star0','star0','star0','star0','star0'], //设置默认背景图,
         }
     }
     componentDidMount(){

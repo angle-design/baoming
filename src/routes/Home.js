@@ -21,7 +21,7 @@ export class Home extends Component {
                 <CacheSwitch>
                     <CacheRoute  saveScrollPosition={true} path="/course" exact component={List}/>
                     <Route path="/course/info" component={Info}/>
-                    <Route path="/course/search" component={Search}/>
+                    <CacheRoute  saveScrollPosition={true}  path="/course/search" component={Search}/>
                     <Route path="/course/lessondetail/:id" component={LessonDetail}/>
                     <Route path="/course/singup/" component={Singup}/>
                 </CacheSwitch>

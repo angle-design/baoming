@@ -385,7 +385,22 @@ class Info extends Component {
                 idid:this.state.idid+1,
                 ii:false
             })
-            Toast.info('提交成功～',1);
+            Toast.info('提交成功～',1,()=>{
+               this.setState({
+                valueData: {
+                    'sid': 0,
+                    'zong': 0,
+                    'pinpai': 0,
+                    'kecheng': 0,
+                    'jiaoxue': 0,
+                    'fuwu': 0,
+                    'shizi': 0,
+                    'dianping': "",
+                    'images': ''
+                },
+                files: [],
+               })
+            });
         }else if(result.code==205){
             this.props.history.push('/my/login');
         }

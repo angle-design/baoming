@@ -16,7 +16,8 @@ class Search extends Component {
             pageNo: 1,
             hasMore: true,
             isLoading: true,
-            dataArr: []
+            dataArr: [],
+            key:''
         }
     }
     componentDidMount() {
@@ -29,8 +30,10 @@ class Search extends Component {
         //获取数据
         let result = await seaList(key, this.state.pageNo);
         if (result.code == 200) {
+            dataArr = this.state.dataArr.concat(result.list)
             if (result.list && result.list.length !== 0) {
-                dataArr = this.state.dataArr.concat(result.list)
+                
+                console.log(dataArr)
                 this.setState({
                     pageNo: this.state.pageNo,
                     dataSource: this.state.dataSource.cloneWithRows(dataArr),
@@ -38,16 +41,16 @@ class Search extends Component {
                     isLoading: false,
                     dataArr: dataArr // 保存新数据进state
                 })
-            } else {
+            if(result.list.length <10){
                 this.setState({
                     hasMore: false,
-                    pageNo: 1,
-                    dataSource: this.state.dataSource.cloneWithRows({}),
-                    isLoading: false,
-                    dataArr: [] // 保存新数据进state
                 })
             }
-
+            } else{
+                this.setState({
+                    hasMore: false,
+                })
+            }
         } else if (result.code == 404) {
             this.setState({
                 hasMore: false,
@@ -62,6 +65,7 @@ class Search extends Component {
         if (!this.state.hasMore) {
             return;
         }
+        alert(1)
         this.setState({
             isLoading: true,
             pageNo: this.state.pageNo + 1, // 加载下一页
@@ -77,16 +81,17 @@ class Search extends Component {
         }
         return (
             <div className="searchBox">
-                <SearchBar placeholder="搜索课程" ref={ref => this.autoFocusInst = ref} onChange={(value) => {
+                <SearchBar placeholder="搜索课程" ref={ref => this.autoFocusInst = ref} onSubmit={(value) => {
                     this.setState({
                         key: value,
                         pageNo: 1,
                         dataArr: [],
                         hasMore: true,
-                        isLoading: false,
                         dataSource: this.state.dataSource.cloneWithRows({}),
+                    },()=>{
+                        this.getData(true, this.state.key)
                     })
-                    this.getData(true, value)
+                   
                 }}
                     onCancel={() => {
                         this.props.history.push('/course')

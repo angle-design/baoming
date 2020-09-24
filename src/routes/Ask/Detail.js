@@ -147,7 +147,7 @@ class Detail extends Component {
             // 这里rowData,就是上面方法cloneWithRows的数组遍历的单条数据了，直接用就行
             return (
                 <li>
-                    <Listcon item={rowData}/>
+                    <Listcon item={rowData} al={true}/>
                 </li>
             )
         }
@@ -300,21 +300,19 @@ class Detail extends Component {
                                         })
                                         Toast.info("提问成功~",1);
                                         this.setState({
-                                            pageNo: this.props.askInfoList.page
+                                            pageNo: this.props.askInfoList.page,
+                                            dataSource: this.state.dataSource.cloneWithRows({}),
                                         },async ()=>{
                                             await  this.props.queryList({
                                                 p:  this.state.pageNo,
                                                 id: this.courseId,
-                                                order:0
+                                                order:0,
                                             })
                                             this.setState({
                                                 dataSource: this.state.dataSource.cloneWithRows(this.props.askInfoList.data),
                                             })
                                         })
-                                      
-                                       
                                       }
-                                      
                                 }
                             }}>发表</span>
                         </p>
@@ -344,7 +342,8 @@ class Detail extends Component {
         this.props.askInfoList.data=[];
         this.setState({
             activeIndex:order,
-            pageNo: this.props.askInfoList.page
+            pageNo: this.props.askInfoList.page,
+            dataSource: this.state.dataSource.cloneWithRows({})
         },async ()=>{
             await this.props.queryList({
                 p: this.state.pageNo,
