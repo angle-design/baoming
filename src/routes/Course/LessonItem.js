@@ -35,9 +35,10 @@ class CourseItem extends Component {
                         <h4>{name}</h4>
                         <p className="shumu">课程数量：{num?num:0}</p>
                         <p className="xue">{objects}</p>
-                        <p className="price"><b>¥{price}</b><font>¥{oldprice}</font> <button onClick={() => {
-
-                        }} className={num<=0?'sale':''}>立即注册</button></p>
+                        <p className="price"><b>¥{price}</b><font>¥{oldprice}</font> 
+                        {!this.props.fl?<button onClick={() => {
+                        }} className={num<=0?'sale':''}>立即注册</button>:''}
+                        </p>
                     </div>
                 </a>
             </div>

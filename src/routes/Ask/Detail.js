@@ -206,6 +206,7 @@ class Detail extends Component {
                                     this.props.history.push({
                                         pathname: '/ask/detail/' + id
                                     })
+                                    this.handleClick(0)
                                 }
                             }>{h_title},{h_title2}</p>
                         })}

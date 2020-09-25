@@ -28,7 +28,7 @@ class Lesson extends Component {
                 {data&&data.length!==0? <div>
                     {data.map((item,index)=>{
                         console.log(item)
-                        return <LessonItem item={item} key={index}></LessonItem>
+                        return <LessonItem item={item} key={index}  fl={false}></LessonItem>
                     })}
                 </div>: <div style={{marginTop:'2rem'}}><Kong msg='暂无报名课程~'></Kong></div>}
               

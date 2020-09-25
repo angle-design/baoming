@@ -3,7 +3,8 @@ import { connect } from 'react-redux';
 import { Link,withRouter} from 'react-router-dom';
 // import { checkLogin } from '../../api/my';
 import action from '../../store/action/index';
-import Star from '../../component/star'
+import Star from '../../component/star';
+import {MingShi } from '../../api/ask'
 export class Info extends Component {
     constructor(props, context) {
         super(props, context);
@@ -17,7 +18,8 @@ export class Info extends Component {
         this.state={
             one:0,
             two:0,
-            three:0
+            three:0,
+            shi:0
         }
     }
     //=>验证是否登录
@@ -26,6 +28,20 @@ export class Info extends Component {
         if(!flag){
             queryLoginFlag();
             queryInfo()
+        }
+        let result=await MingShi();
+        if(result.code==200){
+            this.setState({
+                shi:1
+            })
+        }else if(result.code==206){
+            this.setState({
+                shi:2
+            })
+        }else if(result.code==207){
+            this.setState({
+                shi:3
+            })
         }
     }
     render() {
@@ -38,7 +54,7 @@ export class Info extends Component {
                     {!flag?<span onClick={()=>{
                           this.props.history.push('/my/login');
                     }}>点击登录或注册</span>:<span>{uinfo.a_uname}</span>}
-                    <font  onClick={this.handleTo.bind(this,'/my/teacher')}>申请名师</font>
+                    {this.state.shi!==1?<font  onClick={this.handleTo.bind(this,'/my/teacher')}>{this.state.shi==2?'名师申请中':'申请名师'}</font>:''}
                 </p>
                 <div className="my_hua">
                     <p  onClick={this.handleTo.bind(this,'/my/topic')}><img src={require('../../static/image/hua.png')} />我的话题</p>

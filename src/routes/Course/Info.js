@@ -147,7 +147,7 @@ class Info extends Component {
                 {this.state.leList && this.state.leList.length !== 0 ? <div className="lessonCon">
                     {
                         this.state.leList.map((item, index) => {
-                            return <LessonItem item={item} key={index} />
+                            return <LessonItem item={item} key={index} fl={true} />
                         })
                     }
                 </div> : ''}
@@ -328,10 +328,10 @@ class Info extends Component {
         )
     }
     onStarClick(nextValue, prevValue, name) {
-        // if(!this.state.isLogin){
-        //     this.props.history.push('/my/login');
-        //     return false;
-        // }
+        if(!this.state.isLogin){
+            this.props.history.push('/my/login');
+            return false;
+        }
         const { valueData } = this.state;
         valueData[name] = nextValue;
         this.setState({ valueData },()=>{

@@ -31,7 +31,7 @@ class Evaluate extends Component {
     render() {
         document.title = this.state.data.name?this.state.data.name:'';
         if(!this.state.data) return '';
-        let {name,price,content,image,features,objects,sid,oldprice,classtype,classnum,xingshi}=this.state.data;
+        let {name,price,content,image,features,objects,sid,oldprice,classtype,classnum,xingshi,num}=this.state.data;
         return (
             <div className="lessonBox">
                 <div className="details_top">
@@ -76,12 +76,19 @@ class Evaluate extends Component {
                         </div>
                     </div>
                     <div className="fix_bottom">
-                        <button><Link to={{
-                    pathname:'/course/singup',
-                    search:  `id=${sid}&&cid=${this.props.match.params.id}`
-                }}>立即报名</Link></button>
+                    <button className={num<=0?'sale':''}>
+                        <a onClick={()=>{
+                               if(this.state.data.num<=0){
+                                return false;
+                            }
+                            this.props.history.push({pathname: '/course/singup',
+                            search: `id=${sid}&&cid=${this.props.match.params.id}`})
+                            return false;
+                        }}>立即报名</a>
+                    </button>
                         {/* <button>已报名</button> */}
                     </div>
+                   
                 </div>
         )
     }
