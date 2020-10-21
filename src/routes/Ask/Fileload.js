@@ -57,12 +57,10 @@ class Fileload extends Component {
             action: '/api/api/upload/uploadimage', //这块是将后台给你的接口地址需要改一下你自己的交互地址
             listType: 'picture',
             className: 'upload-list-inline',
-            onChange({ file, fileList }) {//file,和fileList是组件自带的参数，根据你上面赋值过去的接口给你返回的内容，file是个对象，fileList是个数组，其实file对象就相当于你用axios方法返回的response对象差不多啦~
+            onChange({ file, fileList }) {
                 if (file.status === 'done') {
-                    console.log(1)
-                    console.log(file)
-                    $this.setState({
-                        organCertUrl: file.response.data.src,//前面是我的存放地址的对象
+                    $this.setState({ 
+                        organCertUrl:  file.response.data.src
                     })
                 }
             }
@@ -148,12 +146,11 @@ class Fileload extends Component {
                                     </span>}
                             </Upload>
                         </ImgCrop>
-
-
                     </p>
                 </div>
                 <div>
                     <p>
+                        
                         <font  className={sendflag&&!name?'tit_text error':'tit_text'}>姓名：</font>
                         <InputItem
                             onChange={(e) => {
@@ -182,6 +179,7 @@ class Fileload extends Component {
             </div>
         )
     }
+   
     handleToSend =async () => {
         this.setState({
             sendflag:true
@@ -201,6 +199,14 @@ class Fileload extends Component {
         }else if(result.code==400){
             Toast.info('您已提交成功，请勿重复提交。')
         }
+    };
+    beforeUpload=(file)=>{
+        console.log('file', file);
+        const isLt2M = file.size / 1024 / 1024 < 2;
+        if (!isLt2M) {
+            message.error('图片大于2MB!');
+        }
+        return isLt2M;
     };
     close=(ev)=>{
         ev.preventDefault

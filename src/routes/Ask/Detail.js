@@ -36,6 +36,9 @@ class Detail extends Component {
     }
     //=>验证是否登录
     async componentWillMount() {
+        this.props.askInfoList.flag=true;
+        this.props.askInfoList.page=1;
+        this.props.askInfoList.data=[];
         let { queryLoginFlag, flag } = this.props;
         if (!flag) {
             queryLoginFlag();
