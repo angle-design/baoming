@@ -30,6 +30,7 @@ class Fileload extends Component {
             clicked: '小学',
             organCertUrl: '',
             sendflag:false,
+            fileList: [],
         }
     }
     showActionSheet = () => {
@@ -49,22 +50,34 @@ class Fileload extends Component {
                 this.setState({ clicked: BUTTONS[buttonIndex] });
             });
     }
+    onChange = ({fileList}) => {
+        this.setState({ fileList });
+    };
+     beforeUpload=(file)=>{
+         
+        console.log('file', file);
+        const isLt2M = file.size / 1024 / 1024 < 2;
+        if (!isLt2M) {
+            message.error('图片大于2MB!');
+        }
+        return isLt2M;
+    } 
     render() {
         document.title ='创建问吧';
         const $this = this;
-        const props = {
-            ref: "upload",
-            action: '/api/api/upload/uploadimage', //这块是将后台给你的接口地址需要改一下你自己的交互地址
-            listType: 'picture',
-            className: 'upload-list-inline',
-            onChange({ file, fileList }) {
-                if (file.status === 'done') {
-                    $this.setState({ 
-                        organCertUrl:  file.response.data.src
-                    })
-                }
-            }
-        }
+        // const props = {
+        //     ref: "upload",
+        //     action: '/api/api/upload/uploadimage',
+        //     listType: 'picture',
+        //     className: 'upload-list-inline',
+        //     onChange({ file, fileList }) {
+        //         if (file.status === 'done') {
+        //             $this.setState({ 
+        //                 organCertUrl:  file.response.data.src
+        //             })
+        //         }
+        //     }
+        // }
         const props1 = {
             aspect: 375 / 124,
             width: document.body.clientWidth,
@@ -130,19 +143,22 @@ class Fileload extends Component {
                 </div>
                 <div>
                     <p>
-                        <ImgCrop grid  {...props1}>
+                        <ImgCrop   {...props1}>
                             <Upload
-                                {...props}
-                                beforeUpload={this.beforeUpload}
+                                name="file"
+                                　  action="/api/api/upload/uploadimage"
+                                    accept="image/*"
+                                    listType="picture"
+                                    fileList={this.state.fileList}
+                                    beforeUpload={this.beforeUpload}
+                                    onChange={this.onChange}
                             >
                                 {!this.state.organCertUrl ? <span>
                                     <i></i>
                                     <font>点击上传封面（可选）</font>
                                 </span> : <span className="img_big">
                                         <img className="dapic" src={this.state.organCertUrl } />
-                                        <i onClick={
-                                          this.close
-                                        }></i>
+                                        <i onClick={this.close}></i>
                                     </span>}
                             </Upload>
                         </ImgCrop>
@@ -200,14 +216,7 @@ class Fileload extends Component {
             Toast.info('您已提交成功，请勿重复提交。')
         }
     };
-    beforeUpload=(file)=>{
-        console.log('file', file);
-        const isLt2M = file.size / 1024 / 1024 < 2;
-        if (!isLt2M) {
-            message.error('图片大于2MB!');
-        }
-        return isLt2M;
-    };
+  
     close=(ev)=>{
         ev.preventDefault
         this.setState({
