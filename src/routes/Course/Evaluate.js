@@ -7,7 +7,6 @@ import { PingJia } from '../../api/course'
 import '../../static/css/evaluat.less'
 import Star from './Star';
 import Kong from '../../component/kong';
-import { compose } from 'redux';
 class Evaluate extends Component {
 
     constructor(props, context) {

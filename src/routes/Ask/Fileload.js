@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import ImgCrop from 'antd-img-crop';
-import lrz from 'lrz';
 import {askCommit} from '../../api/ask'
 import { ActionSheet, InputItem, TextareaItem, Toast } from 'antd-mobile';
 import { Upload, Button, Modal, message } from 'antd'; //引入上传、按钮、弹窗等antd组件
@@ -30,7 +29,6 @@ class Fileload extends Component {
             clicked: '小学',
             organCertUrl: '',
             sendflag:false,
-            fileList: [],
         }
     }
     showActionSheet = () => {
@@ -50,38 +48,27 @@ class Fileload extends Component {
                 this.setState({ clicked: BUTTONS[buttonIndex] });
             });
     }
-    onChange = ({fileList}) => {
-        this.setState({ fileList });
-    };
-     beforeUpload=(file)=>{
-         
-        console.log('file', file);
-        const isLt2M = file.size / 1024 / 1024 < 2;
-        if (!isLt2M) {
-            message.error('图片大于2MB!');
-        }
-        return isLt2M;
-    } 
     render() {
-        document.title ='创建问吧';
         const $this = this;
-        // const props = {
-        //     ref: "upload",
-        //     action: '/api/api/upload/uploadimage',
-        //     listType: 'picture',
-        //     className: 'upload-list-inline',
-        //     onChange({ file, fileList }) {
-        //         if (file.status === 'done') {
-        //             $this.setState({ 
-        //                 organCertUrl:  file.response.data.src
-        //             })
-        //         }
-        //     }
-        // }
+        const props = {
+            ref: "upload",
+            action: '/api/api/upload/uploadimage', //这块是将后台给你的接口地址需要改一下你自己的交互地址
+            listType: 'picture',
+            className: 'upload-list-inline',
+            onChange({ file, fileList }) {//file,和fileList是组件自带的参数，根据你上面赋值过去的接口给你返回的内容，file是个对象，fileList是个数组，其实file对象就相当于你用axios方法返回的response对象差不多啦~
+                if (file.status === 'done') {
+                    console.log(1)
+                    console.log(file)
+                    $this.setState({
+                        organCertUrl: file.response.data.src,//前面是我的存放地址的对象
+                    })
+                }
+            }
+        }
         const props1 = {
-            aspect: 375 / 124,
+            aspect: 710 / 248,
             width: document.body.clientWidth,
-            height: parseInt(document.body.clientWidth) / 375 * 124,
+            height: parseInt(document.body.clientWidth) / 710 * 248,
             resize: false, //裁剪是否可以调整大小
             resizeAndDrag: true, //裁剪是否可以调整大小、可拖动
             modalTitle: "上传图片", //弹窗标题
@@ -143,30 +130,28 @@ class Fileload extends Component {
                 </div>
                 <div>
                     <p>
-                        <ImgCrop   {...props1}>
+                        <ImgCrop grid  {...props1}>
                             <Upload
-                                name="file"
-                                　  action="/api/api/upload/uploadimage"
-                                    accept="image/*"
-                                    listType="picture"
-                                    fileList={this.state.fileList}
-                                    beforeUpload={this.beforeUpload}
-                                    onChange={this.onChange}
+                                {...props}
+                                beforeUpload={this.beforeUpload}
                             >
                                 {!this.state.organCertUrl ? <span>
                                     <i></i>
                                     <font>点击上传封面（可选）</font>
                                 </span> : <span className="img_big">
                                         <img className="dapic" src={this.state.organCertUrl } />
-                                        <i onClick={this.close}></i>
+                                        <i onClick={
+                                          this.close
+                                        }></i>
                                     </span>}
                             </Upload>
                         </ImgCrop>
+
+
                     </p>
                 </div>
                 <div>
                     <p>
-                        
                         <font  className={sendflag&&!name?'tit_text error':'tit_text'}>姓名：</font>
                         <InputItem
                             onChange={(e) => {
@@ -195,7 +180,6 @@ class Fileload extends Component {
             </div>
         )
     }
-   
     handleToSend =async () => {
         this.setState({
             sendflag:true
@@ -216,7 +200,6 @@ class Fileload extends Component {
             Toast.info('您已提交成功，请勿重复提交。')
         }
     };
-  
     close=(ev)=>{
         ev.preventDefault
         this.setState({
